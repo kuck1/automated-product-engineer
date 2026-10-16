@@ -63,7 +63,7 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   await page.getByRole("button", { name: /Mint focus/ }).click();
   await page.getByRole("button", { name: /Soft/ }).click();
   await page.getByRole("button", { name: "Compact" }).click();
-  await expect(page.getByText(/Mint focus \+ Soft \+ Compact/)).toBeVisible();
+  await expect(page.getByText("Mint focus + Soft + compact", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
 });
 
