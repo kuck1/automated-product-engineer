@@ -44,3 +44,5 @@ Classify each state value as transient local state, shareable navigation state, 
 Document the chosen boundaries, state/data flow, alternatives, risks, test seams, rollout/rollback plan, and intentional constraints in the feature guide or a short decision record. When implementation spans dependent changes, propose the smallest reviewable dependency graph; every branch must remain coherent on its stated base.
 
 After implementation and manual QA, revisit the design with real evidence. Fix low-risk, high-leverage boundary problems in scope, and record larger non-blocking work with a trigger for revisiting it.
+
+For a concrete implementation, study [`../../docs/reference-app-architecture.md`](../../docs/reference-app-architecture.md) and trace either case study in [`../../docs/case-studies.md`](../../docs/case-studies.md).

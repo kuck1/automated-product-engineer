@@ -1,6 +1,6 @@
 # Automated Product Engineer for Next.js
 
-An open-source prompt kit, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
+An open-source reference app, prompt kit, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
 
 Design tools are excellent at defining intent, interaction, and visual direction. Production applications also need clear ownership across components, hooks, APIs, services, persistence, analytics, accessibility, responsive behavior, and tests. This repository connects those two worlds.
 
@@ -24,6 +24,18 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - Progressive skill references with concrete architecture, race handling, review, persistence, responsive, security, QA, and PR-delivery examples.
 
 ## Quick start
+
+Run the reference application:
+
+```bash
+corepack enable
+pnpm install
+pnpm dev
+```
+
+Open `http://localhost:3100` for the landing page, `http://localhost:3100/system` for the interactive token and component tour, and `http://localhost:3100/examples` for two business-logic case studies.
+
+Then use the workflow in your own codebase:
 
 1. Copy [`prompts/claude-design-quick.md`](prompts/claude-design-quick.md) and fill in the bracketed product context.
 2. Attach your Figma frames, screenshots, existing component links, and product rules.
@@ -73,6 +85,14 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 ## Repository map
 
+- [`app/`](app): public product site, interactive examples, and thin API routes.
+- [`src/examples/`](src/examples): full-stack case studies with UI state, server cache, domain services, authorization, repositories, and adapters.
+- [`src/ui/tokens.ts`](src/ui/tokens.ts): human-readable semantic token registry and swappable theme and shape presets.
+- [`app/system/`](app/system): interactive design-system tour, live token playground, and hierarchy-based component catalog.
+- [`supabase/migrations/`](supabase/migrations): normalized example schema, constraints, indexes, and row-level security.
+- [`docs/reference-app-architecture.md`](docs/reference-app-architecture.md): the implementation's ownership and state contracts.
+- [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for both examples.
+
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
@@ -109,12 +129,12 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 ## Scope
 
-This repository is documentation and templates. It does not install a backend, choose a database, or replace the conventions of your Next.js application. Adapt the contracts to your stack and risk level.
+This repository includes a real reference implementation and a deterministic public demo. The example services run against an in-memory adapter by default and include a Supabase adapter plus RLS migration for integration into an authenticated application. Adapt the contracts to your stack and risk level; do not treat demo authentication as production authentication.
 
 The repository validates its JSON, local Markdown links, HTML templates, and public-content boundaries in GitHub Actions. Run the same checks locally with:
 
 ```bash
-python scripts/validate.py
+pnpm verify
 ```
 
 ## License
