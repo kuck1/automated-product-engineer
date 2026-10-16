@@ -42,7 +42,7 @@ export default function HomePage() {
             <p>A practical Next.js reference for turning designs and product intent into typed UI, secure APIs, durable state, tested workflows, and a reviewable pull request.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="/examples">Explore the examples <ArrowRight size={17} /></a>
-              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Use with your AI editor <ArrowRight size={15} /></a>
+              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
             </div>
             <small className="live-note"><i /> The site is the reference implementation.</small>
           </div>
@@ -105,7 +105,7 @@ export default function HomePage() {
       </section>
 
       <section className="section skill-section">
-        <div className="section-heading compact"><div><SectionEyebrow>PORTABLE SKILLS</SectionEyebrow><h2>Call the same workflow from any AI editor.</h2></div><p>Install one conductor and focused skills for each stage. Progressive references keep prompts concise while preserving depth.</p></div>
+        <div className="section-heading compact"><div><SectionEyebrow>PORTABLE SKILLS</SectionEyebrow><h2>Call the same workflow from any AI agent.</h2></div><p>Install one conductor and focused skills for each stage. Progressive references keep prompts concise while preserving depth.</p></div>
         <div className="skill-cloud">{skills.map((skill, index) => <span key={skill}><i>{String(index + 1).padStart(2, "0")}</i>{skill}</span>)}</div>
       </section>
 
