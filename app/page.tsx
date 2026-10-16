@@ -24,7 +24,7 @@ export default function HomePage() {
         <nav aria-label="Primary navigation">
           <a href="#workflow">Workflow</a>
           <a href="#examples">Examples</a>
-          <a href="#system">System</a>
+          <a href="/system">System</a>
           <a href="/library">Library</a>
         </nav>
         <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
@@ -36,7 +36,7 @@ export default function HomePage() {
         <div className="hero-grid">
           <div>
             <SectionEyebrow>OPEN-SOURCE PRODUCT ENGINEERING SYSTEM</SectionEyebrow>
-            <h1>Ship the whole feature.<span>Keep the system clean.</span></h1>
+            <h1>Beautiful features.<span>In a day. Not a week.</span></h1>
           </div>
           <div className="hero-copy">
             <p>A practical Next.js reference for turning designs and product intent into typed UI, secure APIs, durable state, tested workflows, and a reviewable pull request.</p>
@@ -90,7 +90,7 @@ export default function HomePage() {
           <h2>Opinionated where architecture matters.</h2>
           <p>Stable contracts at every boundary make the code easy to extend without turning each new feature into a rewrite.</p>
           <div className="system-actions">
-            <a className="button button-secondary" href="/examples#architecture"><Layers3 size={17} /> Inspect the architecture</a>
+            <a className="button button-secondary" href="/system"><Layers3 size={17} /> Tour the design system</a>
             <a className="text-link" href="/library"><BookOpen size={15} /> Browse skills & prompts</a>
           </div>
         </div>

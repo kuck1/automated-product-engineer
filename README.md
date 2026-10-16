@@ -33,7 +33,7 @@ pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3100` for the landing page and `http://localhost:3100/examples` for two interactive case studies.
+Open `http://localhost:3100` for the landing page, `http://localhost:3100/system` for the interactive token and component tour, and `http://localhost:3100/examples` for two business-logic case studies.
 
 Then use the workflow in your own codebase:
 
@@ -87,6 +87,8 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 - [`app/`](app): public product site, interactive examples, and thin API routes.
 - [`src/examples/`](src/examples): full-stack case studies with UI state, server cache, domain services, authorization, repositories, and adapters.
+- [`src/ui/tokens.ts`](src/ui/tokens.ts): human-readable semantic token registry and swappable theme and shape presets.
+- [`app/system/`](app/system): interactive design-system tour, live token playground, and hierarchy-based component catalog.
 - [`supabase/migrations/`](supabase/migrations): normalized example schema, constraints, indexes, and row-level security.
 - [`docs/reference-app-architecture.md`](docs/reference-app-architecture.md): the implementation's ownership and state contracts.
 - [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for both examples.

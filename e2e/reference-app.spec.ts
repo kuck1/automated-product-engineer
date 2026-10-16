@@ -7,8 +7,8 @@ test.beforeEach(async ({ request }) => {
 test("landing page explains the complete delivery workflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: /Ship the whole feature/ })).toBeVisible();
-  await expect(page.getByLabel("Animated product delivery workflow")).toContainText("Draft PR");
+  await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
+  await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
   await expect(page.getByRole("heading", { name: "Release Readiness" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Onboarding Operations" })).toBeVisible();
 });
@@ -55,11 +55,40 @@ test("skills library exposes the specialist workflows and design meta-prompts", 
   await expect(page.getByRole("link", { name: /Claude Design full export/ })).toBeVisible();
 });
 
+test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/system");
+  await expect(page.getByRole("heading", { name: "See the rules. Feel the system." })).toBeVisible();
+  await expect(page.getByText("Interactive focus and brand expression")).toBeVisible();
+  await page.getByRole("button", { name: /Mint focus/ }).click();
+  await page.getByRole("button", { name: /Soft/ }).click();
+  await page.getByRole("button", { name: "Compact" }).click();
+  await expect(page.getByText(/Mint Focus \+ Soft \+ Compact/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
+});
+
+test("mobile design system tour stays within the viewport", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/system");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  await expect(page.getByRole("link", { name: /Token playground/ })).toBeVisible();
+});
+
 test("desktop landing visual", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
   await page.emulateMedia({ reducedMotion: "reduce" });
   await expect(page).toHaveScreenshot("landing-desktop.png", { fullPage: true, animations: "disabled" });
+});
+
+test("mobile landing visual and overflow", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  await expect(page).toHaveScreenshot("landing-mobile.png", { fullPage: true, animations: "disabled" });
 });
 
 test("desktop release case study visual", async ({ page }, testInfo) => {
