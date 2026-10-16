@@ -47,7 +47,7 @@ Then use the workflow in your own codebase:
 
 For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md). For a focused artifact, choose one of the granular prompts in [`prompts/`](prompts) or browse and copy it from `/library#prompts` in the reference app.
 
-## Use it from your AI editor
+## Use it with your AI agent
 
 Install the skills into another repository:
 
