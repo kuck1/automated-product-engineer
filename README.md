@@ -12,6 +12,9 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - Semantic token templates in JSON and CSS.
 - A frame manifest for reproducible desktop and mobile references.
 - Architecture principles for Next.js, React, hooks, APIs, services, and databases.
+- A complete design-system blueprint with token layers, component hierarchy, enum-driven variants, slots, metadata, and change policy.
+- Decoupled view/controller examples and typed state-machine patterns.
+- Unit, visual, and E2E test templates plus a sharded GitHub Actions workflow.
 - A practical integration and verification checklist.
 - An `AGENTS.md` you can adapt for coding agents working in your repository.
 
@@ -48,9 +51,16 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
+- [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
+- [`docs/state-and-data-architecture.md`](docs/state-and-data-architecture.md): local, URL, cache, database, controller, API, and service ownership.
+- [`docs/testing-and-ci.md`](docs/testing-and-ci.md): component, hook, API, visual, E2E, manual QA, and CI strategy.
 - [`prompts/`](prompts): short and comprehensive Claude Design requests.
 - [`checklists/`](checklists): implementation and review gates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
+- [`templates/components/`](templates/components): enum-driven recipes and a decoupled view contract.
+- [`templates/state/`](templates/state): controller-hook example.
+- [`templates/testing/`](templates/testing): Playwright visual and E2E examples.
+- [`templates/ci/`](templates/ci): Playwright and GitHub Actions templates.
 - [`AGENTS.md`](AGENTS.md): reusable coding-agent instructions.
 
 ## Principles
