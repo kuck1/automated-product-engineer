@@ -16,6 +16,7 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
 test("release policy rejects an incomplete ship and rolls the optimistic state back", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
+  await expect(page.getByLabel("Release policy control tower")).toBeVisible();
   const release = page.getByRole("article").filter({ hasText: "Mobile checkout refresh" });
   await release.getByRole("button", { name: "Mark ready" }).click();
   await expect(page.getByRole("status")).toContainText("Required gates and approvals must pass");
@@ -30,6 +31,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.goto("/examples?view=releases");
   await page.getByRole("button", { name: /Onboarding ops/ }).click();
   await expect(page).toHaveURL(/view=onboarding/);
+  await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const customer = page.getByRole("article").filter({ hasText: "Northstar Health" });
   await customer.getByRole("button", { name: "Begin training" }).click();
   await expect(page.getByRole("status")).toContainText("moved to training");
@@ -38,12 +40,15 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await expect(page).toHaveURL(/view=releases/);
 });
 
-test("architecture view maps the end-to-end ownership chain", async ({ page }, testInfo) => {
+test("developer guide embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=architecture");
-  await expect(page.getByText("ExampleService", { exact: true })).toBeVisible();
-  await expect(page.getByText("ExampleRepository", { exact: true })).toBeVisible();
-  await expect(page.getByText("Optimistic intent + rollback")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "One action. Every boundary. No missing middle." })).toBeVisible();
+  await page.getByRole("button", { name: /Domain ExampleService/ }).click();
+  await expect(page.getByText("authorize(actor, release.workspaceId);", { exact: false })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
+  await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
 });
 
 test("skills library exposes the specialist workflows and design meta-prompts", async ({ page }, testInfo) => {
