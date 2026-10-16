@@ -1,0 +1,23 @@
+{
+  "outputDir": "docs/demo/example-feature",
+  "frames": [
+    {
+      "name": "01-start-desktop",
+      "step": "Entry state",
+      "path": "/example?demo=1&step=start",
+      "viewport": { "width": 1440, "height": 1000 },
+      "readyRole": "heading",
+      "readyName": "Example feature",
+      "fullPage": true
+    },
+    {
+      "name": "02-result-mobile",
+      "step": "Successful result",
+      "path": "/example?demo=1&step=result",
+      "viewport": { "width": 390, "height": 844 },
+      "readyRole": "heading",
+      "readyName": "Ready to share",
+      "fullPage": true
+    }
+  ]
+}

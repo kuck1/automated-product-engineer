@@ -22,6 +22,15 @@ Use these instructions when implementing a Figma or Claude Design handoff in a N
 - Gate every feature-specific entry point and endpoint when a feature flag is required.
 - Use deterministic development or test fixtures for canonical visual states.
 
+## Encapsulation and extension
+
+- Give each feature a public contract and keep its internal components, hooks, adapters, and services private by default.
+- Depend on typed interfaces at layer boundaries. Do not let pages reach through hooks into transport details or let route handlers reach around domain services.
+- Add variants through typed configuration, registries, slots, or adapters when an intentional extension point already exists.
+- Avoid growing central conditionals for each new feature. Add a small implementation behind a stable contract and register it at one composition boundary.
+- Do not create speculative abstractions. Extract an extension point when two real implementations share a stable contract or when product requirements explicitly call for replaceable behavior.
+- Keep extensions closed to arbitrary runtime code: validate registrations, constrain enums, and test the default and added implementation.
+
 ## Verification order
 
 1. Focused component, hook, service, and API tests.
@@ -29,6 +38,14 @@ Use these instructions when implementing a Figma or Claude Design handoff in a N
 3. Targeted visual regression coverage.
 4. Typecheck, lint, build, and required repository tests after behavior and design stabilize.
 5. Real browser QA covering keyboard use, retry, back/reset, refresh, overflow, console errors, and network failures.
+6. Deterministic desktop and mobile demo screenshots of the completed user journey.
+
+## Delivery and fix-back
+
+- Run a short retrospective after implementation and initial QA. Record surprises, defects, architecture friction, and missing safeguards.
+- Fix high-confidence, in-scope findings before handoff, then rerun the affected checks and recapture stale screenshots.
+- Open a draft PR only from a clean, pushed feature branch. Include the user-visible result, architecture, screenshots, validation, retrospective fixes, risks, and rollback path.
+- Never merge automatically. Human review remains the release gate.
 
 Never update screenshots blindly. Decide whether a diff represents a defect, an approved design change, stale fixture data, font/platform variation, or flaky infrastructure.
 

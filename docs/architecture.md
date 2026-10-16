@@ -20,6 +20,12 @@ Across the stack:
 
 Dependencies point inward toward stable contracts. A button should not know about Prisma. A route handler should not render product copy. A reusable component should not own recruiter-specific business rules. The database should not be accessed directly from client components.
 
+## Encapsulation and extension over modification
+
+Each layer exposes the smallest useful public contract and hides its implementation. Pages depend on feature interfaces, features depend on view and controller contracts, adapters implement provider interfaces, and services protect domain rules. Adding a provider, presentation variant, analytics destination, or matching strategy should usually add a focused implementation and one composition-root registration instead of editing conditionals throughout the application.
+
+Extension points must be intentional and typed. Prefer registries, strategy interfaces, adapters, enum-backed variants, and slots when they reflect real product variation. Keep defaults explicit, validate registered values, and test both the default and the extension. Avoid speculative abstraction: duplicate a small amount until the shared contract is stable, then extract it. See [`extensibility-and-encapsulation.md`](extensibility-and-encapsulation.md) for patterns and review questions.
+
 ## Presentation and design system
 
 The design system owns reusable visual language: semantic colors, typography, spacing, radii, borders, shadows, motion, buttons, inputs, dialogs, pills, menus, row shells, and other primitives. Tokens are named for meaning such as surface, text, border, accent, success, warning, and danger rather than for raw color values.
@@ -91,3 +97,5 @@ Fixtures and query controls used for visual verification must be deterministic, 
 ## What good finished code looks like
 
 A teammate should be able to open the feature and quickly answer: which components render it, which hook controls each interaction, which query supplies the data, which API and service apply the rules, which table persists the result, which analytics events fire, and which tests protect the behavior. Each layer has one clear reason to change, names match product language, existing patterns are reused, and the approved design can be reproduced without reading the original implementation conversation.
+
+The same teammate should be able to add a supported variant or provider without editing unrelated implementations. The composition root should reveal which implementation is selected, while internals remain replaceable behind their contracts.

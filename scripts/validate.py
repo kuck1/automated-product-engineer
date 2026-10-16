@@ -55,7 +55,18 @@ def validate_html() -> list[str]:
 
 def validate_public_content() -> list[str]:
     errors: list[str] = []
-    allowed_suffixes = {".md", ".ts", ".tsx", ".json", ".css", ".html", ".yml", ".yaml"}
+    allowed_suffixes = {
+        ".md",
+        ".ts",
+        ".tsx",
+        ".json",
+        ".css",
+        ".html",
+        ".yml",
+        ".yaml",
+        ".mjs",
+        ".sh",
+    }
     for path in ROOT.rglob("*"):
         if (
             not path.is_file()
