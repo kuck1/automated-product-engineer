@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { ReviewPanelState } from "../components/view-contract";
 
 export interface ReviewAdapter {
@@ -10,20 +10,29 @@ export interface ReviewAdapter {
 
 export function useReviewController(adapter: ReviewAdapter) {
   const [state, setState] = useState<ReviewPanelState>({ status: "empty" });
+  const activeRequest = useRef<AbortController | null>(null);
 
   const load = useCallback(async () => {
+    activeRequest.current?.abort();
     const controller = new AbortController();
+    activeRequest.current = controller;
     setState({ status: "loading" });
     try {
       const data = await adapter.load(controller.signal);
-      setState({ status: "ready", ...data });
+      if (!controller.signal.aborted) setState({ status: "ready", ...data });
     } catch (error) {
       if (!controller.signal.aborted) {
         setState({ status: "error", message: normalizeError(error) });
       }
+    } finally {
+      if (activeRequest.current === controller) activeRequest.current = null;
     }
-    return () => controller.abort();
   }, [adapter]);
+
+  const cancel = useCallback(() => {
+    activeRequest.current?.abort();
+    activeRequest.current = null;
+  }, []);
 
   const confirm = useCallback(async () => {
     if (state.status !== "ready") return;
@@ -37,7 +46,7 @@ export function useReviewController(adapter: ReviewAdapter) {
     }
   }, [adapter, state]);
 
-  return { state, load, confirm };
+  return { state, load, confirm, cancel };
 }
 
 function normalizeError(error: unknown) {
