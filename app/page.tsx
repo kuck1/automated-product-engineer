@@ -51,7 +51,7 @@ export default function HomePage() {
       </section>
 
       <section className="stack-strip" aria-label="Reference stack">
-        <span>REFERENCE<br />STACK</span><strong>Next.js 16</strong><strong>React 19</strong><strong>Supabase</strong><strong>TanStack Query</strong><strong>Playwright</strong>
+        <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>React</strong><strong>Supabase</strong><strong>TanStack Query</strong><strong>Playwright</strong>
       </section>
 
       <section className="section examples-section" id="examples">

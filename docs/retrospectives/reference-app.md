@@ -7,7 +7,7 @@ The repository now demonstrates the delivery system as executable software: a pr
 ## Findings fixed during delivery
 
 - **Dependency freshness:** the source inspiration used an older Next.js release with known risk. The reference app was built on the current patched major instead of copying that dependency surface.
-- **Framework-owned configuration:** an experimental typed-routes setting conflicted with Next.js 16 generated validators. Removing the redundant setting restored the framework's supported build path.
+- **Framework-owned configuration:** an experimental typed-routes setting conflicted with Next.js-generated validators. Removing the redundant setting restored the framework's supported build path.
 - **Validation scope:** the Markdown validator initially traversed generated dependencies. It now excludes generated and vendor directories and understands URL-encoded local paths.
 - **Repository instructions:** Next.js development tooling tried to rewrite `AGENTS.md`. `agentRules` is disabled so the repository's human-authored operating contract remains stable.
 - **Discoverability:** direct links into raw Markdown made the public system feel fragmented. `/library` now provides a browsable index for every skill and both Claude Design meta-prompts.
