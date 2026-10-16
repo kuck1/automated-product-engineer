@@ -6,10 +6,10 @@ import type { PromptCategory, PromptEntry } from "./prompt-catalog";
 
 const categories: Array<"All" | PromptCategory> = ["All", "Start here", "Design contract", "Implementation", "Verification"];
 
-export function PromptBrowser({ prompts }: { prompts: PromptEntry[] }) {
+export function PromptBrowser({ prompts, initialSlug }: { prompts: PromptEntry[]; initialSlug?: string }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<(typeof categories)[number]>("All");
-  const [activeSlug, setActiveSlug] = useState(prompts[0]?.slug ?? "");
+  const [activeSlug, setActiveSlug] = useState(() => initialSlug && prompts.some(prompt => prompt.slug === initialSlug) ? initialSlug : prompts[0]?.slug ?? "");
   const [copied, setCopied] = useState(false);
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase();

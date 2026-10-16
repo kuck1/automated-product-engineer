@@ -19,6 +19,13 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
 test("release policy rejects an incomplete ship and rolls the optimistic state back", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
+  await expect(page.getByRole("button", { name: /Client app 01 Release readiness 3 releases/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Client app 02 Onboarding ops 3 accounts/i })).toBeVisible();
+  await expect(page.getByRole("button", { name: /How we built them Developer guide Guide/i })).toBeVisible();
+  await page.getByRole("tab", { name: "Tokens" }).click();
+  await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
+  await page.getByRole("tab", { name: "Prompts" }).click();
+  await expect(page.getByRole("link", { name: /Full-stack boundary map/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByLabel("Release policy control tower")).toBeVisible();
   const release = page.getByRole("article").filter({ hasText: "Mobile checkout refresh" });
   await release.getByRole("button", { name: "Mark ready" }).click();
@@ -34,6 +41,9 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.goto("/examples?view=releases");
   await page.getByRole("button", { name: /Onboarding ops/ }).click();
   await expect(page).toHaveURL(/view=onboarding/);
+  await expect(page.getByLabel("Onboarding operations reference kit")).toBeVisible();
+  await page.getByRole("tab", { name: "Design system" }).click();
+  await expect(page.getByText("Journey before table", { exact: true })).toBeVisible();
   await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const customer = page.getByRole("article").filter({ hasText: "Northstar Health" });
   await customer.getByRole("button", { name: "Begin training" }).click();
@@ -68,6 +78,13 @@ test("skills library exposes specialist workflows and copy-ready prompts", async
   await page.getByRole("button", { name: "Implementation", exact: true }).click();
   await expect(page.getByRole("button", { name: /Full-stack boundary map/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /Semantic token export/ })).toHaveCount(0);
+});
+
+test("example reference links open the requested prompt", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/library?prompt=boundaries#prompts");
+  await expect(page.getByText("Full-stack boundary map", { exact: true })).toBeVisible();
+  await expect(page.getByText("Design the whole vertical slice", { exact: false })).toBeVisible();
 });
 
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {

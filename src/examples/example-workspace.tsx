@@ -9,6 +9,8 @@ import type { ExampleSnapshot, Onboarding, OnboardingStage, Release, ReleaseStag
 import { onboardingHealth, releaseReadiness } from "./service";
 import { Badge, Brand, Button } from "@/src/ui/components";
 import { architectureLayers, extensionRules, requestLifecycle, stateOwners, verificationLayers } from "./architecture-reference";
+import { ExampleReferenceKit } from "./example-reference-kit";
+import { exampleReferenceKits } from "./reference-kits";
 
 type View = "releases" | "onboarding" | "architecture";
 
@@ -104,17 +106,20 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
       <header className="workspace-header"><Brand /><Link href="/" className="workspace-back"><ArrowLeft size={15} /> Back to overview</Link><a href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">Source <ExternalLink size={14} /></a></header>
       <div className="workspace-layout">
         <aside className="workspace-sidebar">
-          <div><small>REFERENCE APPS</small><h1>Example workspace</h1><p>Two complete vertical slices sharing one system.</p></div>
+          <div><small>REFERENCE LAB</small><h1>Choose a client app</h1><p>Run two sample products, then inspect the system we used to build them.</p></div>
           <nav aria-label="Example views">
-            <button className={view === "releases" ? "active" : ""} onClick={() => navigate("releases")}><span><Gauge size={18} /> Release readiness</span><i>{snapshotQuery.data.releases.length}</i></button>
-            <button className={view === "onboarding" ? "active" : ""} onClick={() => navigate("onboarding")}><span><Users size={18} /> Onboarding ops</span><i>{snapshotQuery.data.onboardings.length}</i></button>
-            <button className={view === "architecture" ? "active" : ""} onClick={() => navigate("architecture")}><span><Layers3 size={18} /> Developer guide</span><i><Code2 size={13} /></i></button>
+            <p>CLIENT APPS</p>
+            <button className={view === "releases" ? "active" : ""} onClick={() => navigate("releases")}><span><Gauge size={18} /><span><small>CLIENT APP 01</small><strong>Release readiness</strong></span></span><i>{snapshotQuery.data.releases.length} releases</i></button>
+            <button className={view === "onboarding" ? "active" : ""} onClick={() => navigate("onboarding")}><span><Users size={18} /><span><small>CLIENT APP 02</small><strong>Onboarding ops</strong></span></span><i>{snapshotQuery.data.onboardings.length} accounts</i></button>
+            <p>OUR REFERENCE</p>
+            <button className={view === "architecture" ? "active" : ""} onClick={() => navigate("architecture")}><span><Layers3 size={18} /><span><small>HOW WE BUILT THEM</small><strong>Developer guide</strong></span></span><i>Guide</i></button>
           </nav>
-          <div className="demo-boundary"><span>DEMO MODE</span><p>Deterministic actor and isolated in-memory adapter. Add Supabase env vars to switch persistence.</p></div>
+          <div className="demo-boundary"><span>ABOUT THIS LAB</span><p>The client apps use a deterministic actor and isolated in-memory adapter. The guide, design system, and prompt library belong to this reference repository.</p></div>
         </aside>
         <section className="workspace-main">
-          <div className="workspace-title"><div><Badge tone="info">Interactive reference</Badge><h2>{view === "releases" ? "Release readiness" : view === "onboarding" ? "Customer onboarding operations" : "Developer guide"}</h2><p>{view === "releases" ? "A policy control tower for deciding what can ship." : view === "onboarding" ? "A customer journey board for moving accounts toward value." : "Explore the complete request path, boundaries, code, and delivery contract."}</p></div>{view !== "architecture" && <Button tone="secondary" onClick={() => snapshotQuery.refetch()} disabled={snapshotQuery.isFetching}><RefreshCw size={15} /> Refresh</Button>}</div>
+          <div className="workspace-title"><div><Badge tone="info">{view === "architecture" ? "Our implementation guide" : "Sample client app · Interactive demo"}</Badge><h2>{view === "releases" ? "Release readiness" : view === "onboarding" ? "Customer onboarding operations" : "Developer guide"}</h2><p>{view === "releases" ? "A policy control tower for deciding what can ship." : view === "onboarding" ? "A customer journey board for moving accounts toward value." : "Explore the complete request path, boundaries, code, and delivery contract."}</p></div>{view !== "architecture" && <Button tone="secondary" onClick={() => snapshotQuery.refetch()} disabled={snapshotQuery.isFetching}><RefreshCw size={15} /> Refresh</Button>}</div>
           {notice && <div role="status" className={`notice notice-${notice.tone}`}>{notice.tone === "success" ? <Check size={17} /> : <AlertTriangle size={17} />}{notice.text}</div>}
+          {view !== "architecture" && <ExampleReferenceKit key={view} kit={exampleReferenceKits[view]} />}
           {view === "releases" && <ReleaseView releases={snapshotQuery.data.releases} summary={summary} pending={releaseMutation.isPending} onMove={(release, stage) => releaseMutation.mutate({ release, stage })} />}
           {view === "onboarding" && <OnboardingView onboardings={snapshotQuery.data.onboardings} summary={summary} pending={onboardingMutation.isPending} onMove={(onboarding, stage) => onboardingMutation.mutate({ onboarding, stage })} />}
           {view === "architecture" && <ArchitectureView />}
