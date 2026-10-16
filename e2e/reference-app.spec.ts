@@ -61,7 +61,7 @@ test("skills library exposes specialist workflows and copy-ready prompts", async
   await expect(page.getByRole("heading", { name: "Ask for one artifact or the whole handoff." })).toBeVisible();
   await page.getByRole("button", { name: /Semantic token export/ }).click();
   await expect(page.getByText("Provide DTCG-compatible", { exact: false })).toBeVisible();
-  await page.getByRole("button", { name: "Implementation" }).click();
+  await page.getByRole("button", { name: "Implementation", exact: true }).click();
   await expect(page.getByRole("button", { name: /Full-stack boundary map/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /Semantic token export/ })).toHaveCount(0);
 });
