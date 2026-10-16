@@ -1,6 +1,16 @@
 import Link from "next/link";
+import { GitFork } from "lucide-react";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
 import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipes";
+
+const siteNavigation = [
+  { id: "workflow", label: "Workflow", href: "/#workflow" },
+  { id: "examples", label: "Examples", href: "/#examples" },
+  { id: "system", label: "System", href: "/system" },
+  { id: "library", label: "Library", href: "/library" },
+] as const;
+
+type SiteSection = typeof siteNavigation[number]["id"];
 
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
@@ -8,6 +18,24 @@ export function Brand({ compact = false }: { compact?: boolean }) {
       <span className="brand-mark" aria-hidden="true"><i /><i /><i /></span>
       {!compact && <span>Automated Product Engineer</span>}
     </Link>
+  );
+}
+
+export function SiteHeader({ active }: { active?: SiteSection }) {
+  return (
+    <header className="site-header">
+      <Brand />
+      <nav aria-label="Primary navigation">
+        {siteNavigation.map(item => (
+          <Link aria-current={active === item.id ? "page" : undefined} href={item.href} key={item.id}>
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+      <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
+        <GitFork size={15} /> GitHub
+      </a>
+    </header>
   );
 }
 
