@@ -35,7 +35,8 @@ test("onboarding transition uses URL state and reconciles the canonical response
   const customer = page.getByRole("article").filter({ hasText: "Northstar Health" });
   await customer.getByRole("button", { name: "Begin training" }).click();
   await expect(page.getByRole("status")).toContainText("moved to training");
-  await expect(customer).toContainText("training");
+  await expect(page.getByRole("region", { name: "Training" })).toContainText("Northstar Health");
+  await expect(page.getByRole("article").filter({ hasText: "Northstar Health" }).getByRole("button", { name: "Launch customer" })).toBeVisible();
   await page.goBack();
   await expect(page).toHaveURL(/view=releases/);
 });

@@ -164,7 +164,7 @@ function OnboardingView({ onboardings, summary, pending, onMove }: { onboardings
       <div>{onboardings.filter((item) => item.stage === stage.id).map((onboarding) => {
         const health = onboardingHealth(onboarding);
         return <article className="journey-card" key={onboarding.id}>
-          <div className="journey-card-head"><div><small>{onboarding.plan}</small><h3>{onboarding.customer}</h3><p>{onboarding.owner} · launch {onboarding.targetLaunchDate}</p></div><div className="health-ring" style={{ background: `conic-gradient(var(--mint) ${health.score * 3.6}deg, #293039 0)` }}><span>{health.score}</span></div></div>
+          <div className="journey-card-head"><div><small>{onboarding.plan}</small><h3>{onboarding.customer}</h3><p>{onboarding.owner} · launch {onboarding.targetLaunchDate}</p></div><div className="journey-health-ring" style={{ background: `conic-gradient(var(--mint) ${health.score * 3.6}deg, #293039 0)` }}><span>{health.score}</span></div></div>
           <div className="adoption"><span><b>{onboarding.weeklyActiveUsers}</b> / {onboarding.seats} weekly active</span><i><b style={{ width: `${Math.round(health.adoptionRatio * 100)}%` }} /></i></div>
           <div className="journey-milestones">{onboarding.milestones.map((milestone) => <span className={milestone.completed ? "complete" : ""} key={milestone.id} title={`${milestone.label} · ${milestone.dueDate}`}>{milestone.completed ? <Check size={11} /> : null}</span>)}</div>
           <p className="journey-progress-copy">{health.completed}/{health.total} milestones complete{health.overdue ? ` · ${health.overdue} overdue` : " · on schedule"}</p>
