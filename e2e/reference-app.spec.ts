@@ -16,6 +16,27 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(page.getByRole("heading", { name: "Onboarding Operations" })).toBeVisible();
 });
 
+test("before and after cards stay aligned across viewports", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const alignment = await page.evaluate(() => {
+    const before = document.querySelector<HTMLElement>(".flow-before-window .flow-card")?.getBoundingClientRect();
+    const after = document.querySelector<HTMLElement>(".flow-after-window .flow-card")?.getBoundingClientRect();
+    if (!before || !after) return null;
+    return {
+      x: Math.abs(before.x - after.x),
+      y: Math.abs(before.y - after.y),
+      width: Math.abs(before.width - after.width),
+      height: Math.abs(before.height - after.height),
+    };
+  });
+  expect(alignment).not.toBeNull();
+  expect(alignment?.x).toBeLessThanOrEqual(0.5);
+  expect(alignment?.y).toBeLessThanOrEqual(0.5);
+  expect(alignment?.width).toBeLessThanOrEqual(0.5);
+  expect(alignment?.height).toBeLessThanOrEqual(0.5);
+});
+
 test("release policy rejects an incomplete ship and rolls the optimistic state back", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");

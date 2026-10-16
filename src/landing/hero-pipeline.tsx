@@ -193,9 +193,8 @@ export function HeroPipeline() {
       const cycle = (card + gap) * tiles.length;
       const phase = (((elapsed.current % FLOW_PERIOD) + FLOW_PERIOD) % FLOW_PERIOD) / FLOW_PERIOD;
       const offset = (phase - 1) * cycle;
-      const outputOrigin = element!.clientWidth / 2;
       before!.style.transform = `translate3d(${offset}px,0,0)`;
-      after!.style.transform = `translate3d(${offset - outputOrigin}px,0,0)`;
+      after!.style.transform = `translate3d(${offset}px,0,0)`;
       drawParticles();
     }
 
