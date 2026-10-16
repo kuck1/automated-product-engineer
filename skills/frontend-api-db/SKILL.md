@@ -42,3 +42,5 @@ Define precedence when multiple sources participate. Browser storage is a hydrat
 ## Delivery
 
 Document state ownership, API shapes, authorization, schema, cache transitions, concurrency behavior, failure recovery, and rollout in the living feature guide. Test services and endpoints, migration behavior, negative authorization, client hooks, optimistic success and rollback, and at least one integrated user flow. Use `architecture-building` for broader boundaries and `manual-ui-qa` to verify the complete persistence loop in a real browser.
+
+Trace the release and onboarding slices in [`../../docs/case-studies.md`](../../docs/case-studies.md) for working examples of these boundaries.
