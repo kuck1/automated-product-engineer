@@ -90,15 +90,28 @@ test("skills library exposes specialist workflows and copy-ready prompts", async
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Library" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("heading", { name: "Skills library" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Claude Design to App" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Figma to App" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Start with the workflow, then inspect the playbook." })).toBeVisible();
+  await expect(page.getByRole("button", { name: /RUN THE WHOLE WORKFLOW Automated Product Engineer/ })).toBeVisible();
+  await page.getByRole("button", { name: /SHIP FROM CLAUDE Claude Design to App/ }).click();
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Choose the workflow" })).toBeVisible();
+  await expect(page).toHaveURL(/skill=claude-design-to-app/);
   await expect(page.getByRole("heading", { name: "Ask for one artifact or the whole handoff." })).toBeVisible();
   await page.getByRole("button", { name: /Semantic token export/ }).click();
+  await expect(page.locator(".prompt-preview .markdown-content").getByRole("heading", { name: "Semantic Token Export Prompt" })).toBeVisible();
   await expect(page.getByText("Provide DTCG-compatible", { exact: false })).toBeVisible();
+  await expect(page.getByText("# Semantic Token Export Prompt", { exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Implementation", exact: true }).click();
   await expect(page.getByRole("button", { name: /Full-stack boundary map/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /Semantic token export/ })).toHaveCount(0);
+});
+
+test("mobile workflow library remains readable without page overflow", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/library?skill=figma-to-app-feature#skills");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
+  await expect(page.getByRole("button", { name: /SHIP FROM FIGMA Figma to App/ })).toBeVisible();
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Intake contract" })).toBeVisible();
 });
 
 test("example reference links open the requested prompt", async ({ page }, testInfo) => {

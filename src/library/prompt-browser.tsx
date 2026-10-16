@@ -2,6 +2,7 @@
 
 import { Check, Copy, Search, WandSparkles } from "lucide-react";
 import { useMemo, useState } from "react";
+import { MarkdownContent } from "./markdown-content";
 import type { PromptCategory, PromptEntry } from "./prompt-catalog";
 
 const categories: Array<"All" | PromptCategory> = ["All", "Start here", "Design contract", "Implementation", "Verification"];
@@ -39,7 +40,7 @@ export function PromptBrowser({ prompts, initialSlug }: { prompts: PromptEntry[]
         </nav>
         {active && <article className="prompt-preview">
           <header><div><span><WandSparkles size={16} /></span><div><small>{active.category}</small><h3>{active.title}</h3><p>{active.description}</p></div></div><button type="button" className="button button-primary" onClick={copyPrompt}>{copied ? <Check size={15} /> : <Copy size={15} />}{copied ? "Copied" : "Copy prompt"}</button></header>
-          <pre><code>{active.body}</code></pre>
+          <MarkdownContent>{active.body}</MarkdownContent>
         </article>}
       </div>
     </div>
