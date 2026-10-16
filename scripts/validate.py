@@ -65,6 +65,7 @@ def validate_public_content() -> list[str]:
         ".yml",
         ".yaml",
         ".mjs",
+        ".py",
         ".sh",
     }
     for path in ROOT.rglob("*"):

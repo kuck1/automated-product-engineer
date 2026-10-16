@@ -20,6 +20,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - A retrospective fix-back loop that turns implementation findings into verified corrections.
 - A practical integration and verification checklist.
 - An `AGENTS.md` you can adapt for coding agents working in your repository.
+- A portable Agent Skills library with adapters for Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic builders.
 
 ## Quick start
 
@@ -32,6 +33,24 @@ Design tools are excellent at defining intent, interaction, and visual direction
 7. Capture deterministic demo evidence, run the retrospective, fix in-scope findings, and open a draft PR.
 
 For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md).
+
+## Use it from your AI editor
+
+Install the skills into another repository:
+
+```bash
+python3 scripts/install_ai_editor.py \
+  --target codex \
+  --project /path/to/your-nextjs-project
+```
+
+Then ask:
+
+```text
+Use the automated-product-engineer skill to build this feature from the attached design. Carry it through architecture, implementation, QA, demo screenshots, retrospective fix-back, and a draft PR. Do not merge.
+```
+
+See [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md) for Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic installation.
 
 ## Recommended export
 
@@ -61,6 +80,8 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/extensibility-and-encapsulation.md`](docs/extensibility-and-encapsulation.md): stable contracts, feature boundaries, registries, adapters, and safe extension points.
 - [`docs/automated-delivery.md`](docs/automated-delivery.md): screenshot evidence and automated draft-PR workflow.
 - [`docs/retrospective-fix-back.md`](docs/retrospective-fix-back.md): reflect, correct, reverify, and record durable lessons.
+- [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md): install and invoke the workflow from supported editors and agent environments.
+- [`docs/declassification-audit.md`](docs/declassification-audit.md): what reusable skill material was included or deliberately excluded.
 - [`prompts/`](prompts): short and comprehensive Claude Design requests.
 - [`checklists/`](checklists): implementation and review gates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
@@ -70,6 +91,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`templates/ci/`](templates/ci): Playwright and GitHub Actions templates.
 - [`templates/automation/`](templates/automation): deterministic demo capture, PR body, and draft-PR scripts.
 - [`templates/retrospective/`](templates/retrospective): a concise retrospective and fix-back record.
+- [`skills/`](skills): the conductor and specialist Agent Skills used by supported AI editors.
 - [`AGENTS.md`](AGENTS.md): reusable coding-agent instructions.
 
 ## Principles
