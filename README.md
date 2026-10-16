@@ -77,6 +77,12 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 This repository is documentation and templates. It does not install a backend, choose a database, or replace the conventions of your Next.js application. Adapt the contracts to your stack and risk level.
 
+The repository validates its JSON, local Markdown links, HTML templates, and public-content boundaries in GitHub Actions. Run the same checks locally with:
+
+```bash
+python scripts/validate.py
+```
+
 ## License
 
 MIT. See [`LICENSE`](LICENSE).
