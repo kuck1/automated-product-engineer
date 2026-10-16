@@ -10,6 +10,7 @@ This repository includes the reusable engineering workflows from the original pr
 - design-system construction and focused design polish;
 - responsive design and manual browser QA;
 - local code review, remote pull-request review, security review, and PR packaging.
+- twelve focused, copy-ready prompts for design intake, artifact generation, implementation boundaries, verification, and retrospective fix-back.
 
 These files contain reusable methods only. Product names, customer data, internal repository identifiers, private URLs, credentials, environment values, organization-specific analytics schemas, private database instructions, and historical ticket details are excluded.
 

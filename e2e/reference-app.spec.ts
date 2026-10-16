@@ -52,13 +52,18 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
 });
 
-test("skills library exposes the specialist workflows and design meta-prompts", async ({ page }, testInfo) => {
+test("skills library exposes specialist workflows and copy-ready prompts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
   await expect(page.getByRole("heading", { name: "Skills library" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Claude Design to App" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Figma to App" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Claude Design full export/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Ask for one artifact or the whole handoff." })).toBeVisible();
+  await page.getByRole("button", { name: /Semantic token export/ }).click();
+  await expect(page.getByText("Provide DTCG-compatible", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Implementation", exact: true }).click();
+  await expect(page.getByRole("button", { name: /Full-stack boundary map/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Semantic token export/ })).toHaveCount(0);
 });
 
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
@@ -71,6 +76,8 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   await page.getByRole("button", { name: "Compact" }).click();
   await expect(page.getByText("Mint focus + Soft + compact", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Recover without losing intent" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Browse 12 prompts/ })).toBeVisible();
 });
 
 test("mobile design system tour stays within the viewport", async ({ page }, testInfo) => {

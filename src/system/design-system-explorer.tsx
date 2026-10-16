@@ -10,12 +10,17 @@ import {
   Check,
   CheckCircle2,
   CircleDot,
+  ClipboardCheck,
   Component,
   Copy,
   Layers3,
   LayoutGrid,
   Palette,
+  RefreshCcw,
+  SearchX,
+  ShieldCheck,
   Sparkles,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import { Badge, Brand, Button, SectionEyebrow } from "@/src/ui/components";
@@ -176,7 +181,13 @@ export function DesignSystemExplorer() {
               <article><span>APPROVAL</span><div className="pattern-icon"><CheckCircle2 size={21} /></div><h3>Guarded action</h3><p>Explain readiness, surface remaining checks, and make the irreversible action unmistakable.</p><ul><li>State is visible before the action</li><li>Failure remains recoverable</li><li>Confirmation matches consequence</li></ul></article>
               <article><span>EMPTY STATE</span><div className="pattern-icon"><Box size={21} /></div><h3>First useful outcome</h3><p>Explain the value, give one focused next step, and show enough context to build confidence.</p><ul><li>Outcome before mechanics</li><li>One primary call to action</li><li>Helpful example included</li></ul></article>
               <article><span>PROGRESSIVE DISCLOSURE</span><div className="pattern-icon"><Layers3 size={21} /></div><h3>Simple first, depth nearby</h3><p>Lead with the recommended path and reveal expert controls only when they are requested.</p><ul><li>Defaults carry product judgment</li><li>Advanced choices stay accessible</li><li>Changing course preserves work</li></ul></article>
+              <article><span>ASYNC RECOVERY</span><div className="pattern-icon"><RefreshCcw size={21} /></div><h3>Recover without losing intent</h3><p>Keep the user&apos;s work visible while a failed request explains what happened and how to continue.</p><ul><li>Pending state names the action</li><li>Retry preserves entered work</li><li>Rollback restores truthful state</li></ul></article>
+              <article><span>REVIEW EVIDENCE</span><div className="pattern-icon"><ClipboardCheck size={21} /></div><h3>Proof beside the decision</h3><p>Put screenshots, checks, and unresolved risk next to the approval they are meant to support.</p><ul><li>Evidence matches the current revision</li><li>Failures link to useful context</li><li>Approval scope stays explicit</li></ul></article>
+              <article><span>PERMISSIONS</span><div className="pattern-icon"><ShieldCheck size={21} /></div><h3>Explain unavailable actions</h3><p>Show relevant information while making the permission boundary and the next useful path clear.</p><ul><li>Server remains authoritative</li><li>Disabled controls explain why</li><li>Fallback avoids dead ends</li></ul></article>
+              <article><span>SEARCH &amp; FILTERS</span><div className="pattern-icon"><SearchX size={21} /></div><h3>Return to a known view</h3><p>Keep filters understandable, make active constraints visible, and provide one reliable reset.</p><ul><li>URL reflects shareable state</li><li>Empty results name the cause</li><li>Reset clears every constraint</li></ul></article>
+              <article><span>DESTRUCTIVE ACTION</span><div className="pattern-icon"><Trash2 size={21} /></div><h3>Confirm the consequence</h3><p>Reserve interruption for consequential changes and state exactly what will be removed or retained.</p><ul><li>Trigger language is specific</li><li>Confirmation repeats the object</li><li>Undo exists when feasible</li></ul></article>
             </div>
+            <div className="pattern-prompt-link"><div><strong>Need implementation-ready instructions?</strong><p>Use the copy-ready prompt library for tokens, HTML prototypes, component contracts, full-stack boundaries, QA, and PR evidence.</p></div><Link className="button button-secondary" href="/library#prompts">Browse 12 prompts <ArrowRight size={14} /></Link></div>
           </CatalogSection>
         </div>
       </div>
