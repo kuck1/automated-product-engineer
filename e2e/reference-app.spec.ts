@@ -84,7 +84,7 @@ test("example reference links open the requested prompt", async ({ page }, testI
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library?prompt=boundaries#prompts");
   await expect(page.getByRole("heading", { name: "Full-stack boundary map" })).toBeVisible();
-  await expect(page.getByText("Design the whole vertical slice", { exact: false })).toBeVisible();
+  await expect(page.getByText("Design the production boundaries", { exact: false })).toBeVisible();
 });
 
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
