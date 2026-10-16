@@ -117,7 +117,7 @@ test("mobile workflow library remains readable without page overflow", async ({ 
 test("example reference links open the requested prompt", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library?prompt=boundaries#prompts");
-  await expect(page.getByRole("heading", { name: "Full-stack boundary map" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Full-stack boundary map", exact: true })).toBeVisible();
   await expect(page.getByText("Design the production boundaries", { exact: false })).toBeVisible();
 });
 
