@@ -1,0 +1,20 @@
+[
+  {
+    "id": "default-desktop",
+    "file": "frames/desktop/default.png",
+    "viewport": { "width": 1440, "height": 1000, "deviceScaleFactor": 1 },
+    "prototypePath": "prototype.html?state=default",
+    "state": { "name": "default" },
+    "expectedRegion": { "x": 0, "y": 0, "width": 1440, "height": 1000 },
+    "notes": "Proves the default desktop composition"
+  },
+  {
+    "id": "error-mobile",
+    "file": "frames/mobile/error.png",
+    "viewport": { "width": 390, "height": 844, "deviceScaleFactor": 1 },
+    "prototypePath": "prototype.html?state=error",
+    "state": { "name": "error" },
+    "expectedRegion": { "x": 0, "y": 0, "width": 390, "height": 844 },
+    "notes": "Proves the recoverable error and narrow layout"
+  }
+]

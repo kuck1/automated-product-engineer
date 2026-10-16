@@ -1,0 +1,18 @@
+:root {
+  --color-surface-default: #ffffff;
+  --color-surface-subtle: #f7f7f8;
+  --color-text-primary: #171719;
+  --color-text-secondary: #66666b;
+  --color-action-primary: #315efb;
+  --color-action-primary-hover: #244bd7;
+  --color-border-default: #dfdfe3;
+  --color-border-focus: #315efb;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --radius-control: 10px;
+  --radius-surface: 16px;
+  --motion-fast: 120ms;
+  --motion-default: 180ms;
+}

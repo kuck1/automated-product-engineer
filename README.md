@@ -1,0 +1,72 @@
+# Automated Product Engineer for Next.js
+
+An open-source prompt kit, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
+
+Design tools are excellent at defining intent, interaction, and visual direction. Production applications also need clear ownership across components, hooks, APIs, services, persistence, analytics, accessibility, responsive behavior, and tests. This repository connects those two worlds.
+
+## What this gives you
+
+- A concise prompt for requesting implementation-ready design output from Claude.
+- A comprehensive export contract for complex features.
+- A dependency-free HTML prototype contract with deterministic states.
+- Semantic token templates in JSON and CSS.
+- A frame manifest for reproducible desktop and mobile references.
+- Architecture principles for Next.js, React, hooks, APIs, services, and databases.
+- A practical integration and verification checklist.
+- An `AGENTS.md` you can adapt for coding agents working in your repository.
+
+## Quick start
+
+1. Copy [`prompts/claude-design-quick.md`](prompts/claude-design-quick.md) and fill in the bracketed product context.
+2. Attach your Figma frames, screenshots, existing component links, and product rules.
+3. Ask Claude for the complete offline handoff folder.
+4. Audit the handoff using [`checklists/integration.md`](checklists/integration.md).
+5. Map the export to your existing application using [`docs/architecture.md`](docs/architecture.md).
+6. Implement the smallest stable visual contract first, then add hooks, APIs, persistence, analytics, and tests.
+
+For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md).
+
+## Recommended export
+
+```text
+feature-export/
+  HANDOFF.md
+  prototype.html
+  components/
+  copy/
+  tokens/
+    tokens.json
+    tokens.css
+  assets/
+  frames/
+  frames.json
+```
+
+The export is a **design and behavior contract**, not production code to paste. Rebuild it with your application's components, tokens, authorization, data access, persistence, analytics, and routing conventions.
+
+## Repository map
+
+- [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
+- [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
+- [`prompts/`](prompts): short and comprehensive Claude Design requests.
+- [`checklists/`](checklists): implementation and review gates.
+- [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
+- [`AGENTS.md`](AGENTS.md): reusable coding-agent instructions.
+
+## Principles
+
+- Reuse the existing design system before adding primitives.
+- Name tokens by meaning rather than raw values.
+- Keep page composition, hooks, APIs, services, and persistence separate.
+- Keep authorization and durable product rules server-side.
+- Make every meaningful state deterministic and reproducible.
+- Verify desktop and mobile behavior before accepting visual baselines.
+- Preserve human authority over product decisions, destructive operations, release, and production access.
+
+## Scope
+
+This repository is documentation and templates. It does not install a backend, choose a database, or replace the conventions of your Next.js application. Adapt the contracts to your stack and risk level.
+
+## License
+
+MIT. See [`LICENSE`](LICENSE).
