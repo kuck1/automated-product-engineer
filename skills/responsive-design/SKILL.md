@@ -7,6 +7,8 @@ description: Audit and polish components and pages across compact, intermediate,
 
 Design continuous transitions, not merely acceptable endpoint screenshots. Derive changes from the available container and content rather than presumed device labels.
 
+Read [references/adaptive-failure-patterns.md](references/adaptive-failure-patterns.md) for breakpoint derivation, shell and scroll ownership, overlay containment, and transition-testing examples.
+
 ## Geometry rules
 
 - Compress decorative gaps, flexible gutters, and unused reserves before hiding or truncating meaningful content.

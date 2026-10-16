@@ -7,6 +7,8 @@ description: Perform a security-focused review of pending branch or pull-request
 
 Review only the security impact introduced by the scoped diff. This is not a general correctness or hardening audit.
 
+Read [references/threat-tracing.md](references/threat-tracing.md) for trust-boundary mapping, source-to-sink tracing, exploitability filters, and the required finding format.
+
 ## Pin the threat surface
 
 - Establish the exact base, head, changed files, and repository security guidance.

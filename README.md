@@ -21,6 +21,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - A practical integration and verification checklist.
 - An `AGENTS.md` you can adapt for coding agents working in your repository.
 - A portable Agent Skills library with adapters for Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic builders.
+- Progressive skill references with concrete architecture, race handling, review, persistence, responsive, security, QA, and PR-delivery examples.
 
 ## Quick start
 

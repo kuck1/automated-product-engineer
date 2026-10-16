@@ -7,6 +7,8 @@ description: Plan and implement frontend features that require durable API, data
 
 Use this skill when the UI presents state as durable or shared. Optimistic state may improve feedback, but the database-backed API remains authoritative.
 
+Read [references/full-stack-vertical-slice.md](references/full-stack-vertical-slice.md) for a concrete contract, race-handling sequence, migration questions, and focused test matrix.
+
 ## Classify state first
 
 - **Local UI:** open surfaces, draft input, hover, selection, and animation.

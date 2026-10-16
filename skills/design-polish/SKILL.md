@@ -7,6 +7,8 @@ description: Implement focused UI polish, interaction refinements, responsive sp
 
 Use the screenshot, design node, recorded defect, or visual diff as evidence. Identify the source-of-truth component or token before editing.
 
+Read [references/interaction-debugging.md](references/interaction-debugging.md) for overlay, animation, dense-layout, and visual-diff failure patterns.
+
 ## Working loop
 
 1. Reproduce the exact state in the production component, including viewport, content density, interaction, and surrounding layout.

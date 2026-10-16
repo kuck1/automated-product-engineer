@@ -7,6 +7,8 @@ description: Run intensive authenticated manual browser QA for a release-ready a
 
 This is an exploratory release gate performed through the real interface. Playwright supplies repeatable automated regression coverage, but it does not replace this agent-controlled manual browser session.
 
+Read [references/release-scenarios.md](references/release-scenarios.md) for a risk-based scenario matrix, evidence format, and defect closure contract.
+
 ## Preflight
 
 - Record the exact SHA, branch, URL, environment, database target, flags, browser, and viewport set.

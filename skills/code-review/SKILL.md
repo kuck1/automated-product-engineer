@@ -7,6 +7,8 @@ description: Review the current working diff or branch for correctness defects a
 
 Review the change, not the entire repository. Prefer a few verified findings with concrete failure paths over speculative advice or style nits.
 
+Read [references/verified-review.md](references/verified-review.md) for the candidate-finding matrix, verification procedure, severity model, and examples of useful findings.
+
 ## Establish scope
 
 - Identify the exact base, head, staged changes, and uncommitted changes that are in scope.

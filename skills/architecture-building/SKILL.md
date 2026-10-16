@@ -7,6 +7,8 @@ description: Design, implement, harden, or review feature architecture from a se
 
 Start from observed repository facts and the accepted product contract. Optimize for clear ownership and safe evolution, not abstract purity.
 
+Read [references/feature-boundaries.md](references/feature-boundaries.md) when designing or reviewing a cross-layer feature, decomposing a large component, or deciding where an extension point belongs.
+
 ## Discover before designing
 
 - Read repository instructions, the living feature guide, relevant decision records, schemas, tests, and the closest implemented patterns.

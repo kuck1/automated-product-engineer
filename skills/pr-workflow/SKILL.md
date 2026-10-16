@@ -7,6 +7,8 @@ description: Prepare and maintain small reviewable pull requests, including exac
 
 Package the work so every pull request has a clear purpose, exact base, useful evidence, and safe review boundary. Never merge unless explicitly authorized.
 
+Read [references/reviewable-delivery.md](references/reviewable-delivery.md) for branch topology, commit and PR structure, screenshot evidence, CI monitoring, and stacked-change rules.
+
 ## Establish topology
 
 - Inspect current branches, worktrees, open pull requests, and task ownership before creating anything.

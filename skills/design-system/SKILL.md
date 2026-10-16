@@ -7,6 +7,8 @@ description: Extend or maintain design-system infrastructure including semantic 
 
 Use this skill when a visual rule should become shared infrastructure. Keep feature-specific data and orchestration in feature code.
 
+Read [references/system-extension.md](references/system-extension.md) for the token-to-component pipeline, catalog and inspector contracts, migration sequencing, and visual-baseline discipline.
+
 ## Establish the source of truth
 
 - Inspect existing tokens, variables, primitives, component variants, metadata, previews, and tests before adding a parallel mechanism.

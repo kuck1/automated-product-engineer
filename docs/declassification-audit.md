@@ -13,6 +13,8 @@ This repository includes the reusable engineering workflows from the original pr
 
 These files contain reusable methods only. Product names, customer data, internal repository identifiers, private URLs, credentials, environment values, organization-specific analytics schemas, private database instructions, and historical ticket details are excluded.
 
+The concise `SKILL.md` files are routing entry points. Detailed, sanitized operating procedures live in each skill's `references/` directory so supported agents load the extra context only when the active task needs it. The references retain useful failure patterns, review procedures, vertical-slice examples, evidence contracts, and architecture lessons without copying private application facts.
+
 ## Deliberately excluded
 
 - company-specific database querying and operational runbooks;

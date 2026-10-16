@@ -7,6 +7,8 @@ description: Review an existing GitHub pull request by number using its remote m
 
 Review the pull request GitHub actually contains. Do not substitute the local working diff.
 
+Read [references/remote-review-playbook.md](references/remote-review-playbook.md) for exact remote evidence, review angles, line-comment rules, stale-head handling, and the recommended output structure.
+
 ## Gather authoritative context
 
 - Fetch the title, body, author, state, base and head refs, exact SHAs, labels, commits, changed files, and check results.
