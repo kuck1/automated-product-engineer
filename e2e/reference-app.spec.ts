@@ -7,6 +7,9 @@ test.beforeEach(async ({ request }) => {
 test("landing page explains the complete delivery workflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Primary navigation" });
+  await expect(navigation.getByRole("link", { name: "Workflow" })).toHaveCount(0);
+  await expect(navigation.getByRole("link", { name: "Examples" })).toHaveAttribute("href", "/examples");
   await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
   await expect(page.getByRole("heading", { name: "Release Readiness" })).toBeVisible();

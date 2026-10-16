@@ -4,8 +4,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipes";
 
 const siteNavigation = [
-  { id: "workflow", label: "Workflow", href: "/#workflow" },
-  { id: "examples", label: "Examples", href: "/#examples" },
+  { id: "examples", label: "Examples", href: "/examples" },
   { id: "system", label: "System", href: "/system" },
   { id: "library", label: "Library", href: "/library" },
 ] as const;
