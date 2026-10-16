@@ -6,8 +6,8 @@ Design tools are excellent at defining intent, interaction, and visual direction
 
 ## What this gives you
 
-- A concise prompt for requesting implementation-ready design output from Claude.
-- A comprehensive export contract for complex features.
+- Twelve copy-ready prompts for auditing Figma, requesting Claude Design output, extracting tokens, prototyping HTML, specifying components, mapping full-stack boundaries, verifying UI, and packaging delivery.
+- Concise and comprehensive Claude Design export contracts for focused and complex features.
 - A dependency-free HTML prototype contract with deterministic states.
 - Semantic token templates in JSON and CSS.
 - A frame manifest for reproducible desktop and mobile references.
@@ -45,7 +45,7 @@ Then use the workflow in your own codebase:
 6. Implement the smallest stable visual contract first, then add hooks, APIs, persistence, analytics, and tests.
 7. Capture deterministic demo evidence, run the retrospective, fix in-scope findings, and open a draft PR.
 
-For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md).
+For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md). For a focused artifact, choose one of the granular prompts in [`prompts/`](prompts) or browse and copy it from `/library#prompts` in the reference app.
 
 ## Use it from your AI editor
 
@@ -103,7 +103,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/retrospective-fix-back.md`](docs/retrospective-fix-back.md): reflect, correct, reverify, and record durable lessons.
 - [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md): install and invoke the workflow from supported editors and agent environments.
 - [`docs/declassification-audit.md`](docs/declassification-audit.md): what reusable skill material was included or deliberately excluded.
-- [`prompts/`](prompts): short and comprehensive Claude Design requests.
+- [`prompts/`](prompts): twelve copy-ready requests covering design intake, artifact generation, implementation boundaries, QA, PR evidence, and retrospective fix-back.
 - [`checklists/`](checklists): implementation and review gates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.

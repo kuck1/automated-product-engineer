@@ -19,7 +19,7 @@ Include exact copy when it is already approved. Attach full-page and component-l
 
 ## 2. Request a useful Claude Design handoff
 
-For most features, copy `prompts/claude-design-quick.md`, fill in the brackets, and attach the source material. Use `prompts/claude-design-full-export.md` when the experience has multiple steps, persistence, permissions, analytics, complex responsive behavior, or several error states.
+For most features, copy `prompts/claude-design-quick.md`, fill in the brackets, and attach the source material. Use `prompts/claude-design-full-export.md` when the experience has multiple steps, persistence, permissions, analytics, complex responsive behavior, or several error states. When only one artifact is missing, use the focused prompt for the Figma audit, semantic tokens, offline HTML, typed component contract, responsive matrix, motion, full-stack boundary map, visual QA, pull-request evidence, or retrospective. The reference app exposes all twelve prompts at `/library#prompts` with search and one-click copy.
 
 The request deliberately asks Claude for more than a picture. A useful handoff includes:
 
