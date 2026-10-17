@@ -229,8 +229,11 @@ test("every state scenario has a live collaborative demo that accepts human inpu
 
   const pointsDemo = page.getByLabel("A shared balance changes across two surfaces live demo");
   await pointsDemo.scrollIntoViewIfNeeded();
-  await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "3300");
-  await expect(pointsDemo.getByText("LIVE USAGE · 20× PLAYBACK · 3.3 SECOND LOOP")).toBeVisible();
+  await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "12000");
+  await expect(pointsDemo).toHaveAttribute("data-story-duration-ms", "240000");
+  await expect(pointsDemo).toHaveAttribute("data-playback-fps", "30");
+  await expect(pointsDemo).toHaveAttribute("data-story-step-count", "19");
+  await expect(pointsDemo.getByText("LIVE USAGE · 4 MINUTE STORY · 20× PLAYBACK · 30 FPS")).toBeVisible();
   await expect(pointsDemo.locator(".live-cursor").first()).toBeVisible({ timeout: 1_000 });
   await pointsDemo.getByRole("button", { name: "Replay" }).click();
   await pointsDemo.getByRole("button", { name: "Pause" }).click();

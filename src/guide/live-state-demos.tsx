@@ -81,9 +81,11 @@ type TimelineStep = {
   commands?: DemoCommand[];
 };
 
-const BASE_LOOP_DURATION = 66_000;
+const STORY_DURATION = 240_000;
 const PLAYBACK_SPEED = 20;
-const LOOP_DURATION = BASE_LOOP_DURATION / PLAYBACK_SPEED;
+const PLAYBACK_FPS = 30;
+const FRAME_DURATION = 1_000 / PLAYBACK_FPS;
+const LOOP_DURATION = STORY_DURATION / PLAYBACK_SPEED;
 const LOOP_SECONDS = LOOP_DURATION / 1_000;
 const defaultDocument = "Release notes\n\nMobile checkout is ready for final review.\n\nSecurity evidence is attached.";
 
@@ -196,7 +198,7 @@ const timelineBlueprints: Record<LiveScenarioId, TimelineStep[]> = {
     { at: 38_000, actor: "Maya", note: "Maya awards a smaller bonus.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 70, y: 35 }, commands: [{ type: "points:amount", value: "15" }] },
     { at: 45_000, actor: "Maya", note: "The shared cache updates every observer.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 78, y: 53 }, commands: [{ type: "points:award", delta: 15, author: "Maya" }] },
     { at: 56_000, actor: "Noah", note: "Noah verifies the account header.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 87, y: 15 } },
-    { at: 62_000, actor: "Maya", note: "The walkthrough will restart with the server fixture.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 23, y: 72 } },
+    { at: 62_000, actor: "Maya", note: "Maya opens the canonical account history.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 23, y: 72 } },
   ],
   release: [
     { at: 800, actor: "Maya", note: "Maya selects Mobile checkout.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 20, y: 35 }, commands: [{ type: "release:select", release: "Mobile checkout" }] },
@@ -250,16 +252,119 @@ const timelineBlueprints: Record<LiveScenarioId, TimelineStep[]> = {
     { at: 38_000, actor: "Server", note: "One request rotates the refresh token.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 57 }, commands: [{ type: "auth:stage", stage: "refreshing", notice: "A single server request refreshes and writes Set-Cookie." }] },
     { at: 47_000, actor: "Database", note: "RLS evaluates the verified user token.", cursor: { id: "database", name: "RLS", color: actorColors.Luis, x: 82, y: 55 }, commands: [{ type: "auth:stage", stage: "ready", notice: "Session restored without a logout; RLS returns Maya’s workspace rows." }] },
     { at: 57_000, actor: "Maya", note: "Maya continues on the protected page.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 72, y: 72 } },
-    { at: 62_000, actor: "Server", note: "The walkthrough restarts from a signed-out fixture.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 43 } },
+    { at: 62_000, actor: "Server", note: "The server records a healthy refresh trace.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 43 } },
+  ],
+};
+
+const timelineContinuations: Record<LiveScenarioId, TimelineStep[]> = {
+  points: [
+    { at: 76_000, actor: "Noah", note: "Noah starts a ten-point service recovery credit.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 70, y: 35 }, commands: [{ type: "points:amount", value: "10" }] },
+    { at: 89_000, actor: "Noah", note: "The credit paints optimistically in both surfaces.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 78, y: 53 }, commands: [{ type: "points:award", delta: 10, author: "Noah" }] },
+    { at: 105_000, actor: "Maya", note: "Maya verifies the updated balance in Rewards.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 34, y: 28 } },
+    { at: 121_000, actor: "Maya", note: "Maya prepares a larger loyalty adjustment.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 70, y: 35 }, commands: [{ type: "points:amount", value: "50" }] },
+    { at: 136_000, actor: "Maya", note: "The fifty-point adjustment becomes canonical.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 78, y: 53 }, commands: [{ type: "points:award", delta: 50, author: "Maya" }] },
+    { at: 153_000, actor: "Noah", note: "Noah retries the captured request after reconnecting.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 78, y: 53 }, commands: [{ type: "points:reject", delta: 50, author: "Noah" }] },
+    { at: 171_000, actor: "Maya", note: "Maya switches the draft to a five-point courtesy bonus.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 70, y: 35 }, commands: [{ type: "points:amount", value: "5" }] },
+    { at: 187_000, actor: "Maya", note: "The smaller bonus updates every active observer.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 78, y: 53 }, commands: [{ type: "points:award", delta: 5, author: "Maya" }] },
+    { at: 207_000, actor: "Noah", note: "Noah confirms checkout and the account header agree.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 87, y: 15 } },
+    { at: 229_000, actor: "Maya", note: "The account closes with one canonical balance and an auditable event trail.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 36, y: 64 } },
+  ],
+  release: [
+    { at: 75_000, actor: "Maya", note: "Maya opens Weekly digest without reusing the prior request.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 20, y: 79 }, commands: [{ type: "release:select", release: "Weekly digest" }] },
+    { at: 89_000, actor: "Server", note: "The keyed query returns Weekly digest revision 3.", commands: [{ type: "release:inspect", release: "Weekly digest" }] },
+    { at: 104_000, actor: "Noah", note: "Noah reopens Checkout E2E after finding a retry defect.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 59, y: 54 }, commands: [{ type: "release:gate", gate: "Checkout E2E", author: "Noah" }] },
+    { at: 121_000, actor: "Maya", note: "Maya returns to Mobile checkout while the fix runs.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 20, y: 35 }, commands: [{ type: "release:select", release: "Mobile checkout" }] },
+    { at: 136_000, actor: "Server", note: "Mobile checkout revision 8 reconciles against its own key.", commands: [{ type: "release:inspect", release: "Mobile checkout" }] },
+    { at: 153_000, actor: "Noah", note: "Noah completes the repaired Checkout E2E gate.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 59, y: 54 }, commands: [{ type: "release:gate", gate: "Checkout E2E", author: "Noah" }] },
+    { at: 171_000, actor: "Maya", note: "Maya confirms Security review remains complete.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 74, y: 54 } },
+    { at: 190_000, actor: "Maya", note: "The inspector stays aligned while Maya compares all three releases.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 56, y: 29 } },
+    { at: 211_000, actor: "Noah", note: "Noah verifies there is no late response left to paint.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 72, y: 31 } },
+    { at: 230_000, actor: "Server", note: "Cancellation, query keys, and canonical reconciliation leave the correct release selected." },
+  ],
+  windows: [
+    { at: 76_000, actor: "Maya", note: "Maya changes the launch owner in Window A.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 24, y: 55 }, commands: [{ type: "window:edit", window: "a", value: "Owner: Maya · Nov 2" }] },
+    { at: 91_000, actor: "Maya", note: "Window A saves the owner at the current revision.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 24, y: 72 }, commands: [{ type: "window:save", window: "a", author: "Maya" }] },
+    { at: 108_000, actor: "Noah", note: "Window B still carries the prior snapshot.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 72, y: 55 }, commands: [{ type: "window:edit", window: "b", value: "Owner: Noah · Nov 4" }] },
+    { at: 124_000, actor: "Noah", note: "Noah sees a second explicit stale-write conflict.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 72, y: 72 }, commands: [{ type: "window:save", window: "b", author: "Noah" }] },
+    { at: 142_000, actor: "Noah", note: "Noah refreshes and keeps the server-owned value safe.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 84, y: 72 }, commands: [{ type: "window:refresh", window: "b", author: "Noah" }] },
+    { at: 160_000, actor: "Noah", note: "Noah now makes an intentional post-refresh edit.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 72, y: 55 }, commands: [{ type: "window:edit", window: "b", value: "Owner: Noah · Nov 3" }] },
+    { at: 178_000, actor: "Noah", note: "The revised edit saves without overwriting Maya silently.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 72, y: 72 }, commands: [{ type: "window:save", window: "b", author: "Noah" }] },
+    { at: 198_000, actor: "Maya", note: "Maya refreshes Window A after the sibling-tab invalidation.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 36, y: 72 }, commands: [{ type: "window:refresh", window: "a", author: "Maya" }] },
+    { at: 217_000, actor: "Noah", note: "Both windows now display the same value and revision.", cursor: { id: "noah", name: "Noah", color: actorColors.Noah, x: 50, y: 16 } },
+    { at: 232_000, actor: "Maya", note: "The audit trail shows two conflicts resolved without lost work.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 50, y: 84 } },
+  ],
+  chat: [
+    { at: 74_000, actor: "You", note: "You reopen the thread and review Maya’s evidence.", cursor: { id: "you", name: "You", color: actorColors.You, x: 46, y: 43 } },
+    { at: 88_000, actor: "Ava", note: "Ava begins a follow-up while you stay in the conversation.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 61, y: 76 }, commands: [{ type: "chat:draft", value: "Can we ship", author: "Ava" }] },
+    { at: 102_000, actor: "Ava", note: "Ava finishes the question before sending.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 72, y: 76 }, commands: [{ type: "chat:draft", value: "Can we ship after the retry check?", author: "Ava" }] },
+    { at: 116_000, actor: "Ava", note: "Ava’s optimistic message reconciles by client nonce.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 87, y: 76 }, commands: [{ type: "chat:send", author: "Ava" }] },
+    { at: 133_000, actor: "You", note: "You type a first-person decision with your own cursor.", cursor: { id: "you", name: "You", color: actorColors.You, x: 61, y: 76 }, commands: [{ type: "chat:draft", value: "Yes — retry is green", author: "You" }] },
+    { at: 148_000, actor: "You", note: "You add the remaining release condition.", cursor: { id: "you", name: "You", color: actorColors.You, x: 72, y: 76 }, commands: [{ type: "chat:draft", value: "Yes — retry is green. Waiting on owner sign-off.", author: "You" }] },
+    { at: 163_000, actor: "You", note: "You send the decision from the first-person view.", cursor: { id: "you", name: "You", color: actorColors.You, x: 87, y: 76 }, commands: [{ type: "chat:send", author: "You", mine: true }] },
+    { at: 181_000, actor: "Luis", note: "Luis confirms owner sign-off from another surface.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 18, y: 22 }, commands: [{ type: "chat:receive", author: "Luis", body: "Owner sign-off is recorded." }] },
+    { at: 202_000, actor: "You", note: "You mark the thread read after the server acknowledgment.", cursor: { id: "you", name: "You", color: actorColors.You, x: 87, y: 16 }, commands: [{ type: "chat:read" }] },
+    { at: 229_000, actor: "Ava", note: "The thread ends durable, ordered, and caught up for every participant.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 42, y: 47 } },
+  ],
+  document: [
+    { at: 75_000, actor: "Ava", note: "Ava opens the release title for a second editing pass.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 31, y: 35 }, commands: [{ type: "document:focus", paragraph: "Release notes", author: "Ava" }] },
+    { at: 91_000, actor: "Ava", note: "Ava adds the rollout cohort to the shared brief.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 45, y: 48 }, commands: [{ type: "document:edit", value: "Release notes · Cohort A\n\nMobile checkout is ready for launch review.\n\nSecurity evidence, retry logs, and owner sign-off are attached.", author: "Ava" }] },
+    { at: 108_000, actor: "Luis", note: "Luis moves to the checkout paragraph without stealing focus.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 38, y: 52 }, commands: [{ type: "document:focus", paragraph: "Mobile checkout", author: "Luis" }] },
+    { at: 124_000, actor: "Luis", note: "Luis records the verified retry behavior as a separate operation.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 52, y: 54 }, commands: [{ type: "document:edit", value: "Release notes · Cohort A\n\nMobile checkout and retry recovery are ready for launch review.\n\nSecurity evidence, retry logs, and owner sign-off are attached.", author: "Luis" }] },
+    { at: 142_000, actor: "Ava", note: "Ava checkpoints both merged operations as revision 21.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 82, y: 20 }, commands: [{ type: "document:checkpoint", author: "Ava" }] },
+    { at: 160_000, actor: "Luis", note: "Luis adds the final analytics note after the checkpoint.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 48, y: 68 }, commands: [{ type: "document:edit", value: "Release notes · Cohort A\n\nMobile checkout and retry recovery are ready for launch review.\n\nSecurity evidence, retry logs, owner sign-off, and analytics are attached.", author: "Luis" }] },
+    { at: 179_000, actor: "Ava", note: "Ava reviews Luis’s remote caret and the unsaved operation.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 58, y: 68 } },
+    { at: 198_000, actor: "Luis", note: "Luis checkpoints the completed brief as revision 22.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 82, y: 20 }, commands: [{ type: "document:checkpoint", author: "Luis" }] },
+    { at: 217_000, actor: "Ava", note: "Ava confirms content is durable while cursor presence remains ephemeral.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 31, y: 46 } },
+    { at: 231_000, actor: "Luis", note: "Both collaborators leave one merged document and a clear revision history.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 18, y: 22 } },
+  ],
+  auth: [
+    { at: 75_000, actor: "Maya", note: "Maya opens a second protected view using the shared cookie session.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 72, y: 31 } },
+    { at: 91_000, actor: "Database", note: "RLS scopes the second query to Maya’s workspace.", cursor: { id: "database", name: "RLS", color: actorColors.Luis, x: 82, y: 55 }, commands: [{ type: "auth:stage", stage: "ready", notice: "A second protected query reused the verified session and tenant policy." }] },
+    { at: 109_000, actor: "Maya", note: "The background tab sleeps through another access-token expiry.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 27, y: 30 }, commands: [{ type: "auth:stage", stage: "sleeping", notice: "The background tab expired again while the refresh cookie remained valid." }] },
+    { at: 126_000, actor: "Server", note: "Two loaders request a refresh at nearly the same time.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 49 }, commands: [{ type: "auth:stage", stage: "refreshing", notice: "Concurrent loaders joined one refresh instead of rotating the token twice." }] },
+    { at: 145_000, actor: "Server", note: "One Set-Cookie response persists the rotated token.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 64, y: 57 } },
+    { at: 163_000, actor: "Maya", note: "Maya resumes without a redirect or random logout.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 72, y: 72 }, commands: [{ type: "auth:stage", stage: "ready", notice: "The refreshed cookie restored both loaders without a sign-in redirect." }] },
+    { at: 182_000, actor: "Database", note: "RLS rejects an unrelated tenant row while the session stays healthy.", cursor: { id: "database", name: "RLS", color: actorColors.Luis, x: 82, y: 55 } },
+    { at: 201_000, actor: "Server", note: "The trace separates authentication, domain authorization, and data policy.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 43 } },
+    { at: 219_000, actor: "Maya", note: "Maya continues working across both protected surfaces.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 72, y: 72 } },
+    { at: 232_000, actor: "Server", note: "The session closes healthy with one refresh owner and an auditable cookie path.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 43 } },
   ],
 };
 
 const timelines = Object.fromEntries(
   Object.entries(timelineBlueprints).map(([scenarioId, steps]) => [
     scenarioId,
-    steps.map((step) => ({ ...step, at: step.at / PLAYBACK_SPEED })),
+    [...steps, ...timelineContinuations[scenarioId as LiveScenarioId]]
+      .sort((a, b) => a.at - b.at)
+      .map((step) => ({ ...step, at: step.at / PLAYBACK_SPEED })),
   ]),
 ) as Record<LiveScenarioId, TimelineStep[]>;
+
+function cursorsAtTime(steps: TimelineStep[], elapsed: number): CursorState[] {
+  const tracks = new Map<string, Array<{ at: number; cursor: Omit<CursorState, "visible"> }>>();
+  steps.forEach((step) => {
+    if (!step.cursor) return;
+    const track = tracks.get(step.cursor.id) ?? [];
+    track.push({ at: step.at, cursor: step.cursor });
+    tracks.set(step.cursor.id, track);
+  });
+
+  return Array.from(tracks.values()).flatMap((track) => {
+    const previousIndex = track.findLastIndex((point) => point.at <= elapsed);
+    if (previousIndex < 0) return [];
+    const previous = track[previousIndex];
+    const following = track[previousIndex + 1];
+    if (!following) return [{ ...previous.cursor, visible: true }];
+    const rawProgress = Math.min(1, Math.max(0, (elapsed - previous.at) / (following.at - previous.at)));
+    const progress = rawProgress * rawProgress * (3 - 2 * rawProgress);
+    return [{
+      ...previous.cursor,
+      x: previous.cursor.x + (following.cursor.x - previous.cursor.x) * progress,
+      y: previous.cursor.y + (following.cursor.y - previous.cursor.y) * progress,
+      visible: true,
+    }];
+  });
+}
 
 function useLivePlayback(scenarioId: LiveScenarioId, surfaceRef: RefObject<HTMLDivElement | null>) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -290,25 +395,34 @@ function useLivePlayback(scenarioId: LiveScenarioId, surfaceRef: RefObject<HTMLD
   useEffect(() => {
     if (!inView || !enabled) return;
     startedAtRef.current = performance.now() - elapsedRef.current;
-    const timer = window.setInterval(() => {
-      let next = performance.now() - startedAtRef.current;
+    let animationFrame = 0;
+    let lastFrame = -FRAME_DURATION;
+    const tick = (now: number) => {
+      if (now - lastFrame < FRAME_DURATION) {
+        animationFrame = window.requestAnimationFrame(tick);
+        return;
+      }
+      lastFrame = now - ((now - lastFrame) % FRAME_DURATION);
+      let next = now - startedAtRef.current;
       if (next >= LOOP_DURATION) {
         dispatch({ type: "reset" });
         appliedRef.current.clear();
-        startedAtRef.current = performance.now();
+        startedAtRef.current = now;
         next = 0;
       }
       elapsedRef.current = next;
       setElapsed(next);
+      cursorsAtTime(steps, next).forEach((cursor) => dispatch({ type: "cursor", cursor }));
       steps.forEach((step, index) => {
         if (step.at > next || appliedRef.current.has(index)) return;
         appliedRef.current.add(index);
-        if (step.cursor) dispatch({ type: "cursor", cursor: { ...step.cursor, visible: true } });
         step.commands?.forEach((command) => dispatch(command));
         dispatch({ type: "activity", text: step.note });
       });
-    }, 20);
-    return () => window.clearInterval(timer);
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+    animationFrame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(animationFrame);
   }, [enabled, inView, steps]);
 
   const human = useCallback((commands: DemoCommand[], note: string) => {
@@ -325,7 +439,7 @@ function CursorLayer({ cursors }: { cursors: CursorState[] }) {
 }
 
 function PlaybackChrome({ title, actors, elapsed, playing, inView, onToggle, onReset }: { title: string; actors: string[]; elapsed: number; playing: boolean; inView: boolean; onToggle: () => void; onReset: () => void }) {
-  return <header className="live-demo-header"><div><span>LIVE USAGE · 20× PLAYBACK · {LOOP_SECONDS.toFixed(1)} SECOND LOOP</span><h5>{title}</h5><div className="live-presence"><UsersRound size={13} />{actors.map((actor) => <strong key={actor}><i style={{ background: actorColors[actor] ?? "#a991ff" }} />{actor}</strong>)}</div></div><div className="playback-controls"><span>{inView ? `${(elapsed / 1_000).toFixed(1)}s / ${LOOP_SECONDS.toFixed(1)}s` : "Scroll into view to start"}</span><button type="button" onClick={onToggle}>{playing ? <Pause size={13} /> : <Play size={13} />}{playing ? "Pause" : "Play"}</button><button type="button" onClick={onReset}><RefreshCw size={13} /> Replay</button></div><div className="playback-progress"><span style={{ width: `${Math.min(100, elapsed / LOOP_DURATION * 100)}%` }} /></div></header>;
+  return <header className="live-demo-header"><div><span>LIVE USAGE · 4 MINUTE STORY · 20× PLAYBACK · 30 FPS</span><h5>{title}</h5><div className="live-presence"><UsersRound size={13} />{actors.map((actor) => <strong key={actor}><i style={{ background: actorColors[actor] ?? "#a991ff" }} />{actor}</strong>)}</div></div><div className="playback-controls"><span>{inView ? `${(elapsed / 1_000).toFixed(1)}s / ${LOOP_SECONDS.toFixed(1)}s` : "Scroll into view to start"}</span><button type="button" onClick={onToggle}>{playing ? <Pause size={13} /> : <Play size={13} />}{playing ? "Pause" : "Play"}</button><button type="button" onClick={onReset}><RefreshCw size={13} /> Replay</button></div><div className="playback-progress"><span style={{ width: `${Math.min(100, elapsed / LOOP_DURATION * 100)}%` }} /></div></header>;
 }
 
 function PointsDemo({ state, human }: { state: DemoState; human: (commands: DemoCommand[], note: string) => void }) {
@@ -373,7 +487,7 @@ export function LiveStateDemo({ scenarioId }: { scenarioId: LiveScenarioId }) {
   const titles: Record<LiveScenarioId, string> = { points: "A shared balance changes across two surfaces", release: "Two requests finish in the wrong order", windows: "Two tabs edit one versioned record", chat: "Messages, presence, and unread state move together", document: "Two collaborators edit and checkpoint one brief", auth: "A cookie session survives sleep and refresh" };
   const playing = playback.inView && playback.enabled;
 
-  return <section className={`live-state-demo live-${scenarioId}`} ref={surfaceRef} data-loop-duration-ms={LOOP_DURATION} onMouseEnter={() => playback.setEnabled(true)} aria-label={`${titles[scenarioId]} live demo`}>
+  return <section className={`live-state-demo live-${scenarioId}`} ref={surfaceRef} data-loop-duration-ms={LOOP_DURATION} data-story-duration-ms={STORY_DURATION} data-playback-fps={PLAYBACK_FPS} data-story-step-count={timelines[scenarioId].length} onMouseEnter={() => playback.setEnabled(true)} aria-label={`${titles[scenarioId]} live demo`}>
     <PlaybackChrome title={titles[scenarioId]} actors={actors} elapsed={playback.elapsed} playing={playing} inView={playback.inView} onToggle={() => playback.setEnabled(!playback.enabled)} onReset={() => { playback.reset(); playback.setEnabled(true); }} />
     <div className="live-demo-stage">
       {scenarioId === "points" ? <PointsDemo state={playback.state} human={playback.human} /> : null}
