@@ -42,7 +42,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .site-header nav a { white-space: nowrap; }
 .site-header nav a:hover { color: white; }
 .site-header nav a[aria-current="page"] { color: white; }
-.header-action { height: 38px; padding: 0 15px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 12px; }
+.header-action { height: 38px; padding: 0 15px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 12px; white-space: nowrap; }
 .header-action:hover { background: rgba(255,255,255,.06); }
 
 .hero { padding-top: 82px; }

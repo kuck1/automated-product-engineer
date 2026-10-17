@@ -4,6 +4,29 @@ test.beforeEach(async ({ request }) => {
   await request.post("/api/examples/reset");
 });
 
+test("every public page uses the shared top bar", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  const routes = [
+    "/",
+    "/examples?view=releases",
+    "/examples?view=onboarding",
+    "/quick-start",
+    "/guide",
+    "/library",
+    "/system",
+  ];
+
+  for (const route of routes) {
+    await page.goto(route);
+    const navigation = page.getByRole("navigation", { name: "Primary navigation" });
+    await expect(navigation.getByRole("link")).toHaveCount(5);
+    await expect(page.getByRole("link", { name: "Open Source on GitHub" })).toHaveAttribute(
+      "href",
+      "https://github.com/kuck1/automated-product-engineer-nextjs",
+    );
+  }
+});
+
 test("landing page explains the complete delivery workflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");

@@ -34,7 +34,7 @@ export function SiteHeader({ active }: { active?: SiteSection }) {
         ))}
       </nav>
       <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
-        <GitFork size={15} /> GitHub
+        <GitFork size={15} /> Open Source on GitHub
       </a>
     </header>
   );
