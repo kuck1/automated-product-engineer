@@ -229,9 +229,9 @@ test("every state scenario has a live collaborative demo that accepts human inpu
 
   const pointsDemo = page.getByLabel("A shared balance changes across two surfaces live demo");
   await pointsDemo.scrollIntoViewIfNeeded();
-  await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "66000");
-  await expect(pointsDemo.getByText("LIVE USAGE · 66 SECOND LOOP")).toBeVisible();
-  await expect(pointsDemo.locator(".live-cursor").first()).toBeVisible({ timeout: 3_000 });
+  await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "3300");
+  await expect(pointsDemo.getByText("LIVE USAGE · 20× PLAYBACK · 3.3 SECOND LOOP")).toBeVisible();
+  await expect(pointsDemo.locator(".live-cursor").first()).toBeVisible({ timeout: 1_000 });
   await pointsDemo.getByRole("button", { name: "Pause" }).click();
   await pointsDemo.getByLabel("Award amount").fill("12");
   await pointsDemo.getByRole("button", { name: "Award points" }).click();
@@ -248,6 +248,7 @@ test("every state scenario has a live collaborative demo that accepts human inpu
 
   await page.getByRole("tab", { name: /Chat, unread counts, and presence/ }).click();
   const chatDemo = page.getByLabel("Messages, presence, and unread state move together live demo");
+  await expect(chatDemo.locator(".message-list article.mine")).toContainText("I’m checking the retry before we ship.", { timeout: 3_000 });
   await chatDemo.getByRole("button", { name: "Pause" }).click();
   await chatDemo.getByRole("textbox", { name: "Live chat message" }).fill("Human input joins the same state flow");
   await chatDemo.getByRole("button", { name: "Send live chat message" }).click();

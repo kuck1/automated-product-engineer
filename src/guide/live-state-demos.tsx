@@ -81,7 +81,10 @@ type TimelineStep = {
   commands?: DemoCommand[];
 };
 
-const LOOP_DURATION = 66_000;
+const BASE_LOOP_DURATION = 66_000;
+const PLAYBACK_SPEED = 20;
+const LOOP_DURATION = BASE_LOOP_DURATION / PLAYBACK_SPEED;
+const LOOP_SECONDS = LOOP_DURATION / 1_000;
 const defaultDocument = "Release notes\n\nMobile checkout is ready for final review.\n\nSecurity evidence is attached.";
 
 function initialState(): DemoState {
@@ -183,7 +186,7 @@ function reducer(state: DemoState, command: DemoCommand): DemoState {
 
 const actorColors: Record<string, string> = { Maya: "#a991ff", Noah: "#72e2c0", Ava: "#7bb7ff", Luis: "#f2bf68", You: "#ff887f" };
 
-const timelines: Record<LiveScenarioId, TimelineStep[]> = {
+const timelineBlueprints: Record<LiveScenarioId, TimelineStep[]> = {
   points: [
     { at: 800, actor: "Maya", note: "Maya opens Rewards.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 28, y: 38 } },
     { at: 7_000, actor: "Maya", note: "Maya changes the award amount.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 71, y: 35 }, commands: [{ type: "points:amount", value: "40" }] },
@@ -222,9 +225,9 @@ const timelines: Record<LiveScenarioId, TimelineStep[]> = {
     { at: 7_000, actor: "Luis", note: "Luis begins typing.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 62, y: 76 }, commands: [{ type: "chat:draft", value: "Retry", author: "Luis" }] },
     { at: 12_000, actor: "Luis", note: "Luis continues the same local draft.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 70, y: 76 }, commands: [{ type: "chat:draft", value: "Retry passed", author: "Luis" }] },
     { at: 18_000, actor: "Luis", note: "Luis sends the durable message.", cursor: { id: "luis", name: "Luis", color: actorColors.Luis, x: 87, y: 76 }, commands: [{ type: "chat:send", author: "Luis" }] },
-    { at: 28_000, actor: "Ava", note: "Ava types a reply.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 55, y: 76 }, commands: [{ type: "chat:draft", value: "Shipping", author: "Ava" }] },
-    { at: 34_000, actor: "Ava", note: "Ava finishes the reply.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 65, y: 76 }, commands: [{ type: "chat:draft", value: "Shipping after QA", author: "Ava" }] },
-    { at: 41_000, actor: "Ava", note: "Ava sends; every subscriber reconciles.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 87, y: 76 }, commands: [{ type: "chat:send", author: "Ava" }] },
+    { at: 28_000, actor: "You", note: "You begin a reply from the first-person view.", cursor: { id: "you", name: "You", color: actorColors.You, x: 55, y: 76 }, commands: [{ type: "chat:draft", value: "I’m checking", author: "You" }] },
+    { at: 34_000, actor: "You", note: "Your local draft stays private while you type.", cursor: { id: "you", name: "You", color: actorColors.You, x: 67, y: 76 }, commands: [{ type: "chat:draft", value: "I’m checking the retry before we ship.", author: "You" }] },
+    { at: 41_000, actor: "You", note: "You send; every subscriber reconciles.", cursor: { id: "you", name: "You", color: actorColors.You, x: 87, y: 76 }, commands: [{ type: "chat:send", author: "You", mine: true }] },
     { at: 51_000, actor: "Maya", note: "Maya messages from another page.", cursor: { id: "maya", name: "Maya", color: actorColors.Maya, x: 18, y: 22 }, commands: [{ type: "chat:receive", author: "Maya", body: "Security evidence attached." }] },
     { at: 61_000, actor: "Ava", note: "Ava clears the global unread badge.", cursor: { id: "ava", name: "Ava", color: actorColors.Ava, x: 87, y: 16 }, commands: [{ type: "chat:read" }] },
   ],
@@ -250,6 +253,13 @@ const timelines: Record<LiveScenarioId, TimelineStep[]> = {
     { at: 62_000, actor: "Server", note: "The walkthrough restarts from a signed-out fixture.", cursor: { id: "server", name: "Server", color: actorColors.Noah, x: 57, y: 43 } },
   ],
 };
+
+const timelines = Object.fromEntries(
+  Object.entries(timelineBlueprints).map(([scenarioId, steps]) => [
+    scenarioId,
+    steps.map((step) => ({ ...step, at: step.at / PLAYBACK_SPEED })),
+  ]),
+) as Record<LiveScenarioId, TimelineStep[]>;
 
 function useLivePlayback(scenarioId: LiveScenarioId, surfaceRef: RefObject<HTMLDivElement | null>) {
   const [state, dispatch] = useReducer(reducer, undefined, initialState);
@@ -297,13 +307,14 @@ function useLivePlayback(scenarioId: LiveScenarioId, surfaceRef: RefObject<HTMLD
         step.commands?.forEach((command) => dispatch(command));
         dispatch({ type: "activity", text: step.note });
       });
-    }, 250);
+    }, 20);
     return () => window.clearInterval(timer);
   }, [enabled, inView, steps]);
 
   const human = useCallback((commands: DemoCommand[], note: string) => {
+    setEnabled(false);
     commands.forEach((command) => dispatch(command));
-    dispatch({ type: "activity", text: `You: ${note}` });
+    dispatch({ type: "activity", text: `You took control · ${note}` });
   }, []);
 
   return { state, human, elapsed, inView, enabled, setEnabled, reset };
@@ -314,7 +325,7 @@ function CursorLayer({ cursors }: { cursors: CursorState[] }) {
 }
 
 function PlaybackChrome({ title, actors, elapsed, playing, inView, onToggle, onReset }: { title: string; actors: string[]; elapsed: number; playing: boolean; inView: boolean; onToggle: () => void; onReset: () => void }) {
-  return <header className="live-demo-header"><div><span>LIVE USAGE · 66 SECOND LOOP</span><h5>{title}</h5><div className="live-presence"><UsersRound size={13} />{actors.map((actor) => <strong key={actor}><i style={{ background: actorColors[actor] ?? "#a991ff" }} />{actor}</strong>)}</div></div><div className="playback-controls"><span>{inView ? `${Math.floor(elapsed / 1000)}s / 66s` : "Scroll into view to start"}</span><button type="button" onClick={onToggle}>{playing ? <Pause size={13} /> : <Play size={13} />}{playing ? "Pause" : "Play"}</button><button type="button" onClick={onReset}><RefreshCw size={13} /> Replay</button></div><div className="playback-progress"><span style={{ width: `${Math.min(100, elapsed / LOOP_DURATION * 100)}%` }} /></div></header>;
+  return <header className="live-demo-header"><div><span>LIVE USAGE · 20× PLAYBACK · {LOOP_SECONDS.toFixed(1)} SECOND LOOP</span><h5>{title}</h5><div className="live-presence"><UsersRound size={13} />{actors.map((actor) => <strong key={actor}><i style={{ background: actorColors[actor] ?? "#a991ff" }} />{actor}</strong>)}</div></div><div className="playback-controls"><span>{inView ? `${(elapsed / 1_000).toFixed(1)}s / ${LOOP_SECONDS.toFixed(1)}s` : "Scroll into view to start"}</span><button type="button" onClick={onToggle}>{playing ? <Pause size={13} /> : <Play size={13} />}{playing ? "Pause" : "Play"}</button><button type="button" onClick={onReset}><RefreshCw size={13} /> Replay</button></div><div className="playback-progress"><span style={{ width: `${Math.min(100, elapsed / LOOP_DURATION * 100)}%` }} /></div></header>;
 }
 
 function PointsDemo({ state, human }: { state: DemoState; human: (commands: DemoCommand[], note: string) => void }) {
@@ -336,7 +347,7 @@ function WindowsDemo({ state, human }: { state: DemoState; human: (commands: Dem
 }
 
 function ChatDemo({ state, human }: { state: DemoState; human: (commands: DemoCommand[], note: string) => void }) {
-  return <div className="living-app chat-app"><aside><div><MessageSquare size={15} /><strong>Support inbox</strong><span>{state.unread}</span></div><button type="button" onClick={() => human([{ type: "chat:read" }], "marked the conversation read.")}>Checkout launch <small>{state.unread ? `${state.unread} unread` : "caught up"}</small></button><div className="chat-presence"><i /> Ava online<br /><i /> Luis online</div></aside><section><header><div><strong># checkout-launch</strong><small>3 people · live</small></div><button type="button" onClick={() => human([{ type: "chat:read" }], "cleared the unread count.")}>Mark read</button></header><div className="message-list">{state.messages.map((message) => <article className={message.mine ? "mine" : ""} key={message.id}><strong>{message.author}</strong><p>{message.body}</p></article>)}</div><p className="typing-indicator">{state.typing.length ? `${state.typing.join(" and ")} ${state.typing.length > 1 ? "are" : "is"} typing…` : "Everyone is caught up."}</p><form onSubmit={(event) => { event.preventDefault(); human([{ type: "chat:send", author: "You", mine: true }], "sent a message."); }}><input aria-label="Live chat message" placeholder="Message the team" value={state.chatDraft} onChange={(event) => human([{ type: "chat:draft", value: event.target.value, author: "You" }], "updated your local message draft.")} /><button aria-label="Send live chat message"><Send size={14} /></button></form></section></div>;
+  return <div className="living-app chat-app"><aside><div><MessageSquare size={15} /><strong>Support inbox</strong><span>{state.unread}</span></div><button type="button" onClick={() => human([{ type: "chat:read" }], "marked the conversation read.")}>Checkout launch <small>{state.unread ? `${state.unread} unread` : "caught up"}</small></button><div className="chat-presence"><i /> You are here<br /><i /> Ava online<br /><i /> Luis online</div></aside><section><header><div><strong># checkout-launch</strong><small>4 people · live · you are viewing as yourself</small></div><button type="button" onClick={() => human([{ type: "chat:read" }], "cleared the unread count.")}>Mark read</button></header><div className="message-list">{state.messages.map((message) => <article className={message.mine ? "mine" : ""} key={message.id}><strong>{message.author}{message.mine ? " · you" : ""}</strong><p>{message.body}</p></article>)}</div><p className="typing-indicator">{state.typing.length ? `${state.typing.join(" and ")} ${state.typing.length > 1 ? "are" : "is"} typing…` : "Everyone is caught up."}</p><form onSubmit={(event) => { event.preventDefault(); human([{ type: "chat:send", author: "You", mine: true }], "sent a message."); }}><input aria-label="Live chat message" placeholder="Message the team as yourself" value={state.chatDraft} onChange={(event) => human([{ type: "chat:draft", value: event.target.value, author: "You" }], "updated your local message draft.")} /><button aria-label="Send live chat message"><Send size={14} /></button></form></section></div>;
 }
 
 function DocumentDemo({ state, human }: { state: DemoState; human: (commands: DemoCommand[], note: string) => void }) {
@@ -358,7 +369,7 @@ function ActivityFeed({ entries }: { entries: string[] }) {
 export function LiveStateDemo({ scenarioId }: { scenarioId: LiveScenarioId }) {
   const surfaceRef = useRef<HTMLDivElement>(null);
   const playback = useLivePlayback(scenarioId, surfaceRef);
-  const actors = useMemo(() => ({ points: ["Maya", "Noah"], release: ["Maya", "Noah"], windows: ["Maya", "Noah"], chat: ["Ava", "Luis", "Maya"], document: ["Ava", "Luis"], auth: ["Maya", "Server"] }[scenarioId]), [scenarioId]);
+  const actors = useMemo(() => ({ points: ["Maya", "Noah"], release: ["Maya", "Noah"], windows: ["Maya", "Noah"], chat: ["You", "Ava", "Luis", "Maya"], document: ["Ava", "Luis"], auth: ["Maya", "Server"] }[scenarioId]), [scenarioId]);
   const titles: Record<LiveScenarioId, string> = { points: "A shared balance changes across two surfaces", release: "Two requests finish in the wrong order", windows: "Two tabs edit one versioned record", chat: "Messages, presence, and unread state move together", document: "Two collaborators edit and checkpoint one brief", auth: "A cookie session survives sleep and refresh" };
   const playing = playback.inView && playback.enabled;
 

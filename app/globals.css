@@ -971,11 +971,11 @@ footer > a:hover { color: white; }
 .playback-controls button { min-height: 32px; padding: 0 9px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid #343d46; border-radius: 7px; background: #1d232a; color: #c6cbd0; font: 650 8px/1 ui-sans-serif,system-ui,sans-serif; cursor: pointer; }
 .playback-controls button:hover, .playback-controls button:focus-visible { border-color: rgba(169,145,255,.6); color: white; outline: none; }
 .playback-progress { height: 2px; position: absolute; right: 0; bottom: 0; left: 0; overflow: hidden; background: rgba(255,255,255,.04); }
-.playback-progress span { height: 100%; display: block; background: linear-gradient(90deg,var(--accent),var(--mint)); transition: width .25s linear; }
+.playback-progress span { height: 100%; display: block; background: linear-gradient(90deg,var(--accent),var(--mint)); transition: width .04s linear; }
 .live-demo-stage { min-height: 320px; position: relative; isolation: isolate; overflow: hidden; background: #edf0f3; color: #20252b; }
 .living-app { min-height: 320px; }
 .live-cursor-layer { position: absolute; z-index: 8; inset: 0; overflow: hidden; pointer-events: none; }
-.live-cursor { position: absolute; display: grid; grid-template-columns: 22px auto; align-items: start; color: var(--cursor-color); filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); transition: left 1.1s cubic-bezier(.22,.85,.3,1),top 1.1s cubic-bezier(.22,.85,.3,1); transform: translate(-3px,-3px); }
+.live-cursor { position: absolute; display: grid; grid-template-columns: 22px auto; align-items: start; color: var(--cursor-color); filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); transition: left .09s cubic-bezier(.22,.85,.3,1),top .09s cubic-bezier(.22,.85,.3,1); transform: translate(-3px,-3px); }
 .live-cursor > svg { stroke: #10151a; stroke-width: 1.4; }
 .live-cursor > span { margin: 14px 0 0 -2px; padding: 4px 6px; border: 1px solid rgba(255,255,255,.45); border-radius: 5px; background: var(--cursor-color); color: #11161b; font: 750 7px/1 ui-sans-serif,system-ui,sans-serif; white-space: nowrap; }
 .live-activity { min-height: 76px; padding: 12px 18px; display: grid; grid-template-columns: 72px repeat(2,minmax(0,1fr)); gap: 8px 14px; align-items: center; border-top: 1px solid #2b333c; background: #13181e; }
