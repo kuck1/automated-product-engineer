@@ -88,12 +88,12 @@ export function DesignSystemExplorer() {
 
   return (
     <main className="design-system-shell">
-      <SiteHeader active="system" />
+      <SiteHeader />
 
       <section className="system-tour-hero">
         <div>
           <SectionEyebrow>DESIGN SYSTEM TOUR</SectionEyebrow>
-          <h1>See the rules.<br /><span>Feel the system.</span></h1>
+          <h1>Design tokens.<br /><span>Components and patterns.</span></h1>
         </div>
         <div className="system-tour-intro">
           <p>Start with meaning, then inspect implementation. Every token explains the job it performs, and every component shows where it belongs.</p>
@@ -182,7 +182,7 @@ export function DesignSystemExplorer() {
               <article><span>SEARCH &amp; FILTERS</span><div className="pattern-icon"><SearchX size={21} /></div><h3>Return to a known view</h3><p>Keep filters understandable, make active constraints visible, and provide one reliable reset.</p><ul><li>URL reflects shareable state</li><li>Empty results name the cause</li><li>Reset clears every constraint</li></ul></article>
               <article><span>DESTRUCTIVE ACTION</span><div className="pattern-icon"><Trash2 size={21} /></div><h3>Confirm the consequence</h3><p>Reserve interruption for consequential changes and state exactly what will be removed or retained.</p><ul><li>Trigger language is specific</li><li>Confirmation repeats the object</li><li>Undo exists when feasible</li></ul></article>
             </div>
-            <div className="pattern-prompt-link"><div><strong>Need implementation-ready instructions?</strong><p>Use the copy-ready prompt library for tokens, HTML prototypes, component contracts, full-stack boundaries, QA, and PR evidence.</p></div><Link className="button button-secondary" href="/library#prompts">Browse 12 prompts <ArrowRight size={14} /></Link></div>
+            <div className="pattern-skill-link"><div><strong>Apply this system to real product work.</strong><p>The Design System skill inspects the existing foundations, asks for missing decisions, and guides tokens, components, documentation, and visual evidence in context.</p></div><Link className="button button-secondary" href="/library?skill=design-system#skills">Open Design System skill <ArrowRight size={14} /></Link></div>
           </CatalogSection>
         </div>
       </div>

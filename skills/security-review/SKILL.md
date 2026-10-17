@@ -9,6 +9,11 @@ Review only the security impact introduced by the scoped diff. This is not a gen
 
 Read [references/threat-tracing.md](references/threat-tracing.md) for trust-boundary mapping, source-to-sink tracing, exploitability filters, and the required finding format.
 
+
+## Intake and pushback
+
+Resolve the exact diff, actors, protected resources, trust boundaries, deployment context, and existing controls from code and repository guidance first. Ask only when missing identity, tenancy, data-sensitivity, or integration assumptions prevent a confident exploitability decision. If a system owner must clarify the contract, provide a concise request naming the entry point, protected action or data, observed enforcement, and exact assumption that needs confirmation.
+
 ## Pin the threat surface
 
 - Establish the exact base, head, changed files, and repository security guidance.

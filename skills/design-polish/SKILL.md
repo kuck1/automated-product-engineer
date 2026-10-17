@@ -9,6 +9,11 @@ Use the screenshot, design node, recorded defect, or visual diff as evidence. Id
 
 Read [references/interaction-debugging.md](references/interaction-debugging.md) for overlay, animation, dense-layout, and visual-diff failure patterns.
 
+
+## Intake and pushback
+
+Inspect the live surface, design system, reference frames, current screenshots, and responsive behavior first. Establish the intended hierarchy, primary task, approved visual source, relevant states, and viewport range. Ask only for visual or interaction decisions that cannot be inferred and would change the result. When a designer must provide missing direction, generate a focused request with the current screenshot or component context, the exact ambiguity, and the states or measurements needed.
+
 ## Working loop
 
 1. Reproduce the exact state in the production component, including viewport, content density, interaction, and surrounding layout.

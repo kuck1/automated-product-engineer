@@ -9,6 +9,13 @@ Use these instructions when implementing a Figma or Claude Design handoff in a N
 - Inspect existing components, tokens, routes, data models, API patterns, feature flags, analytics, and tests.
 - Write a compact mapping from export artifacts to application owners.
 
+## Adaptive intake
+
+- Inspect the repository, conversation, available design source, current branch or pull request, and tests before asking the user for information.
+- Ask only for missing decisions that would materially change behavior, architecture, persistence, permissions, responsive rules, or acceptance evidence. Continue independent discovery while waiting when possible.
+- When a missing input belongs to Figma, Claude Design, a product owner, or another teammate, generate one tailored copy-ready request with known context filled in, the exact gap, and the expected deliverable. Do not send the user to a catalog of generic prompts.
+- If the evidence is sufficient, state any reasonable assumptions briefly and proceed.
+
 ## Implementation rules
 
 - Treat reference code as a visual and interaction specification, not production architecture.

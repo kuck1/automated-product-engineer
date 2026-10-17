@@ -5,17 +5,54 @@ export const architectureLayers = [
     title: "ExampleWorkspace",
     detail: "Owns navigation, transient notices, and user intent.",
     why: "The component describes what the user asked for. It never imports Supabase, constructs database records, or decides whether a transition is allowed.",
-    path: "src/examples/example-workspace.tsx",
-    code: `const mutation = useMutation({
-  mutationFn: ({ release, stage }) =>
-    patchEntity(\`/api/examples/releases/\${release.id}\`, {
-      stage,
-      expectedRevision: release.revision,
-    }),
-  onMutate: snapshotAndApplyOptimisticStage,
-  onError: restorePreviousSnapshot,
-  onSuccess: reconcileCanonicalResponse,
-});`,
+    files: [
+      {
+        id: "interaction-contract",
+        label: "Actions and state enums",
+        path: "src/examples/example-workspace.tsx",
+        startLine: 14,
+        endLine: 29,
+        summary: "Typed actions constrain every transition the UI can request.",
+        code: `type View = "releases" | "onboarding";
+
+const releaseActions: Partial<Record<
+  ReleaseStage,
+  { label: string; stage: ReleaseStage }[]
+>> = {
+  building: [{ label: "Start validation", stage: "validating" }],
+  validating: [
+    { label: "Mark ready", stage: "ready" },
+    { label: "Block release", stage: "blocked" },
+  ],
+  blocked: [{ label: "Resume validation", stage: "validating" }],
+  ready: [{ label: "Reopen validation", stage: "validating" }],
+};`,
+      },
+      {
+        id: "interaction-composition",
+        label: "Page composition",
+        path: "src/examples/example-workspace.tsx",
+        startLine: 97,
+        endLine: 110,
+        summary: "The page composes documentation and product views from canonical query data.",
+        code: `return (
+  <main className="workspace-shell">
+    <SiteHeader active={view} />
+    <section className="workspace-main">
+      <WorkspaceTitle view={view} onRefresh={snapshotQuery.refetch} />
+      {notice && <Notice {...notice} />}
+      <ExampleReferenceKit key={view} kit={exampleReferenceKits[view]} />
+      {view === "releases" && (
+        <ReleaseView releases={snapshotQuery.data.releases} onMove={moveRelease} />
+      )}
+      {view === "onboarding" && (
+        <OnboardingView onboardings={snapshotQuery.data.onboardings} onMove={moveOnboarding} />
+      )}
+    </section>
+  </main>
+);`,
+      },
+    ],
   },
   {
     id: "cache",
@@ -23,18 +60,66 @@ export const architectureLayers = [
     title: "TanStack Query",
     detail: "Coordinates remote state, optimistic intent, and rollback.",
     why: "Remote data is not duplicated into component state. One query key owns the snapshot, so successful responses and failures reconcile through a predictable seam.",
-    path: "src/examples/example-workspace.tsx",
-    code: `await queryClient.cancelQueries({ queryKey: ["example-snapshot"] });
-const previous = queryClient.getQueryData(["example-snapshot"]);
+    files: [
+      {
+        id: "release-mutation",
+        label: "Release mutation",
+        path: "src/examples/example-workspace.tsx",
+        startLine: 50,
+        endLine: 69,
+        summary: "Optimistic state is snapshotted, rolled back on failure, and replaced by the canonical response.",
+        code: `const snapshotQuery = useQuery({
+  queryKey: ["example-snapshot"],
+  queryFn: fetchSnapshot,
+  initialData: initialSnapshot,
+});
 
-queryClient.setQueryData(["example-snapshot"], current => ({
-  ...current,
-  releases: current.releases.map(item =>
-    item.id === release.id ? optimisticRelease : item,
+const releaseMutation = useMutation({
+  mutationFn: ({ release, stage }) => patchEntity<Release>(
+    \`/api/examples/releases/\${release.id}\`,
+    { stage, expectedRevision: release.revision },
   ),
-}));
-
-return { previous };`,
+  onMutate: async ({ release, stage }) => {
+    await queryClient.cancelQueries({ queryKey: ["example-snapshot"] });
+    const previous = queryClient.getQueryData<ExampleSnapshot>(["example-snapshot"]);
+    queryClient.setQueryData<ExampleSnapshot>(["example-snapshot"], current =>
+      applyOptimisticRelease(current, release.id, stage),
+    );
+    return { previous };
+  },
+  onError: (_error, _variables, context) => {
+    if (context?.previous) queryClient.setQueryData(["example-snapshot"], context.previous);
+  },
+  onSuccess: saved => reconcileRelease(queryClient, saved),
+});`,
+      },
+      {
+        id: "onboarding-mutation",
+        label: "Onboarding mutation",
+        path: "src/examples/example-workspace.tsx",
+        startLine: 71,
+        endLine: 88,
+        summary: "The second workflow uses the same cache contract without sharing component-local state.",
+        code: `const onboardingMutation = useMutation({
+  mutationFn: ({ onboarding, stage }) => patchEntity<Onboarding>(
+    \`/api/examples/onboardings/\${onboarding.id}\`,
+    { stage, expectedRevision: onboarding.revision },
+  ),
+  onMutate: async ({ onboarding, stage }) => {
+    await queryClient.cancelQueries({ queryKey: ["example-snapshot"] });
+    const previous = queryClient.getQueryData<ExampleSnapshot>(["example-snapshot"]);
+    queryClient.setQueryData<ExampleSnapshot>(["example-snapshot"], current =>
+      applyOptimisticOnboarding(current, onboarding.id, stage),
+    );
+    return { previous };
+  },
+  onError: (_error, _variables, context) => {
+    if (context?.previous) queryClient.setQueryData(["example-snapshot"], context.previous);
+  },
+  onSuccess: saved => reconcileOnboarding(queryClient, saved),
+});`,
+      },
+    ],
   },
   {
     id: "transport",
@@ -42,19 +127,78 @@ return { previous };`,
     title: "Route handlers",
     detail: "Authenticate, parse the contract, delegate, and normalize errors.",
     why: "HTTP stays thin. Route handlers know request and response mechanics, while business decisions remain reusable from jobs, tests, or another transport.",
-    path: "app/api/examples/releases/[id]/route.ts",
-    code: `export async function PATCH(request, context) {
+    files: [
+      {
+        id: "release-route",
+        label: "Release PATCH route",
+        path: "app/api/examples/releases/[id]/route.ts",
+        startLine: 1,
+        endLine: 15,
+        summary: "A complete route: resolve identity, validate input, delegate, and normalize errors.",
+        code: `import { NextResponse } from "next/server";
+import { getExampleService } from "@/src/examples/container";
+import { updateReleaseSchema } from "@/src/examples/contracts";
+import { apiError } from "@/src/examples/http";
+import { requireActor } from "@/src/server/auth/actor";
+
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const actor = await requireActor();
-    const input = updateReleaseSchema.parse(await request.json());
     const { id } = await context.params;
-    return NextResponse.json(
-      await getExampleService().updateRelease(actor, id, input),
-    );
+    const input = updateReleaseSchema.parse(await request.json());
+    const saved = await getExampleService().updateRelease(await requireActor(), id, input);
+    return NextResponse.json(saved);
   } catch (error) {
-    return domainErrorResponse(error);
+    return apiError(error);
   }
 }`,
+      },
+      {
+        id: "onboarding-route",
+        label: "Onboarding PATCH route",
+        path: "app/api/examples/onboardings/[id]/route.ts",
+        startLine: 1,
+        endLine: 15,
+        summary: "A second transport reuses the same boundary shape for a different workflow.",
+        code: `import { NextResponse } from "next/server";
+import { getExampleService } from "@/src/examples/container";
+import { updateOnboardingSchema } from "@/src/examples/contracts";
+import { apiError } from "@/src/examples/http";
+import { requireActor } from "@/src/server/auth/actor";
+
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await context.params;
+    const input = updateOnboardingSchema.parse(await request.json());
+    const saved = await getExampleService().updateOnboarding(await requireActor(), id, input);
+    return NextResponse.json(saved);
+  } catch (error) {
+    return apiError(error);
+  }
+}`,
+      },
+      {
+        id: "error-normalizer",
+        label: "Error normalization",
+        path: "src/examples/http.ts",
+        startLine: 1,
+        endLine: 12,
+        summary: "Domain failures keep stable codes and statuses while unexpected errors stay private.",
+        code: `export function apiError(error: unknown) {
+  if (error instanceof DomainError) {
+    return NextResponse.json(
+      { error: { code: error.code, message: error.message } },
+      { status: error.status },
+    );
+  }
+
+  console.error(error);
+  return NextResponse.json(
+    { error: { code: "INTERNAL", message: "Something went wrong." } },
+    { status: 500 },
+  );
+}`,
+      },
+    ],
   },
   {
     id: "domain",
@@ -62,18 +206,98 @@ return { previous };`,
     title: "ExampleService",
     detail: "Enforces ownership, revisions, transitions, and launch policy.",
     why: "The service is the authority. UI affordances improve usability, but the same invariants are enforced even when requests are replayed or crafted by another client.",
-    path: "src/examples/service.ts",
-    code: `authorize(actor, release.workspaceId);
+    files: [
+      {
+        id: "release-policy",
+        label: "Release transition policy",
+        path: "src/examples/service.ts",
+        startLine: 66,
+        endLine: 83,
+        summary: "The complete release transition guards ownership, concurrency, state, and business gates.",
+        code: `async updateRelease(actor: Actor, id: string, input: UpdateRelease) {
+  const release = await this.repository.getRelease(id);
+  if (!release) throw new DomainError("NOT_FOUND", "Release not found.", 404);
 
-if (release.revision !== input.expectedRevision) {
-  throw new DomainError("CONFLICT", "Refresh before trying again.", 409);
-}
+  authorize(actor, release.workspaceId);
+  if (release.revision !== input.expectedRevision) {
+    throw new DomainError("CONFLICT", "This release changed. Refresh before trying again.", 409);
+  }
+  if (!releaseTransitions[release.stage].includes(input.stage)) {
+    throw new DomainError("INVALID_TRANSITION", "Transition not allowed.", 422);
+  }
+  if (input.stage === "ready") {
+    const readiness = releaseReadiness(release);
+    if (!readiness.gatesReady || !readiness.approvalsReady) {
+      throw new DomainError("GATES_INCOMPLETE", "Required gates must pass.", 422);
+    }
+  }
 
-if (!releaseTransitions[release.stage].includes(input.stage)) {
-  throw new DomainError("INVALID_TRANSITION", "Transition not allowed.", 422);
-}
+  return this.repository.saveRelease({
+    ...release,
+    stage: input.stage,
+    revision: release.revision + 1,
+  });
+}`,
+      },
+      {
+        id: "onboarding-policy",
+        label: "Onboarding launch policy",
+        path: "src/examples/service.ts",
+        startLine: 85,
+        endLine: 103,
+        summary: "The onboarding flow applies different policy without changing transport or persistence contracts.",
+        code: `async updateOnboarding(actor: Actor, id: string, input: UpdateOnboarding) {
+  const onboarding = await this.repository.getOnboarding(id);
+  if (!onboarding) throw new DomainError("NOT_FOUND", "Onboarding not found.", 404);
 
-if (input.stage === "ready") assertReleasePolicy(release);`,
+  authorize(actor, onboarding.workspaceId);
+  if (onboarding.revision !== input.expectedRevision) {
+    throw new DomainError("CONFLICT", "This onboarding changed.", 409);
+  }
+  if (!onboardingTransitions[onboarding.stage].includes(input.stage)) {
+    throw new DomainError("INVALID_TRANSITION", "Transition not allowed.", 422);
+  }
+  if (input.stage === "live") {
+    const health = onboardingHealth(onboarding);
+    const milestonesReady = onboarding.milestones.every(item => item.completed);
+    if (!milestonesReady || health.adoptionRatio < 0.5) {
+      throw new DomainError("GATES_INCOMPLETE", "Complete launch requirements.", 422);
+    }
+  }
+
+  return this.repository.saveOnboarding({
+    ...onboarding,
+    stage: input.stage,
+    revision: onboarding.revision + 1,
+  });
+}`,
+      },
+      {
+        id: "scoring-policy",
+        label: "Readiness scoring",
+        path: "src/examples/service.ts",
+        startLine: 31,
+        endLine: 53,
+        summary: "Pure scoring functions stay deterministic and easy to test without HTTP or database fixtures.",
+        code: `export function releaseReadiness(release: Release) {
+  const required = release.gates.filter(gate => gate.required);
+  const passing = required.filter(gate => gate.status === "passing").length;
+  const gatesReady = passing === required.length;
+  const approvalsReady = release.approvals >= release.requiredApprovals;
+  const gateRatio = required.length ? passing / required.length : 1;
+  const approvalRatio = Math.min(1, release.approvals / release.requiredApprovals);
+  const score = Math.round((gateRatio * 0.72 + approvalRatio * 0.28) * 100);
+
+  return {
+    score,
+    gatesReady,
+    approvalsReady,
+    passing,
+    required: required.length,
+  };
+}`,
+      },
+    ],
   },
   {
     id: "persistence",
@@ -81,8 +305,17 @@ if (input.stage === "ready") assertReleasePolicy(release);`,
     title: "ExampleRepository",
     detail: "A stable port implemented by memory and Supabase adapters.",
     why: "Domain code depends on a typed capability instead of a vendor client. The public demo stays deterministic while production can use RLS-backed persistence without changing the service.",
-    path: "src/examples/repository.ts",
-    code: `export interface ExampleRepository {
+    files: [
+      {
+        id: "repository-port",
+        label: "Repository port",
+        path: "src/examples/repository.ts",
+        startLine: 1,
+        endLine: 10,
+        summary: "The service sees domain-shaped capabilities rather than database tables or vendor types.",
+        code: `import type { Onboarding, Release } from "./contracts";
+
+export interface ExampleRepository {
   listReleases(workspaceId: string): Promise<Release[]>;
   getRelease(id: string): Promise<Release | null>;
   saveRelease(release: Release): Promise<Release>;
@@ -91,16 +324,141 @@ if (input.stage === "ready") assertReleasePolicy(release);`,
   getOnboarding(id: string): Promise<Onboarding | null>;
   saveOnboarding(onboarding: Onboarding): Promise<Onboarding>;
 }`,
+      },
+      {
+        id: "memory-adapter",
+        label: "Deterministic memory adapter",
+        path: "src/examples/adapters/memory-repository.ts",
+        startLine: 5,
+        endLine: 33,
+        summary: "The public demo implements the same port with isolated, clone-safe fixtures.",
+        code: `const clone = <T,>(value: T): T => structuredClone(value);
+
+export class MemoryExampleRepository implements ExampleRepository {
+  private releases = new Map(demoReleases.map(item => [item.id, clone(item)]));
+  private onboardings = new Map(demoOnboardings.map(item => [item.id, clone(item)]));
+
+  async listReleases(workspaceId: string) {
+    return [...this.releases.values()]
+      .filter(item => item.workspaceId === workspaceId)
+      .map(clone);
+  }
+
+  async getRelease(id: string) {
+    const item = this.releases.get(id);
+    return item ? clone(item) : null;
+  }
+
+  async saveRelease(release: Release) {
+    this.releases.set(release.id, clone(release));
+    return clone(release);
+  }
+
+  async saveOnboarding(onboarding: Onboarding) {
+    this.onboardings.set(onboarding.id, clone(onboarding));
+    return clone(onboarding);
+  }
+}`,
+      },
+      {
+        id: "supabase-adapter",
+        label: "Supabase production adapter",
+        path: "src/examples/adapters/supabase-repository.ts",
+        startLine: 54,
+        endLine: 85,
+        summary: "The production adapter preserves RLS and rejects stale writes with a revision predicate.",
+        code: `/** The caller supplies an authenticated client so RLS remains authoritative. */
+export class SupabaseExampleRepository implements ExampleRepository {
+  constructor(private readonly client: SupabaseClient) {}
+
+  async listReleases(workspaceId: string) {
+    const { data, error } = await this.client
+      .from("example_releases")
+      .select(releaseSelect)
+      .eq("workspace_id", workspaceId)
+      .order("target_date");
+    if (error) throw new Error(error.message);
+    return (data ?? []).map(mapRelease);
+  }
+
+  async saveRelease(release: Release) {
+    const { data, error } = await this.client
+      .from("example_releases")
+      .update({ stage: release.stage, revision: release.revision })
+      .eq("id", release.id)
+      .eq("revision", release.revision - 1)
+      .select(releaseSelect)
+      .maybeSingle();
+
+    return mapRelease(unwrapVersioned(data, error));
+  }
+}`,
+      },
+    ],
   },
 ] as const;
 
 export const requestLifecycle = [
-  ["Intent", "A typed button emits the requested next stage."],
-  ["Optimism", "TanStack Query snapshots the cache and paints the likely result."],
-  ["Boundary", "The route authenticates, validates the Zod contract, and delegates."],
-  ["Policy", "The service verifies tenant ownership, revision, transition, and gates."],
-  ["Persistence", "The selected adapter performs the versioned write."],
-  ["Reconcile", "The canonical DTO replaces optimistic state, or the snapshot rolls back."],
+  {
+    id: "intent",
+    title: "Intent",
+    detail: "A typed button emits the requested next stage.",
+    owner: "Interaction component",
+    behavior: "Allowed actions come from typed stage-to-action maps. The component emits a domain-shaped command and owns only transient feedback.",
+    failure: "Unsupported transitions never appear as controls, and pending mutations disable repeated submission.",
+    source: { path: "src/examples/example-workspace.tsx", startLine: 14, endLine: 29, label: "Action contracts" },
+    skill: { slug: "architecture-building", label: "Architecture Design" },
+  },
+  {
+    id: "optimism",
+    title: "Optimism",
+    detail: "TanStack Query snapshots the cache and paints the likely result.",
+    owner: "Server-state cache",
+    behavior: "The mutation cancels stale reads, stores the previous snapshot, and applies the expected stage and revision immediately.",
+    failure: "A rejected request restores the exact snapshot captured before the optimistic update and presents the server error.",
+    source: { path: "src/examples/example-workspace.tsx", startLine: 52, endLine: 69, label: "Optimistic mutation" },
+    skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
+  },
+  {
+    id: "boundary",
+    title: "Boundary",
+    detail: "The route authenticates, validates the Zod contract, and delegates.",
+    owner: "Route handler",
+    behavior: "The endpoint resolves the actor, parses untrusted input, and delegates one typed command to the domain service.",
+    failure: "Validation and domain failures are normalized into stable API responses; the route does not duplicate policy.",
+    source: { path: "app/api/examples/releases/[id]/route.ts", startLine: 1, endLine: 15, label: "Release PATCH route" },
+    skill: { slug: "security-review", label: "Security Review" },
+  },
+  {
+    id: "policy",
+    title: "Policy",
+    detail: "The service verifies tenant ownership, revision, transition, and gates.",
+    owner: "Domain service",
+    behavior: "The service is the authority for ownership, concurrency, allowed transitions, and release-readiness rules.",
+    failure: "Each rejected invariant returns a typed domain error with an actionable message and stable status code.",
+    source: { path: "src/examples/service.ts", startLine: 66, endLine: 83, label: "Release transition policy" },
+    skill: { slug: "architecture-building", label: "Architecture Design" },
+  },
+  {
+    id: "persistence",
+    title: "Persistence",
+    detail: "The selected adapter performs the versioned write.",
+    owner: "Repository adapter",
+    behavior: "A domain-shaped repository port hides storage details. The production adapter scopes reads and writes through an authenticated client.",
+    failure: "The revision predicate rejects stale writes, while database row-level security repeats tenant isolation below the service.",
+    source: { path: "src/examples/adapters/supabase-repository.ts", startLine: 54, endLine: 85, label: "Supabase adapter" },
+    skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
+  },
+  {
+    id: "reconcile",
+    title: "Reconcile",
+    detail: "The canonical DTO replaces optimistic state, or the snapshot rolls back.",
+    owner: "Mutation lifecycle",
+    behavior: "A successful response replaces the optimistic entity with the server DTO so revisions and computed values stay canonical.",
+    failure: "Errors restore the prior cache snapshot and leave a visible recovery message instead of silently drifting from server state.",
+    source: { path: "src/examples/example-workspace.tsx", startLine: 61, endLine: 68, label: "Mutation reconciliation" },
+    skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
+  },
 ] as const;
 
 export const stateOwners = [
@@ -119,9 +477,49 @@ export const extensionRules = [
 ] as const;
 
 export const verificationLayers = [
-  ["Domain", "Transition policy, authorization, scoring, and stale-write rejection."],
-  ["Transport", "Schema rejection and normalized domain errors."],
-  ["Browser", "Optimistic rollback, canonical reconciliation, URL history, and keyboard paths."],
-  ["Visual", "Deterministic desktop and mobile states reviewed before baseline updates."],
-  ["Delivery", "Content validation, tests, typecheck, lint, build, browser CI, and preview deployment."],
+  {
+    id: "domain",
+    title: "Domain",
+    detail: "Transition policy, authorization, scoring, and stale-write rejection.",
+    goal: "Prove business invariants directly against the service so policy stays correct without a browser, route handler, or database vendor.",
+    evidence: "Happy and rejected transitions, tenant isolation, deterministic scoring, revision increments, and stale-write rejection with stable error codes.",
+    source: { path: "src/examples/service.test.ts", startLine: 9, endLine: 68, label: "Domain policy tests" },
+    skill: { slug: "architecture-building", label: "Architecture Design" },
+  },
+  {
+    id: "transport",
+    title: "Transport",
+    detail: "Schema rejection and normalized domain errors.",
+    goal: "Prove the HTTP boundary authenticates, parses untrusted input, delegates exactly once, and preserves the domain contract.",
+    evidence: "Malformed payloads, missing identity, normalized error codes, safe internal failures, and a thin success response containing the canonical DTO.",
+    source: { path: "app/api/examples/releases/[id]/route.ts", startLine: 1, endLine: 15, label: "Authenticated route boundary" },
+    skill: { slug: "security-review", label: "Security Review" },
+  },
+  {
+    id: "browser",
+    title: "Browser",
+    detail: "Optimistic rollback, canonical reconciliation, URL history, and keyboard paths.",
+    goal: "Prove the composed feature works through the same controls, network boundary, cache lifecycle, and navigation state a person uses.",
+    evidence: "Successful transitions, rejected policy, optimistic rollback, server reconciliation, back navigation, semantic roles, and actionable recovery copy.",
+    source: { path: "e2e/reference-app.spec.ts", startLine: 88, endLine: 147, label: "End-to-end product flows" },
+    skill: { slug: "manual-ui-qa", label: "Manual UI QA" },
+  },
+  {
+    id: "visual",
+    title: "Visual",
+    detail: "Deterministic desktop and mobile states reviewed before baseline updates.",
+    goal: "Prove hierarchy, spacing, typography, states, and responsive behavior against deterministic fixtures at meaningful breakpoints.",
+    evidence: "Reviewed desktop and mobile captures, overflow assertions, stable reduced-motion states, and an explicit decision for every changed baseline.",
+    source: { path: "e2e/reference-app.spec.ts", startLine: 262, endLine: 312, label: "Visual regression coverage" },
+    skill: { slug: "design-polish", label: "Design Polish" },
+  },
+  {
+    id: "delivery",
+    title: "Delivery",
+    detail: "Content validation, tests, typecheck, lint, build, browser CI, and preview deployment.",
+    goal: "Prove the branch is reproducible, reviewable, and safe to evaluate before a person decides whether it should merge.",
+    evidence: "Independent five-minute content, code, and browser jobs; a deployable build; preview URL; screenshots; risk notes; and clean PR status.",
+    source: { path: ".github/workflows/validate.yml", startLine: 15, endLine: 61, label: "Pull-request verification" },
+    skill: { slug: "pr-workflow", label: "PR Workflow" },
+  },
 ] as const;

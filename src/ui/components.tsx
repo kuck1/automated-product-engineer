@@ -4,9 +4,11 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipes";
 
 const siteNavigation = [
-  { id: "examples", label: "Examples", href: "/examples" },
-  { id: "system", label: "System", href: "/system" },
-  { id: "library", label: "Library", href: "/library" },
+  { id: "releases", label: "Case Study #1", href: "/examples?view=releases" },
+  { id: "onboarding", label: "Case Study #2", href: "/examples?view=onboarding" },
+  { id: "quick-start", label: "Quick Start", href: "/quick-start" },
+  { id: "guide", label: "Developer Guide", href: "/guide" },
+  { id: "library", label: "Complete Skill Library", href: "/library" },
 ] as const;
 
 type SiteSection = typeof siteNavigation[number]["id"];
@@ -32,7 +34,7 @@ export function SiteHeader({ active }: { active?: SiteSection }) {
         ))}
       </nav>
       <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
-        <GitFork size={15} /> GitHub
+        <GitFork size={15} /> Open Source on GitHub
       </a>
     </header>
   );

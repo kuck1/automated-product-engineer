@@ -7,7 +7,14 @@ description: Turn Figma designs, screenshots, exports, and product notes into a 
 
 Treat design artifacts as product requirements, not CSS paste targets. This skill coordinates the full delivery loop; load the specialist skills only when their boundary is active.
 
-Read [references/delivery-lifecycle.md](references/delivery-lifecycle.md) for the full staged workflow and exit evidence. Use the repository's design-export examples as concrete shape guidance when they are available, but preserve the target application's architecture and data contracts.
+Read [references/delivery-lifecycle.md](references/delivery-lifecycle.md) for the full staged workflow and exit evidence. Read [references/artifact-and-state-contract.md](references/artifact-and-state-contract.md) when auditing a design handoff, resolving state precedence, or planning focused tests. Use the repository's design-export examples as concrete shape guidance when they are available, but preserve the target application's architecture and data contracts.
+
+
+## Adaptive intake
+
+Inspect the accessible Figma source, target repository, existing design system, routes, data contracts, and tests before asking for information. Establish the target frames and states, user outcome, required behavior and copy, persistence and permissions, responsive and accessibility rules, and acceptance evidence.
+
+Ask only when a missing product or design decision would materially change implementation. If the Figma source lacks a required frame, state, token mapping, or interaction rule, generate one focused copy-ready request for the designer with known context filled in and the exact artifact or decision needed. Do not offer a generic prompt catalog. If the design contract is sufficient, proceed.
 
 ## Intake contract
 

@@ -17,9 +17,11 @@ Before asking Claude or working from Figma, write down the minimum product contr
 
 Include exact copy when it is already approved. Attach full-page and component-level Figma frames, screenshots, and interaction notes. Show desktop and narrow layouts, overlays, dense content, empty states, errors, and long-text cases. One polished screenshot rarely defines enough behavior to build a durable feature.
 
-## 2. Request a useful Claude Design handoff
+## 2. Let the skill complete the intake
 
-For most features, copy `prompts/claude-design-quick.md`, fill in the brackets, and attach the source material. Use `prompts/claude-design-full-export.md` when the experience has multiple steps, persistence, permissions, analytics, complex responsive behavior, or several error states. When only one artifact is missing, use the focused prompt for the Figma audit, semantic tokens, offline HTML, typed component contract, responsive matrix, motion, full-stack boundary map, visual QA, pull-request evidence, or retrospective. The reference app exposes all twelve prompts at `/library#prompts` with search and one-click copy.
+Invoke `automated-product-engineer` for end-to-end delivery, `claude-design-to-app` or `figma-to-app-feature` for design-led work, or a focused specialist for one boundary. The skill first inspects the conversation, repository, available design source, current branch or pull request, and existing tests. It fills in implementation context itself instead of asking the user to restate facts already present in the codebase.
+
+When a missing product decision would materially change behavior, persistence, permissions, responsive rules, or acceptance criteria, the skill asks one to three focused questions. If the missing input must come from Claude Design, Figma, a product owner, or another teammate, it generates a single copy-ready request with known context already filled in, the exact missing decisions or artifacts, and the expected output. There is no separate prompt catalog to browse.
 
 The request deliberately asks Claude for more than a picture. A useful handoff includes:
 
@@ -34,7 +36,7 @@ The request deliberately asks Claude for more than a picture. A useful handoff i
 - deterministic controls that reproduce every meaningful state;
 - explicit open decisions instead of silent assumptions.
 
-Ask Claude to map proposed components and tokens to the application's existing system. The result should explain what is new and what should be reused. Claude should not invent a backend, database, authentication model, or second component library.
+The generated request asks Claude to map proposed components and tokens to the application's existing system. The result should explain what is new and what should be reused. Claude should not invent a backend, database, authentication model, or second component library.
 
 ## 3. Audit the handoff before coding
 

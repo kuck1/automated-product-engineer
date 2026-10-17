@@ -9,6 +9,11 @@ Design continuous transitions, not merely acceptable endpoint screenshots. Deriv
 
 Read [references/adaptive-failure-patterns.md](references/adaptive-failure-patterns.md) for breakpoint derivation, shell and scroll ownership, overlay containment, and transition-testing examples.
 
+
+## Intake and pushback
+
+Inspect the production component continuously across widths with representative content before asking for breakpoint values. Establish the primary task, content priority, minimum readable geometry, required controls, input modes, overlay behavior, and approved references. Ask only when a product decision determines what may move, condense, scroll, or hide. If design input is required, generate a focused request showing the pressure point and asking for the exact wide, transition, and narrow behavior.
+
 ## Geometry rules
 
 - Compress decorative gaps, flexible gutters, and unused reserves before hiding or truncating meaningful content.

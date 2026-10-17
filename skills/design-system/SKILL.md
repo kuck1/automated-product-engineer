@@ -9,6 +9,13 @@ Use this skill when a visual rule should become shared infrastructure. Keep feat
 
 Read [references/system-extension.md](references/system-extension.md) for the token-to-component pipeline, catalog and inspector contracts, migration sequencing, and visual-baseline discipline.
 
+
+## Intake and pushback
+
+Inspect existing tokens, primitives, variants, consumers, documentation, and visual baselines before proposing a parallel system. Establish the target consumers, semantic role, themes, accessibility requirements, supported states, extension axis, and ownership or migration expectations.
+
+Ask one to three focused questions only when a missing decision would change the public token or component contract. If design source or governance input is missing, generate a tailored request that lists the observed foundations, the conflicting or absent decisions, and the exact token, component, state, or approval artifact required.
+
 ## Establish the source of truth
 
 - Inspect existing tokens, variables, primitives, component variants, metadata, previews, and tests before adding a parallel mechanism.

@@ -4,18 +4,37 @@ The repository ships one conductor skill and focused specialist skills in the op
 
 ## Install into a project
 
-Clone or download this repository, then run:
+Run one command from the project you want the agent to work in:
 
 ```bash
-python3 scripts/install_ai_editor.py \
-  --target codex \
-  --project /path/to/your-nextjs-project
+pnpm dlx automated-product-engineer
 ```
+
+The default install is universal and includes the complete local reference kit:
+
+- 13 adaptive agent skills and discovery adapters for the supported agents.
+- Architecture, state, design-system, testing, delivery, and retrospective guides.
+- Integration checklists and copyable design, component, state, testing, CI, automation, and retrospective templates.
+- Two working business-logic case studies, thin API routes, domain services, repositories, a Supabase adapter and migration, an interactive semantic-token system, and browser test examples.
+- Desktop and mobile evidence from the reference implementations.
+
+The skills are copied to the supported agent locations. All non-runtime reference material is kept under `.automated-product-engineer/`. Its `INSTALLATION.md` gives the agent a map of the installed material. The host application does not import this folder at runtime.
+
+### Optional controls
+
+Most teams do not need flags. For a narrower installation:
+
+```bash
+pnpm dlx automated-product-engineer --target codex --only skills,docs
+```
+
+Use `--project ../another-app` when running outside the target project. Available parts are `skills`, `docs`, `templates`, and `examples`. The installer refuses to overwrite different existing files unless `--force` is supplied.
 
 Supported targets:
 
 | Target | Installed convention | Invocation |
 | --- | --- | --- |
+| default | Universal skill locations and thin adapters | Ask the active agent to use `automated-product-engineer` |
 | `codex` | `.agents/skills/<name>/SKILL.md` | `$automated-product-engineer ...` |
 | `claude` | `.claude/skills/<name>/SKILL.md` | `Use the automated-product-engineer skill ...` |
 | `cursor` | `.ai/skills/` plus a Cursor rule and `/automated-product-engineer` command | `/automated-product-engineer` |
@@ -24,7 +43,9 @@ Supported targets:
 | `orca` | both Codex and Claude skill locations | Launch Codex or Claude Code in Orca and invoke the corresponding skill |
 | `generic` | `.ai/skills/` plus `AI_WORKFLOW.md` | Attach or reference `AI_WORKFLOW.md` |
 
-The installer refuses to overwrite different existing files unless `--force` is supplied. Review the diff after installation and keep repository-specific commands, architecture, and permissions in the target project's own `AGENTS.md` or equivalent instructions.
+Review the installation diff and keep repository-specific commands, architecture, and permissions in the target project's own `AGENTS.md` or equivalent instructions.
+
+Every installed skill uses adaptive intake. It inspects the repository and available source material first, asks only for missing decisions that affect the work, and generates one contextual request when another design tool or teammate must supply an artifact or answer.
 
 ## A good first request
 

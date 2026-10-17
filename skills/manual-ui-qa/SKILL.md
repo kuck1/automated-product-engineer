@@ -9,6 +9,11 @@ This is an exploratory release gate performed through the real interface. Playwr
 
 Read [references/release-scenarios.md](references/release-scenarios.md) for a risk-based scenario matrix, evidence format, and defect closure contract.
 
+
+## Intake and pushback
+
+Inspect the feature, accepted stories, available environment, fixtures, and existing automated coverage before asking for setup details. Establish the exact SHA and URL, authorized test identity, data mode, high-risk journeys, viewport set, and cleanup boundary. Ask only for missing access or product expectations that block meaningful QA. If another owner must supply them, produce one concrete request naming the environment, account or fixture, scenario, expected behavior, and evidence required.
+
 ## Preflight
 
 - Record the exact SHA, branch, URL, environment, database target, flags, browser, and viewport set.

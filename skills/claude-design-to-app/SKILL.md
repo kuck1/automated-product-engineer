@@ -7,6 +7,13 @@ description: Prepare production-grade requests for Claude Design and turn Claude
 
 Treat a Claude Design export as a design and behavior contract, not as production code to paste into the repository.
 
+
+## Adaptive intake
+
+First infer product and repository context from the conversation, existing application, screenshots, and linked source. Compare what is known with the export contract below. If a missing product decision would change behavior, permissions, persistence, responsive rules, copy, analytics, or acceptance criteria, ask one to three focused questions instead of silently inventing it. Continue repository discovery while waiting when possible.
+
+If the user needs Claude Design to supply missing design artifacts, generate one tailored copy-ready request using the prompt reference. Fill every field supported by current evidence, ask only for the missing decisions and deliverables, and explain what the returned package must prove. Do not present a menu of generic prompts. If the supplied context is sufficient, produce the request or begin integration without an intake ceremony.
+
 ## Choose the workflow
 
 - If the user wants a request to send to Claude Design, read [claude-design-export-prompt.md](references/claude-design-export-prompt.md), replace its bracketed inputs, and return the complete prompt without weakening its deliverables.

@@ -9,6 +9,11 @@ Package the work so every pull request has a clear purpose, exact base, useful e
 
 Read [references/reviewable-delivery.md](references/reviewable-delivery.md) for branch topology, commit and PR structure, screenshot evidence, CI monitoring, and stacked-change rules.
 
+
+## Intake and pushback
+
+Inspect the current branch, worktrees, open pull requests, exact base, repository template, required checks, and available evidence before asking. Ask only when branch ownership, target base, scope, release authority, or a reviewer-facing product decision cannot be inferred. If another owner must supply missing evidence or a decision, generate a concise request containing the current SHA, relevant link, exact gap, and acceptance condition.
+
 ## Establish topology
 
 - Inspect current branches, worktrees, open pull requests, and task ownership before creating anything.
