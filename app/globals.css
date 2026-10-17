@@ -239,11 +239,17 @@ footer > a:hover { color: white; }
 .example-reference-kit > header h3 { margin: 10px 0 5px; font-size: 18px; }
 .example-reference-kit > header p { margin: 0; color: var(--muted); font-size: 10px; }
 .example-reference-kit > header > a { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-size: 10px; font-weight: 700; }
+.reference-kit-badge { min-height: 24px; padding: 0 9px; display: inline-flex; align-items: center; border: 1px solid rgba(169,145,255,.2); border-radius: 999px; background: rgba(169,145,255,.1); color: #d8d0ff; font: 700 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .8px; text-transform: uppercase; }
 .reference-kit-tabs { padding: 8px; display: flex; gap: 5px; overflow-x: auto; border-bottom: 1px solid var(--line); }
 .reference-kit-tabs button { min-height: 38px; padding: 0 12px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #8d969f; font-size: 9px; white-space: nowrap; cursor: pointer; }
 .reference-kit-tabs button:hover { color: white; }
 .reference-kit-tabs button.active { border-color: rgba(169,145,255,.22); background: rgba(169,145,255,.1); color: #d8d0ff; }
 .reference-kit-panel { min-height: 214px; padding: 20px 22px; }
+.reference-section { display: grid; gap: 17px; }
+.reference-section-heading { max-width: 680px; }
+.reference-section-heading small { color: var(--accent); font: 700 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1px; }
+.reference-section-heading h4 { margin: 8px 0 5px; font-size: 17px; letter-spacing: -.02em; }
+.reference-section-heading p { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
 .reference-brief { display: grid; grid-template-columns: minmax(250px,.75fr) minmax(0,1.25fr); gap: 26px; }
 .reference-ownership { margin: 0; padding: 18px; border-radius: 11px; background: rgba(169,145,255,.07); color: #aeb5bd; font-size: 11px; line-height: 1.65; }
 .reference-ownership strong { margin-bottom: 8px; display: block; color: var(--accent); font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1px; text-transform: uppercase; }
@@ -281,6 +287,71 @@ footer > a:hover { color: white; }
 .reference-prompts strong { margin-top: 8px; display: block; font-size: 11px; }
 .reference-prompts p { margin: 5px 0 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
 .reference-prompts svg { flex: 0 0 auto; color: var(--accent); }
+
+/* Each client reference kit owns its visual language instead of inheriting this site's system. */
+.reference-kit-arcade { --accent: #ffd43b; --mint: #45e6a8; --warning: #ff8a3d; --danger: #ff4d8d; --panel: #17172a; --line: #343653; --muted: #aaa7ba; border: 2px solid #494c70; border-radius: 4px; background: #0d0e1a; color: #fff9df; box-shadow: 7px 7px 0 #242640; }
+.reference-kit-arcade > header { position: relative; overflow: hidden; border-bottom: 2px solid #494c70; background-color: #131426; background-image: linear-gradient(rgba(255,212,59,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,212,59,.045) 1px,transparent 1px); background-size: 12px 12px; }
+.reference-kit-arcade > header::after { content: "SYSTEM ONLINE"; position: absolute; right: 20px; bottom: 12px; color: #45e6a8; font: 700 6px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1.4px; }
+.reference-kit-arcade .reference-kit-badge { border: 1px solid #ffd43b; border-radius: 2px; background: #ffd43b; color: #161623; box-shadow: 3px 3px 0 #ff4d8d; }
+.reference-kit-arcade > header h3 { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: -.04em; text-transform: uppercase; }
+.reference-kit-arcade > header > a { color: #ffd43b; text-transform: uppercase; }
+.reference-kit-arcade .reference-kit-tabs { gap: 0; padding: 0; border-bottom: 2px solid #494c70; background: #10111f; }
+.reference-kit-arcade .reference-kit-tabs button { min-height: 42px; border: 0; border-right: 1px solid #343653; border-radius: 0; color: #9695aa; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
+.reference-kit-arcade .reference-kit-tabs button:hover { color: #fff9df; background: #1d1e33; }
+.reference-kit-arcade .reference-kit-tabs button.active { border-color: #343653; background: #ffd43b; color: #17172a; box-shadow: inset 0 -3px 0 #ff8a3d; }
+.reference-kit-arcade .reference-kit-panel { background: linear-gradient(180deg,#111220,#0d0e1a); }
+.reference-kit-arcade .reference-section-heading small { color: #45e6a8; }
+.reference-kit-arcade .reference-section-heading h4 { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
+.reference-kit-arcade .reference-principles { gap: 10px; }
+.reference-kit-arcade .reference-principles article { position: relative; border: 2px solid #343653; border-radius: 3px; background: #18192d; box-shadow: 4px 4px 0 #090a12; }
+.reference-kit-arcade .reference-principles article::after { content: ""; position: absolute; inset: 6px; pointer-events: none; border: 1px dashed rgba(255,212,59,.13); }
+.reference-kit-arcade .reference-principles span { color: #ffd43b; }
+.reference-kit-arcade .reference-principles strong { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
+.reference-kit-arcade .reference-components { border: 2px solid #343653; border-radius: 3px; background: #0b0c16; box-shadow: 4px 4px 0 #242640; }
+.reference-kit-arcade .reference-components > small { color: #45e6a8; }
+.reference-kit-arcade .reference-components > span { min-height: 34px; border: 1px solid #343653; border-left: 5px solid #ff8a3d; background: #17172a; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+.reference-kit-arcade .reference-components > span:nth-of-type(2n) { border-left-color: #ff4d8d; }
+.reference-kit-arcade .reference-components i { color: #ffd43b; text-transform: uppercase; }
+.reference-kit-arcade .reference-tokens { gap: 10px; }
+.reference-kit-arcade .reference-tokens article { position: relative; min-height: 178px; border: 2px solid #343653; border-radius: 3px; background: #17172a; box-shadow: 4px 4px 0 #090a12; }
+.reference-kit-arcade .reference-tokens article > i { width: 100%; height: 38px; border: 1px solid rgba(255,255,255,.28); border-radius: 1px; box-shadow: inset 0 -7px 0 rgba(0,0,0,.17); }
+.reference-kit-arcade .reference-tokens strong { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
+.reference-kit-arcade .reference-tokens code { color: #45e6a8; }
+.reference-kit-arcade .reference-tokens article > span { color: #aaa7ba; }
+
+.reference-kit-minimal { --accent: #0066cc; --mint: #248a3d; --danger: #d92d20; --panel: #ffffff; --line: #e5e5e7; --muted: #6e6e73; border: 1px solid #dedee2; border-radius: 24px; background: #f5f5f7; color: #1d1d1f; box-shadow: 0 18px 50px rgba(0,0,0,.08); }
+.reference-kit-minimal > header { border-bottom-color: #e5e5e7; background: #fff; }
+.reference-kit-minimal > header h3 { font-size: 20px; font-weight: 650; letter-spacing: -.035em; }
+.reference-kit-minimal > header > a { color: #0066cc; }
+.reference-kit-minimal .reference-kit-badge { min-height: 22px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #6e6e73; letter-spacing: .12em; }
+.reference-kit-minimal .reference-kit-tabs { width: max-content; max-width: calc(100% - 32px); margin: 12px 16px 0; padding: 4px; gap: 2px; border: 0; border-radius: 12px; background: #e8e8ed; }
+.reference-kit-minimal .reference-kit-tabs button { min-height: 34px; border: 0; border-radius: 9px; color: #6e6e73; }
+.reference-kit-minimal .reference-kit-tabs button:hover { color: #1d1d1f; }
+.reference-kit-minimal .reference-kit-tabs button.active { border: 0; background: #fff; color: #1d1d1f; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+.reference-kit-minimal .reference-kit-panel { background: #f5f5f7; }
+.reference-kit-minimal .reference-section-heading { max-width: 620px; }
+.reference-kit-minimal .reference-section-heading small { color: #6e6e73; letter-spacing: .13em; }
+.reference-kit-minimal .reference-section-heading h4 { margin-top: 11px; font-size: 23px; font-weight: 600; letter-spacing: -.045em; }
+.reference-kit-minimal .reference-principles { gap: 12px; }
+.reference-kit-minimal .reference-principles article { min-height: 158px; padding: 18px; border: 1px solid #e5e5e7; border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.035); }
+.reference-kit-minimal .reference-principles span { color: #86868b; font-weight: 500; }
+.reference-kit-minimal .reference-principles strong { margin-top: 31px; color: #1d1d1f; font-size: 13px; letter-spacing: -.02em; }
+.reference-kit-minimal .reference-components { padding: 18px; border: 1px solid #e5e5e7; border-radius: 18px; background: #fff; }
+.reference-kit-minimal .reference-components > small { color: #86868b; letter-spacing: .12em; }
+.reference-kit-minimal .reference-components > span { min-height: 36px; margin-top: 4px; padding: 0; border: 0; border-bottom: 1px solid #ededf0; background: transparent; color: #1d1d1f; }
+.reference-kit-minimal .reference-components > span:last-child { border-bottom: 0; }
+.reference-kit-minimal .reference-components i { color: #86868b; }
+.reference-kit-minimal .reference-tokens { gap: 12px; }
+.reference-kit-minimal .reference-tokens article { min-height: 188px; padding: 18px; border: 1px solid #e5e5e7; border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.035); }
+.reference-kit-minimal .reference-tokens article > i { width: 100%; height: 54px; border: 1px solid rgba(0,0,0,.07); border-radius: 13px; }
+.reference-kit-minimal .reference-tokens strong { margin-top: 18px; color: #1d1d1f; font-size: 12px; letter-spacing: -.01em; }
+.reference-kit-minimal .reference-tokens p { color: #6e6e73; }
+.reference-kit-minimal .reference-tokens code { color: #0066cc; }
+.reference-kit-minimal .reference-tokens article > span { color: #86868b; }
+.reference-kit-minimal .reference-ownership { background: #fff; color: #6e6e73; }
+.reference-kit-minimal .reference-brief dd, .reference-kit-minimal .reference-architecture strong, .reference-kit-minimal .reference-prompts strong { color: #1d1d1f; }
+.reference-kit-minimal .reference-architecture code { color: #0066cc; }
+.reference-kit-minimal .reference-prompts > a:hover { border-color: #b9d8f7; background: #fff; }
 .notice { min-height: 48px; padding: 0 15px; margin-bottom: 18px; border-radius: 10px; display: flex; align-items: center; gap: 9px; font-size: 12px; }
 .notice-danger { color: #ffb3ad; background: rgba(255,136,127,.1); border: 1px solid rgba(255,136,127,.18); }
 .notice-success { color: #a3ecd6; background: rgba(114,226,192,.08); border: 1px solid rgba(114,226,192,.16); }

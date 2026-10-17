@@ -1,6 +1,9 @@
 export type ExampleReferenceKit = {
+  theme: "arcade" | "minimal";
   name: string;
   label: string;
+  systemName: string;
+  systemSummary: string;
   summary: string;
   brief: ReadonlyArray<readonly [label: string, value: string]>;
   principles: ReadonlyArray<readonly [name: string, detail: string]>;
@@ -12,8 +15,11 @@ export type ExampleReferenceKit = {
 
 export const exampleReferenceKits = {
   releases: {
+    theme: "arcade",
     name: "Release readiness",
     label: "Client app 01",
+    systemName: "Checkpoint OS",
+    systemSummary: "A tactile arcade control room for high-stakes release decisions: bold signals, hard edges, and unmistakable system states.",
     summary: "A sample client product for release managers deciding what can safely ship. This is the client-facing application; the surrounding library, system tour, and guide explain how we built it.",
     brief: [
       ["Primary user", "Release manager or engineering lead"],
@@ -28,11 +34,11 @@ export const exampleReferenceKits = {
     ],
     components: ["Release summary", "Policy gate", "Approval count", "Readiness score", "Decision action"],
     tokens: [
-      { name: "Decision focus", variable: "--accent", value: "#a991ff", purpose: "Selected release, progress, and primary focus" },
-      { name: "Ready", variable: "--mint", value: "#72e2c0", purpose: "Passing gates and policy-complete releases" },
-      { name: "Pending", variable: "--warning", value: "#f2bf68", purpose: "Checks that still need attention" },
-      { name: "Blocked", variable: "--danger", value: "#ff887f", purpose: "Failed gates and blocked transitions" },
-      { name: "Control surface", variable: "--panel", value: "#181d23", purpose: "Rows, cards, and grouped controls" },
+      { name: "Decision focus", variable: "--release-action", value: "#FFD43B", purpose: "Selected release, progress, and primary focus" },
+      { name: "Ready", variable: "--release-ready", value: "#45E6A8", purpose: "Passing gates and policy-complete releases" },
+      { name: "Pending", variable: "--release-warning", value: "#FF8A3D", purpose: "Checks that still need attention" },
+      { name: "Blocked", variable: "--release-danger", value: "#FF4D8D", purpose: "Failed gates and blocked transitions" },
+      { name: "Control surface", variable: "--release-panel", value: "#17172A", purpose: "Rows, cards, and grouped controls" },
     ],
     architecture: [
       ["UI state", "The URL selects the client app; each row owns only transient interaction state.", "src/examples/example-workspace.tsx"],
@@ -49,8 +55,11 @@ export const exampleReferenceKits = {
     ],
   },
   onboarding: {
+    theme: "minimal",
     name: "Onboarding operations",
     label: "Client app 02",
+    systemName: "Clarity System",
+    systemSummary: "A quiet, light workspace for customer journeys: generous space, restrained color, and content-led hierarchy.",
     summary: "A sample client product for customer teams moving accounts toward value. This is the client-facing application; the reference system documents its design and implementation choices.",
     brief: [
       ["Primary user", "Customer success or implementation lead"],
@@ -65,11 +74,11 @@ export const exampleReferenceKits = {
     ],
     components: ["Journey summary", "Stage column", "Account card", "Health ring", "Milestone track"],
     tokens: [
-      { name: "Journey focus", variable: "--accent", value: "#a991ff", purpose: "Selected navigation and interactive focus" },
-      { name: "Healthy progress", variable: "--mint", value: "#72e2c0", purpose: "Adoption, completed milestones, and live state" },
-      { name: "Needs attention", variable: "--danger", value: "#ff887f", purpose: "At-risk accounts and overdue work" },
-      { name: "Stage surface", variable: "--bg-elevated", value: "#14191f", purpose: "Journey columns and spatial grouping" },
-      { name: "Account surface", variable: "--panel", value: "#181d23", purpose: "Account cards and operational details" },
+      { name: "Journey focus", variable: "--journey-action", value: "#0066CC", purpose: "Selected navigation and interactive focus" },
+      { name: "Healthy progress", variable: "--journey-success", value: "#248A3D", purpose: "Adoption, completed milestones, and live state" },
+      { name: "Needs attention", variable: "--journey-danger", value: "#D92D20", purpose: "At-risk accounts and overdue work" },
+      { name: "Stage surface", variable: "--journey-canvas", value: "#F5F5F7", purpose: "Journey columns and spatial grouping" },
+      { name: "Account surface", variable: "--journey-surface", value: "#FFFFFF", purpose: "Account cards and operational details" },
     ],
     architecture: [
       ["UI state", "The URL selects the client app; the board derives columns from canonical account stages.", "src/examples/example-workspace.tsx"],

@@ -43,8 +43,10 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   await expect(page.getByRole("button", { name: /Client app 01 Release readiness 3 releases/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /Client app 02 Onboarding ops 3 accounts/i })).toBeVisible();
   await expect(page.getByRole("button", { name: /How we built them Developer guide Guide/i })).toBeVisible();
+  await expect(page.getByLabel("Release readiness reference kit")).toHaveClass(/reference-kit-arcade/);
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
+  await expect(page.getByText("--release-action", { exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Prompts" }).click();
   await expect(page.getByRole("link", { name: /Full-stack boundary map/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByLabel("Release policy control tower")).toBeVisible();
@@ -62,7 +64,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.goto("/examples?view=releases");
   await page.getByRole("button", { name: /Onboarding ops/ }).click();
   await expect(page).toHaveURL(/view=onboarding/);
-  await expect(page.getByLabel("Onboarding operations reference kit")).toBeVisible();
+  await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass(/reference-kit-minimal/);
   await page.getByRole("tab", { name: "Design system" }).click();
   await expect(page.getByText("Journey before table", { exact: true })).toBeVisible();
   await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
