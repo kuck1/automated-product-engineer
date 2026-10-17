@@ -387,3 +387,31 @@ test("mobile examples visual and overflow", async ({ page }, testInfo) => {
   expect(overflow).toBeLessThanOrEqual(1);
   await expect(page).toHaveScreenshot("examples-mobile.png", { fullPage: true, animations: "disabled" });
 });
+
+test("component library onboarding explains ownership and renders interactive states", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/guide#guide-components");
+
+  await expect(page.getByRole("heading", { name: "Understand the system before you assemble the screen." })).toBeVisible();
+  await expect(page.getByText("Every new screen starts from tested decisions.")).toBeVisible();
+  const workbench = page.locator(".cl-workbench");
+  await workbench.getByRole("button", { name: /Text field/ }).click();
+  await workbench.getByRole("button", { name: "Error" }).click();
+  await expect(workbench.getByText("Use at least three characters.")).toBeVisible();
+  await workbench.getByLabel("Project name").fill("Release train");
+  await expect(workbench.getByLabel("Project name")).toHaveValue("Release train");
+  await workbench.getByRole("button", { name: /Review panel/ }).click();
+  await workbench.getByRole("button", { name: "Blocked" }).click();
+  await expect(workbench.getByText("Resolve the security review before approval.")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Open component catalog/ }).last()).toHaveAttribute("href", "/system#primitives");
+});
+
+test("mobile component library onboarding stays inside the page", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/guide#guide-components");
+  await page.getByRole("button", { name: /Text field/ }).click();
+  await page.getByRole("button", { name: "Error" }).click();
+  await expect(page.getByText("Use at least three characters.")).toBeVisible();
+  const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(pageOverflow).toBeLessThanOrEqual(1);
+});

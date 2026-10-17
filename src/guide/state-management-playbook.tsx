@@ -327,7 +327,7 @@ export function StateManagementPlaybook() {
   const activeAuth = authCases.find((item) => item.id === activeAuthId) ?? authCases[0];
 
   return <section className="guide-section state-playbook" id="guide-state">
-    <div className="guide-heading"><span>03 / STATE MANAGEMENT</span><div><h3>Put each kind of state where it can stay correct.</h3><p>Use component state for transient interaction, the URL for shareable navigation, Context for stable subtree coordination, TanStack Query for server snapshots, and the service plus database for durable truth.</p></div></div>
+    <div className="guide-heading"><span>04 / STATE MANAGEMENT</span><div><h3>Put each kind of state where it can stay correct.</h3><p>Use component state for transient interaction, the URL for shareable navigation, Context for stable subtree coordination, TanStack Query for server snapshots, and the service plus database for durable truth.</p></div></div>
 
     <div className="owner-map" aria-label="State ownership decision model">{owners.map((owner, index) => <article className={`owner-${owner.tone}`} key={owner.name}><span>{String(index + 1).padStart(2, "0")}</span><strong>{owner.name}</strong><small>{owner.scope}</small><p>{owner.examples}</p><code>{owner.tool}</code></article>)}</div>
 
