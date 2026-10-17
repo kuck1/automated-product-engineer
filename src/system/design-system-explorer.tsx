@@ -4,7 +4,6 @@ import type { CSSProperties, ReactNode } from "react";
 import { useState } from "react";
 import {
   AlertTriangle,
-  ArrowLeft,
   ArrowRight,
   Box,
   Check,
@@ -23,7 +22,7 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import { Badge, Brand, Button, SectionEyebrow } from "@/src/ui/components";
+import { Badge, Button, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 import {
   semanticColorTokens,
   shapePresets,
@@ -89,11 +88,7 @@ export function DesignSystemExplorer() {
 
   return (
     <main className="design-system-shell">
-      <header className="workspace-header system-topbar">
-        <Brand />
-        <Link className="workspace-back" href="/"><ArrowLeft size={15} /> Back to overview</Link>
-        <Link href="/library">Skills &amp; prompts <ArrowRight size={14} /></Link>
-      </header>
+      <SiteHeader active="system" />
 
       <section className="system-tour-hero">
         <div>

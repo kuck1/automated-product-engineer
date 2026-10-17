@@ -7,6 +7,9 @@ test.beforeEach(async ({ request }) => {
 test("landing page explains the complete delivery workflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Primary navigation" });
+  await expect(navigation.getByRole("link", { name: "Workflow" })).toHaveCount(0);
+  await expect(navigation.getByRole("link", { name: "Examples" })).toHaveAttribute("href", "/examples");
   await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
   await expect(page.getByRole("heading", { name: "Release Readiness" })).toBeVisible();
@@ -55,6 +58,7 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
 test("skills library exposes specialist workflows and copy-ready prompts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Library" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Skills library" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Claude Design to App" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Figma to App" })).toBeVisible();
@@ -69,7 +73,10 @@ test("skills library exposes specialist workflows and copy-ready prompts", async
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/system");
-  await expect(page.getByRole("heading", { name: "See the rules. Feel the system." })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "System" })).toHaveAttribute("aria-current", "page");
+  const heading = page.getByRole("heading", { name: "See the rules. Feel the system." });
+  await expect(heading).toBeVisible();
+  expect((await heading.boundingBox())?.y).toBeLessThan(340);
   await expect(page.getByText("Interactive focus and brand expression")).toBeVisible();
   await page.getByRole("button", { name: /Mint focus/ }).click();
   await page.getByRole("button", { name: /Soft/ }).click();

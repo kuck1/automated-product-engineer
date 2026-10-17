@@ -39,6 +39,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .brand-mark i:nth-child(2) { transform: translateY(-3px); background: color-mix(in srgb, var(--accent) 45%, transparent); }
 .site-header nav { display: flex; gap: 30px; color: #c8ccd0; font-size: 13px; }
 .site-header nav a:hover { color: white; }
+.site-header nav a[aria-current="page"] { color: white; }
 .header-action { margin-left: auto; height: 38px; padding: 0 15px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 12px; }
 .header-action:hover { background: rgba(255,255,255,.06); }
 
@@ -490,9 +491,7 @@ footer > a:hover { color: white; }
 
 /* Human-readable design system explorer */
 .design-system-shell { min-height: 100vh; background: var(--bg); }
-.system-topbar { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb,var(--bg) 91%,transparent); backdrop-filter: blur(18px); }
-.system-topbar > a:last-child { margin-left: auto; }
-.system-tour-hero { min-height: 530px; padding: 104px 5.5% 80px; display: grid; grid-template-columns: minmax(0,1.35fr) minmax(320px,.65fr); gap: 7vw; align-items: end; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12% 68%,rgba(169,145,255,.09),transparent 30%); }
+.system-tour-hero { padding: clamp(52px,5vw,72px) 5.5% 64px; display: grid; grid-template-columns: minmax(0,1.35fr) minmax(320px,.65fr); gap: 7vw; align-items: start; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12% 68%,rgba(169,145,255,.09),transparent 30%); }
 .system-tour-hero h1 { max-width: 900px; margin: 25px 0 0; font-size: clamp(56px,6.4vw,104px); line-height: 1.02; font-weight: 510; letter-spacing: -.056em; }
 .system-tour-hero h1 span { color: var(--accent); }
 .system-tour-intro > p { margin: 0; color: #b5bbc1; font-size: 17px; line-height: 1.75; }
@@ -507,7 +506,7 @@ footer > a:hover { color: white; }
 .system-tour-map small { grid-column: 3; margin-top: 3px; color: var(--muted); font-size: 9px; }
 .system-tour-map > i { color: #4e5863; }
 .system-tour-layout { max-width: 1740px; margin: auto; padding: 0 5.5%; display: grid; grid-template-columns: 238px minmax(0,1fr); gap: clamp(38px,5vw,84px); align-items: start; }
-.system-tour-nav { position: sticky; top: 104px; max-height: calc(100vh - 124px); padding: 48px 0 24px; overflow-y: auto; }
+.system-tour-nav { position: sticky; top: 24px; max-height: calc(100vh - 48px); padding: 48px 0 24px; overflow-y: auto; }
 .system-tour-nav > p { margin: 0 0 20px; color: #68737e; font: 700 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1.3px; }
 .system-tour-nav > a { min-height: 58px; padding: 10px 9px; display: grid; grid-template-columns: 25px 1fr; gap: 9px; align-items: center; border-left: 1px solid var(--line); }
 .system-tour-nav > a:hover { border-left-color: var(--accent); background: linear-gradient(90deg,rgba(169,145,255,.08),transparent); }
@@ -762,13 +761,13 @@ footer > a:hover { color: white; }
   .library-footer { align-items: flex-start; flex-wrap: wrap; }
   .library-footer .button { width: 100%; margin: 8px 0 0; }
   .library-system-link { width: fit-content !important; }
-  .system-tour-hero { min-height: auto; padding: 68px 20px 56px; grid-template-columns: 1fr; gap: 32px; }
+  .system-tour-hero { padding: 48px 20px 52px; grid-template-columns: 1fr; gap: 32px; }
   .system-tour-hero h1 { font-size: clamp(52px,14vw,72px); }
   .system-tour-intro > p { font-size: 14px; }
   .system-tour-map { padding: 18px 20px; display: flex; overflow-x: auto; justify-content: flex-start; }
   .system-tour-map > div { min-width: 190px; }
   .system-tour-layout { padding: 0 20px; display: block; }
-  .system-tour-nav { position: sticky; top: 68px; z-index: 20; margin: 0 -20px; padding: 10px 20px; display: flex; gap: 6px; max-height: none; overflow-x: auto; border-bottom: 1px solid var(--line); background: color-mix(in srgb,var(--bg) 94%,transparent); backdrop-filter: blur(14px); }
+  .system-tour-nav { position: sticky; top: 0; z-index: 20; margin: 0 -20px; padding: 10px 20px; display: flex; gap: 6px; max-height: none; overflow-x: auto; border-bottom: 1px solid var(--line); background: color-mix(in srgb,var(--bg) 94%,transparent); backdrop-filter: blur(14px); }
   .system-tour-nav > p, .tour-principle { display: none; }
   .system-tour-nav > a { min-width: max-content; min-height: 40px; padding: 0 11px; display: flex; border: 1px solid var(--line); border-radius: 8px; }
   .system-tour-nav > a > span, .system-tour-nav small { display: none; }

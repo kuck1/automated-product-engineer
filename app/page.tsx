@@ -1,6 +1,6 @@
 import { ArrowRight, BookOpen, Check, GitFork, Layers3, Sparkles } from "lucide-react";
 import { HeroPipeline } from "@/src/landing/hero-pipeline";
-import { Badge, Brand, SectionEyebrow } from "@/src/ui/components";
+import { Badge, Brand, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 const skills = [
   "Architecture design",
@@ -19,18 +19,7 @@ const skills = [
 export default function HomePage() {
   return (
     <main className="site-shell">
-      <header className="site-header">
-        <Brand />
-        <nav aria-label="Primary navigation">
-          <a href="#workflow">Workflow</a>
-          <a href="#examples">Examples</a>
-          <a href="/system">System</a>
-          <a href="/library">Library</a>
-        </nav>
-        <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
-          <GitFork size={15} /> GitHub
-        </a>
-      </header>
+      <SiteHeader />
 
       <section className="hero" id="workflow">
         <div className="hero-grid">
