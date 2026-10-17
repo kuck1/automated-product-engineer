@@ -232,6 +232,7 @@ test("every state scenario has a live collaborative demo that accepts human inpu
   await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "3300");
   await expect(pointsDemo.getByText("LIVE USAGE · 20× PLAYBACK · 3.3 SECOND LOOP")).toBeVisible();
   await expect(pointsDemo.locator(".live-cursor").first()).toBeVisible({ timeout: 1_000 });
+  await pointsDemo.getByRole("button", { name: "Replay" }).click();
   await pointsDemo.getByRole("button", { name: "Pause" }).click();
   await pointsDemo.getByLabel("Award amount").fill("12");
   await pointsDemo.getByRole("button", { name: "Award points" }).click();
