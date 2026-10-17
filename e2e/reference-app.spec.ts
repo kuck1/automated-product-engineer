@@ -53,8 +53,8 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Primary navigation" });
   await expect(navigation.getByRole("link")).toHaveCount(5);
-  await expect(navigation.getByRole("link", { name: "Release Readiness" })).toHaveAttribute("href", "/examples?view=releases");
-  await expect(navigation.getByRole("link", { name: "Onboarding Operations" })).toHaveAttribute("href", "/examples?view=onboarding");
+  await expect(navigation.getByRole("link", { name: "Case Study #1" })).toHaveAttribute("href", "/examples?view=releases");
+  await expect(navigation.getByRole("link", { name: "Case Study #2" })).toHaveAttribute("href", "/examples?view=onboarding");
   await expect(navigation.getByRole("link", { name: "Quick Start" })).toHaveAttribute("href", "/quick-start");
   await expect(navigation.getByRole("link", { name: "Developer Guide" })).toHaveAttribute("href", "/guide");
   await expect(navigation.getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("href", "/library");
@@ -88,7 +88,7 @@ test("before and after cards stay aligned across viewports", async ({ page }) =>
 test("release policy rejects an incomplete ship and rolls the optimistic state back", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Release Readiness" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #1" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByLabel("Release readiness reference kit")).toHaveClass(/reference-kit-arcade/);
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
@@ -118,7 +118,7 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
 test("onboarding transition uses URL state and reconciles the canonical response", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
-  await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Onboarding Operations" }).click();
+  await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #2" }).click();
   await expect(page).toHaveURL(/view=onboarding/);
   await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass(/reference-kit-minimal/);
   await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
