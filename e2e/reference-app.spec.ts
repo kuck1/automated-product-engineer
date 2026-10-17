@@ -169,6 +169,13 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(page.getByRole("link", { name: /Use Full-stack boundary map prompt/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
+  const browserEvidence = page.getByRole("button", { name: /Browser Optimistic rollback/ });
+  await browserEvidence.click();
+  await expect(browserEvidence).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByText("Prove the composed feature works", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /View verification source/ })).toHaveAttribute("href", /e2e\/reference-app\.spec\.ts#L88-L147$/);
+  await expect(page.getByRole("link", { name: /Open Manual UI QA skill/ })).toHaveAttribute("href", "/library?skill=manual-ui-qa#skills");
+  await expect(page.getByRole("link", { name: /Use Visual QA evidence prompt/ })).toHaveAttribute("href", "/library?prompt=visual-qa#prompts");
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
 });
 
@@ -181,6 +188,8 @@ test("mobile developer guide keeps every source excerpt accessible", async ({ pa
   await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L31-L53$/);
   const verticalCodeOverflow = await page.locator(".source-code").evaluate((element) => element.scrollHeight - element.clientHeight);
   expect(verticalCodeOverflow).toBeLessThanOrEqual(1);
+  await page.getByRole("button", { name: /Visual Deterministic desktop/ }).click();
+  await expect(page.getByText("Prove hierarchy, spacing, typography", { exact: false })).toBeVisible();
   const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(pageOverflow).toBeLessThanOrEqual(1);
 });

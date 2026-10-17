@@ -520,11 +520,19 @@ footer > a:hover { color: white; }
 .production-rules strong { font-size: 10px; }
 .production-rules p { margin: 5px 0 0; color: #8c959e; font-size: 8px; line-height: 1.5; }
 .verification-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; }
-.verification-grid article { min-height: 176px; padding: 16px; position: relative; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); }
-.verification-grid article > span { position: absolute; top: 15px; right: 15px; color: #5f6973; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
-.verification-grid svg { color: var(--mint); }
+.verification-grid article { min-width: 0; }
+.verification-grid button { width: 100%; min-height: 194px; padding: 16px; position: relative; display: block; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); color: inherit; text-align: left; cursor: pointer; transition: border-color .16s ease, background .16s ease, transform .16s ease; }
+.verification-grid button:hover { transform: translateY(-2px); border-color: rgba(114,226,192,.36); background: #1c2128; }
+.verification-grid article.active button { border-color: rgba(114,226,192,.5); background: rgba(114,226,192,.055); }
+.verification-grid button > span { position: absolute; top: 15px; right: 15px; color: #5f6973; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.verification-grid button > svg { color: var(--mint); }
 .verification-grid h4 { margin: 25px 0 8px; font-size: 12px; }
 .verification-grid p { margin: 0; color: #89929b; font-size: 8px; line-height: 1.55; }
+.verification-grid button > small { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; color: #77d4b9; font: 700 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; letter-spacing: .65px; }
+.verification-grid button > small svg { transition: transform .16s ease; }
+.verification-grid article.active button > small svg { transform: rotate(180deg); }
+.verification-detail { border-color: rgba(114,226,192,.3); background: linear-gradient(120deg,rgba(114,226,192,.075),rgba(25,30,36,.96) 48%,rgba(169,145,255,.045)); }
+.verification-detail > header span { color: var(--mint); }
 .guide-finish { margin-top: 12px; padding: 20px; display: grid; grid-template-columns: 30px 1fr; gap: 10px; border-radius: 11px; background: linear-gradient(100deg,rgba(169,145,255,.1),rgba(114,226,192,.06)); }
 .guide-finish svg { color: var(--accent); }
 .guide-finish strong { font-size: 11px; }
