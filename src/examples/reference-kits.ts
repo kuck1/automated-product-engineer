@@ -1,3 +1,5 @@
+import { clientSystems, type ClientToken } from "./client-systems";
+
 export type ExampleReferenceKit = {
   theme: "arcade" | "minimal";
   name: string;
@@ -8,7 +10,7 @@ export type ExampleReferenceKit = {
   brief: ReadonlyArray<readonly [label: string, value: string]>;
   principles: ReadonlyArray<readonly [name: string, detail: string]>;
   components: readonly string[];
-  tokens: ReadonlyArray<{ readonly name: string; readonly variable: string; readonly value: string; readonly purpose: string }>;
+  tokens: readonly ClientToken[];
   architecture: ReadonlyArray<readonly [layer: string, detail: string, source: string]>;
   prompts: ReadonlyArray<{ readonly slug: string; readonly name: string; readonly use: string }>;
 };
@@ -33,19 +35,13 @@ export const exampleReferenceKits = {
       ["Status uses words", "Color supports labels and icons; it never carries meaning alone."],
     ],
     components: ["Release summary", "Policy gate", "Approval count", "Readiness score", "Decision action"],
-    tokens: [
-      { name: "Decision focus", variable: "--release-action", value: "#FFD43B", purpose: "Selected release, progress, and primary focus" },
-      { name: "Ready", variable: "--release-ready", value: "#45E6A8", purpose: "Passing gates and policy-complete releases" },
-      { name: "Pending", variable: "--release-warning", value: "#FF8A3D", purpose: "Checks that still need attention" },
-      { name: "Blocked", variable: "--release-danger", value: "#FF4D8D", purpose: "Failed gates and blocked transitions" },
-      { name: "Control surface", variable: "--release-panel", value: "#17172A", purpose: "Rows, cards, and grouped controls" },
-    ],
+    tokens: clientSystems.releases.tokens,
     architecture: [
       ["UI state", "The URL selects the client app; each row owns only transient interaction state.", "src/examples/example-workspace.tsx"],
       ["Server cache", "TanStack Query owns the snapshot, optimistic mutation, rollback, and reconciliation.", "queryKey: example-snapshot"],
       ["API", "The PATCH route authenticates, validates the revision, and delegates the transition.", "/api/examples/releases/[id]"],
       ["Policy", "The service recomputes gates and approvals before accepting ready.", "ExampleService.updateRelease"],
-      ["Persistence", "A repository contract supports deterministic memory or Supabase adapters.", "ExampleRepository"],
+      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with the authenticated Supabase adapter.", "MemoryExampleRepository → ExampleRepository ← SupabaseExampleRepository"],
     ],
     prompts: [
       { slug: "components", name: "Typed component contract", use: "Specify the release row, gates, score, states, and callbacks." },
@@ -73,19 +69,13 @@ export const exampleReferenceKits = {
       ["Calm operations", "Use whitespace and compact cards so exceptions stand out without alarm fatigue."],
     ],
     components: ["Journey summary", "Stage column", "Account card", "Health ring", "Milestone track"],
-    tokens: [
-      { name: "Journey focus", variable: "--journey-action", value: "#0066CC", purpose: "Selected navigation and interactive focus" },
-      { name: "Healthy progress", variable: "--journey-success", value: "#248A3D", purpose: "Adoption, completed milestones, and live state" },
-      { name: "Needs attention", variable: "--journey-danger", value: "#D92D20", purpose: "At-risk accounts and overdue work" },
-      { name: "Stage surface", variable: "--journey-canvas", value: "#F5F5F7", purpose: "Journey columns and spatial grouping" },
-      { name: "Account surface", variable: "--journey-surface", value: "#FFFFFF", purpose: "Account cards and operational details" },
-    ],
+    tokens: clientSystems.onboarding.tokens,
     architecture: [
       ["UI state", "The URL selects the client app; the board derives columns from canonical account stages.", "src/examples/example-workspace.tsx"],
       ["Server cache", "TanStack Query moves cards optimistically, then reconciles the saved account.", "queryKey: example-snapshot"],
       ["API", "The PATCH route authenticates, validates the revision, and delegates the stage change.", "/api/examples/onboardings/[id]"],
       ["Policy", "The service blocks launch until milestones and adoption meet the product rules.", "ExampleService.updateOnboarding"],
-      ["Persistence", "The same repository seam supports memory fixtures or tenant-scoped Supabase records.", "ExampleRepository"],
+      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with tenant-scoped Supabase records.", "MemoryExampleRepository → ExampleRepository ← SupabaseExampleRepository"],
     ],
     prompts: [
       { slug: "responsive", name: "Responsive state matrix", use: "Specify the horizontal journey at wide, transition, and narrow widths." },

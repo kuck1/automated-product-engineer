@@ -93,6 +93,16 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
   await expect(page.getByText("--release-action", { exact: true })).toBeVisible();
+  const releaseTokenValues = await page.evaluate(() => {
+    const kit = document.querySelector<HTMLElement>(".reference-kit-arcade");
+    const app = document.querySelector<HTMLElement>(".release-control-tower");
+    return {
+      documented: kit ? getComputedStyle(kit).getPropertyValue("--release-action").trim() : "",
+      consumed: app ? getComputedStyle(app).getPropertyValue("--release-action").trim() : "",
+    };
+  });
+  expect(releaseTokenValues).toEqual({ documented: "#FFD43B", consumed: "#FFD43B" });
+  await expect(page.getByText("Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Prompts" }).click();
   await expect(page.getByRole("link", { name: /Full-stack boundary map/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByLabel("Release policy control tower")).toBeVisible();

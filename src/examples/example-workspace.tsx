@@ -9,6 +9,7 @@ import { onboardingHealth, releaseReadiness } from "./service";
 import { Badge, Button, SiteHeader } from "@/src/ui/components";
 import { ExampleReferenceKit } from "./example-reference-kit";
 import { exampleReferenceKits } from "./reference-kits";
+import { clientSystems, clientTokenStyle } from "./client-systems";
 
 type View = "releases" | "onboarding";
 
@@ -110,9 +111,9 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
 }
 
 function ReleaseView({ releases, summary, pending, onMove }: { releases: Release[]; summary: { blocked: number; ready: number }; pending: boolean; onMove: (release: Release, stage: ReleaseStage) => void }) {
-  return <section className="release-control-tower" aria-label="Release policy control tower">
+  return <section className="release-control-tower" style={clientTokenStyle(clientSystems.releases.tokens)} aria-label="Release policy control tower">
     <div className="release-summary">
-      <div><small>CYCLE</small><strong>October ship train</strong><span>Policy snapshot · deterministic demo</span></div>
+      <div><small>CHECKPOINT OS · CYCLE</small><strong>October ship train</strong><span>Live policy service · deterministic memory adapter</span></div>
       <Metric label="Candidates" value={releases.length} detail="In this train" />
       <Metric label="Blocked" value={summary.blocked} detail="Needs intervention" tone="danger" />
       <Metric label="Ready" value={summary.ready} detail="Policy complete" tone="success" />
@@ -142,7 +143,7 @@ function OnboardingView({ onboardings, summary, pending, onMove }: { onboardings
     { id: "live", label: "Live", hint: "Measure value" },
     { id: "at_risk", label: "Needs attention", hint: "Recover momentum" },
   ];
-  return <section className="onboarding-journey" aria-label="Customer onboarding journey">
+  return <section className="onboarding-journey" style={clientTokenStyle(clientSystems.onboarding.tokens)} aria-label="Customer onboarding journey">
     <div className="journey-summary"><div><Sparkles size={17} /><span><strong>{onboardings.length}</strong> active journeys</span></div><div><Users size={17} /><span><strong>{summary.seats}</strong> seats in motion</span></div><div className={summary.atRisk ? "is-risk" : ""}><AlertTriangle size={17} /><span><strong>{summary.atRisk}</strong> account needs attention</span></div></div>
     <div className="journey-board">{stages.map((stage, stageIndex) => <section className={`journey-column journey-${stage.id}`} key={stage.id} aria-label={stage.label}>
       <header><span>{String(stageIndex + 1).padStart(2, "0")}</span><div><strong>{stage.label}</strong><small>{stage.hint}</small></div><i>{onboardings.filter((item) => item.stage === stage.id).length}</i></header>
