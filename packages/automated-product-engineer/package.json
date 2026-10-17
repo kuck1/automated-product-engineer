@@ -1,0 +1,37 @@
+{
+  "name": "automated-product-engineer",
+  "version": "0.3.0",
+  "description": "Install product-engineering skills, reference apps, architecture guides, templates, testing, CI, and delivery automation for AI coding agents.",
+  "type": "module",
+  "bin": {
+    "automated-product-engineer": "bin/automated-product-engineer.mjs"
+  },
+  "files": [
+    "bin",
+    "payload"
+  ],
+  "scripts": {
+    "prepack": "node scripts/prepare-payload.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuck1/automated-product-engineer-nextjs.git",
+    "directory": "packages/automated-product-engineer"
+  },
+  "homepage": "https://github.com/kuck1/automated-product-engineer-nextjs#readme",
+  "bugs": "https://github.com/kuck1/automated-product-engineer-nextjs/issues",
+  "keywords": [
+    "ai-agent",
+    "agent-skills",
+    "nextjs",
+    "design-system",
+    "product-engineering"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

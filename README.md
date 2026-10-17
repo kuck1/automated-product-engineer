@@ -1,6 +1,6 @@
 # Automated Product Engineer for Next.js
 
-An open-source reference app, portable skill system, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
+An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js features.
 
 Design tools are excellent at defining intent, interaction, and visual direction. Production applications also need clear ownership across components, hooks, APIs, services, persistence, analytics, accessibility, responsive behavior, and tests. This repository connects those two worlds.
 
@@ -46,13 +46,15 @@ Then use the workflow in your own codebase:
 
 ## Use it with your AI agent
 
-Install the skills into another repository:
+From the root of another repository, install the complete toolkit:
 
 ```bash
-pnpm install:skills \
-  --target codex \
-  --project /path/to/your-nextjs-project
+pnpm dlx automated-product-engineer
 ```
+
+That one command installs the 13 agent skills, adapters for common AI coding tools, architecture and design-system guides, integration checklists, implementation templates, two working full-stack case studies, Supabase examples, testing and CI patterns, screenshot automation, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+
+Use `--target`, `--project`, or `--only` only when you need a narrower or non-default installation. See [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md) for those options.
 
 Then ask:
 
@@ -60,7 +62,7 @@ Then ask:
 Use the automated-product-engineer skill to build this feature from the attached design. Carry it through architecture, implementation, QA, demo screenshots, retrospective fix-back, and a draft PR. Do not merge.
 ```
 
-See [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md) for Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic installation.
+The default install works across Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic agents.
 
 ## Recommended export
 

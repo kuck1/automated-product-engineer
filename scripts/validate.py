@@ -14,7 +14,7 @@ PRIVATE_MARKERS = re.compile(
     r"gosquad|GO-SQUAD-AI|staging\.gosquad|ryankuck@gmail|supabase\.co",
     re.IGNORECASE,
 )
-IGNORED_PARTS = {".git", ".next", ".vercel", "node_modules", "playwright-report", "test-results"}
+IGNORED_PARTS = {".git", ".next", ".vercel", "node_modules", "payload", "playwright-report", "test-results"}
 
 
 def files(pattern: str):

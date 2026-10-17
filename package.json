@@ -15,7 +15,8 @@
     "test": "tsx --test src/**/*.test.ts",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
-    "install:skills": "tsx scripts/install-ai-editor.ts",
+    "install:toolkit": "node packages/automated-product-engineer/bin/automated-product-engineer.mjs install",
+    "install:skills": "node packages/automated-product-engineer/bin/automated-product-engineer.mjs install --only skills",
     "validate:content": "python3 scripts/validate.py",
     "verify": "pnpm validate:content && pnpm test && pnpm typecheck && pnpm lint && pnpm build"
   },

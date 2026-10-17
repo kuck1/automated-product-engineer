@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Badge, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 const steps = [
-  ["01", "Install the workflow", "Copy the conductor and specialist skills into your project so your agent can call them by name."],
+  ["01", "Install the system", "Add the skills, working examples, architecture guides, templates, tests, CI patterns, and delivery automation to your project."],
   ["02", "Choose the scope", "Run the complete product-engineering workflow or invoke one specialist for a focused task."],
   ["03", "Provide product context", "Give the agent the design, acceptance criteria, repository instructions, and current branch."],
   ["04", "Review working evidence", "Inspect the implementation, responsive screenshots, tests, CI results, and draft pull request."],
@@ -16,7 +16,7 @@ export default function QuickStartPage() {
       <section className="quick-start-hero">
         <div>
           <SectionEyebrow>QUICK START</SectionEyebrow>
-          <h1>Install the workflow.<br /><span>Ship a complete feature.</span></h1>
+          <h1>Install the system.<br /><span>Ship a complete feature.</span></h1>
         </div>
         <div className="quick-start-intro">
           <p>Add the system to your AI agent, provide the product contract, and follow the same path from implementation through review evidence.</p>
@@ -26,7 +26,7 @@ export default function QuickStartPage() {
 
       <section className="quick-start-command" aria-label="Installation command">
         <SquareTerminal size={20} />
-        <code>pnpm install:skills --target codex --project /your/app</code>
+        <code>pnpm dlx automated-product-engineer</code>
         <Link href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Installation options <ArrowRight size={15} /></Link>
       </section>
 

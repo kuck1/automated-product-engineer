@@ -16,6 +16,10 @@ If a missing decision would materially change product behavior, architecture, da
 
 When the missing input belongs to Figma, Claude Design, a product owner, or another teammate, generate one tailored, copy-ready request at that moment. Fill it with everything already known, ask only for the missing decisions or artifacts, name the expected output and acceptance criteria, and preserve unresolved choices explicitly. Do not send the user to a catalog of generic prompts.
 
+## Use the installed reference kit
+
+When `.automated-product-engineer/INSTALLATION.md` exists in the repository, read its resource map before proposing new architecture or scaffolding. Use the installed guides, checklists, templates, working vertical slices, design-system implementation, Supabase examples, test patterns, CI workflow, screenshot automation, and retrospective format as concrete references. Adapt those examples to the host repository's established conventions and dependencies; never import the reference directory as runtime application code.
+
 ## Establish the contract
 
 - Read repository instructions and inspect existing work before creating a parallel implementation.
