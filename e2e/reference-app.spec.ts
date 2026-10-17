@@ -8,12 +8,16 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Primary navigation" });
-  await expect(navigation.getByRole("link", { name: "Workflow" })).toHaveCount(0);
-  await expect(navigation.getByRole("link", { name: "Examples" })).toHaveAttribute("href", "/examples");
+  await expect(navigation.getByRole("link")).toHaveCount(5);
+  await expect(navigation.getByRole("link", { name: "Release Readiness" })).toHaveAttribute("href", "/examples?view=releases");
+  await expect(navigation.getByRole("link", { name: "Onboarding Operations" })).toHaveAttribute("href", "/examples?view=onboarding");
+  await expect(navigation.getByRole("link", { name: "Quick Start" })).toHaveAttribute("href", "/quick-start");
+  await expect(navigation.getByRole("link", { name: "Developer Guide" })).toHaveAttribute("href", "/guide");
+  await expect(navigation.getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("href", "/library");
   await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
-  await expect(page.getByRole("heading", { name: "Release Readiness" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Onboarding Operations" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open the Release Readiness case study" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open the Onboarding Operations case study" })).toBeVisible();
 });
 
 test("before and after cards stay aligned across viewports", async ({ page }) => {
@@ -40,9 +44,7 @@ test("before and after cards stay aligned across viewports", async ({ page }) =>
 test("release policy rejects an incomplete ship and rolls the optimistic state back", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
-  await expect(page.getByRole("button", { name: /Client app 01 Release readiness 3 releases/i })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Client app 02 Onboarding ops 3 accounts/i })).toBeVisible();
-  await expect(page.getByRole("button", { name: /How we built them Developer guide Guide/i })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Release Readiness" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByLabel("Release readiness reference kit")).toHaveClass(/reference-kit-arcade/);
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
@@ -62,7 +64,7 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
 test("onboarding transition uses URL state and reconciles the canonical response", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
-  await page.getByRole("button", { name: /Onboarding ops/ }).click();
+  await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Onboarding Operations" }).click();
   await expect(page).toHaveURL(/view=onboarding/);
   await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass(/reference-kit-minimal/);
   await page.getByRole("tab", { name: "Design system" }).click();
@@ -79,7 +81,8 @@ test("onboarding transition uses URL state and reconciles the canonical response
 
 test("developer guide embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
-  await page.goto("/examples?view=architecture");
+  await page.goto("/guide");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Developer Guide" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "One action. Every boundary. No missing middle." })).toBeVisible();
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   await expect(page.getByText("authorize(actor, release.workspaceId);", { exact: false })).toBeVisible();
@@ -91,7 +94,7 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
 test("skills library exposes specialist workflows and copy-ready prompts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Library" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Start with the workflow, then inspect the playbook." })).toBeVisible();
   await expect(page.getByRole("button", { name: /RUN THE WHOLE WORKFLOW Automated Product Engineer/ })).toBeVisible();
   await page.getByRole("button", { name: /SHIP FROM CLAUDE Claude Design to App/ }).click();
@@ -126,7 +129,7 @@ test("example reference links open the requested prompt", async ({ page }, testI
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/system");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "System" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Quick Start" })).toBeVisible();
   const heading = page.getByRole("heading", { name: "Design tokens. Components and patterns." });
   await expect(heading).toBeVisible();
   expect((await heading.boundingBox())?.y).toBeLessThan(340);
@@ -138,6 +141,16 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Recover without losing intent" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Browse 12 prompts/ })).toBeVisible();
+});
+
+test("quick start connects installation, workflows, and the developer guide", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/quick-start");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Quick Start" })).toHaveAttribute("aria-current", "page");
+  await expect(page.locator(".quick-start-hero h1")).toContainText("Install the workflow");
+  await expect(page.getByText("python3 scripts/install_ai_editor.py", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Open Automated Product Engineer/ })).toHaveAttribute("href", "/library?skill=automated-product-engineer#skills");
+  await expect(page.getByRole("link", { name: /Open developer guide/ })).toHaveAttribute("href", "/guide");
 });
 
 test("mobile design system tour stays within the viewport", async ({ page }, testInfo) => {

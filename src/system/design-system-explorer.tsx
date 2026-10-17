@@ -88,7 +88,7 @@ export function DesignSystemExplorer() {
 
   return (
     <main className="design-system-shell">
-      <SiteHeader active="system" />
+      <SiteHeader />
 
       <section className="system-tour-hero">
         <div>
