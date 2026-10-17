@@ -249,7 +249,7 @@ test("every state scenario has a live collaborative demo that accepts human inpu
   await page.getByRole("tab", { name: /Chat, unread counts, and presence/ }).click();
   const chatDemo = page.getByLabel("Messages, presence, and unread state move together live demo");
   await chatDemo.getByRole("button", { name: "Pause" }).click();
-  await chatDemo.getByLabel("Live chat message").fill("Human input joins the same state flow");
+  await chatDemo.getByRole("textbox", { name: "Live chat message" }).fill("Human input joins the same state flow");
   await chatDemo.getByRole("button", { name: "Send live chat message" }).click();
   await expect(chatDemo.getByText("Human input joins the same state flow")).toBeVisible();
 

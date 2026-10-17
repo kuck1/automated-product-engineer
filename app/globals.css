@@ -907,9 +907,9 @@ footer > a:hover { color: white; }
 .release-demo-heading h6, .release-demo-heading strong { margin: 13px 0 0; display: block; font-size: 10px; }
 .release-demo-heading strong.mismatch { color: var(--state-coral); }
 .release-status { min-height: 30px; margin: 10px 0; color: #8f99a2; font-size: 8px; }
-.release-gates { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-.release-gates button { min-height: 60px; padding: 9px; display: flex; align-items: center; gap: 6px; border: 1px solid #303842; border-radius: 8px; background: #1a2026; color: #8e98a2; font-size: 7px; text-align: left; }
-.release-gates button.done { color: #82dbc0; background: rgba(114,226,192,.06); }
+.living-release-gates { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.living-release-gates button { min-height: 60px; padding: 9px; display: flex; align-items: center; gap: 6px; border: 1px solid #303842; border-radius: 8px; background: #1a2026; color: #8e98a2; font-size: 7px; text-align: left; }
+.living-release-gates button.done { color: #82dbc0; background: rgba(114,226,192,.06); }
 
 /* Living multi-window application */
 .windows-app { padding: 18px; background: #141a1f; color: white; }
@@ -1325,7 +1325,7 @@ footer > a:hover { color: white; }
   .release-app > nav button { min-width: 140px; }
   .release-app > section { padding: 16px; }
   .release-demo-heading { grid-template-columns: 1fr; }
-  .release-gates { grid-template-columns: 1fr; }
+  .living-release-gates { grid-template-columns: 1fr; }
   .windows-app { padding: 13px; }
   .canonical-row { grid-template-columns: 20px 1fr auto; }
   .canonical-row strong { grid-column: 2; padding-bottom: 9px; }
