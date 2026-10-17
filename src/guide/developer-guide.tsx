@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Database, LockKeyhole, Server, ShieldCheck, Sparkles, Workflow } from "lucide-react";
-import { architectureLayers, extensionRules, requestLifecycle, stateOwners, verificationLayers } from "@/src/examples/architecture-reference";
+import { architectureLayers, extensionRules, requestLifecycle, verificationLayers } from "@/src/examples/architecture-reference";
+import { StateManagementPlaybook } from "./state-management-playbook";
 
 type SourceFile = {
   readonly id: string;
@@ -35,7 +36,7 @@ export function DeveloperGuide() {
   };
   return <article id="architecture" className="developer-guide">
     <header className="guide-intro"><div><span>COMPLETE IMPLEMENTATION GUIDE</span><h1>One action. Every boundary. No missing middle.</h1><p>This page contains the architecture decision, real source excerpts, state model, extension rules, and verification contract. Follow the same path when adding a vertical slice.</p></div><dl><div><dt>5</dt><dd>explicit boundaries</dd></div><div><dt>2</dt><dd>replaceable adapters</dd></div><div><dt>1</dt><dd>policy authority</dd></div></dl></header>
-    <nav className="guide-nav" aria-label="Developer guide sections"><a href="#guide-layers">Layers</a><a href="#guide-lifecycle">Request lifecycle</a><a href="#guide-state">State ownership</a><a href="#guide-extension">Extension</a><a href="#guide-verification">Verification</a></nav>
+    <nav className="guide-nav" aria-label="Developer guide sections"><a href="#guide-layers">Layers</a><a href="#guide-lifecycle">Request lifecycle</a><a href="#guide-state">State playbook</a><a href="#guide-extension">Extension</a><a href="#guide-verification">Verification</a></nav>
 
     <section className="guide-section" id="guide-layers"><div className="guide-heading"><span>01 / LAYERS</span><div><h3>Explore the source by responsibility.</h3><p>Select a layer to see what it owns, why the boundary exists, and the code that implements it.</p></div></div>
       <div className="layer-explorer"><div className="layer-stack">{architectureLayers.map((layer, index) => <button className={active.id === layer.id ? "active" : ""} key={layer.id} onClick={() => selectLayer(layer)} aria-pressed={active.id === layer.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{layer.label}</small><strong>{layer.title}</strong><p>{layer.detail}</p></div><ArrowRight size={16} /></button>)}</div>
@@ -48,7 +49,7 @@ export function DeveloperGuide() {
       <article className="lifecycle-detail" id="lifecycle-detail" aria-live="polite"><header><div><span>{activeLifecycle.owner}</span><h4>{activeLifecycle.title}</h4></div><code>{activeLifecycle.source.label}</code></header><div className="lifecycle-detail-grid"><section><small>RESPONSIBILITY</small><p>{activeLifecycle.behavior}</p></section><section><small>FAILURE CONTRACT</small><p>{activeLifecycle.failure}</p></section></div><footer><a href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/${activeLifecycle.source.path}#L${activeLifecycle.source.startLine}-L${activeLifecycle.source.endLine}`} target="_blank" rel="noreferrer">View implementation <ArrowUpRight size={13} /></a><Link href={`/library?skill=${activeLifecycle.skill.slug}#skills`} target="_blank">Open {activeLifecycle.skill.label} skill <ArrowUpRight size={13} /></Link></footer></article>
     </section>
 
-    <section className="guide-section" id="guide-state"><div className="guide-heading"><span>03 / STATE</span><div><h3>Give every state one owner.</h3><p>UI state, navigation, cached server state, durable records, and identity have different lifetimes and authorities.</p></div></div><div className="state-table"><div className="state-table-head"><span>State class</span><span>What lives there</span><span>Owner</span></div>{stateOwners.map(([kind, content, owner]) => <div key={kind}><strong>{kind}</strong><p>{content}</p><code>{owner}</code></div>)}</div></section>
+    <StateManagementPlaybook />
 
     <section className="guide-section guide-split" id="guide-extension"><div><div className="guide-heading"><span>04 / EXTENSION</span><div><h3>Extend contracts, not conditionals.</h3><p>New capability enters through one stable seam. Existing layers remain closed to unrelated details.</p></div></div><div className="extension-list">{extensionRules.map(([change, rule]) => <div key={change}><Sparkles size={16} /><span><strong>{change}</strong><p>{rule}</p></span></div>)}</div></div><aside className="production-rules"><h3>Boundary rules</h3><ul><li><Check size={14} /> Pages compose; they do not query databases.</li><li><Check size={14} /> Routes authenticate, validate, delegate, normalize.</li><li><Check size={14} /> Services own authorization and business policy.</li><li><Check size={14} /> Repositories expose domain-shaped capabilities.</li><li><Check size={14} /> Adapters translate vendor records at the edge.</li></ul><div><Server size={18} /><span><strong>Auth before policy</strong><p>The server resolves an actor. The service verifies actor-to-workspace ownership for every record.</p></span></div><div><Database size={18} /><span><strong>RLS as defense in depth</strong><p>Supabase policies repeat tenant isolation below the application service.</p></span></div></aside></section>
 

@@ -167,7 +167,7 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(lifecycleDetail.getByText("The service is the authority for ownership", { exact: false })).toBeVisible();
   await expect(lifecycleDetail.getByRole("link", { name: /View implementation/ })).toHaveAttribute("href", /src\/examples\/service\.ts#L66-L83$/);
   await expect(lifecycleDetail.getByRole("link", { name: /Open Architecture Design skill/ })).toHaveAttribute("href", "/library?skill=architecture-building#skills");
-  await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Put each kind of state where it can stay correct." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
   const browserEvidence = page.getByRole("button", { name: /Browser Optimistic rollback/ });
   await browserEvidence.click();
@@ -190,6 +190,45 @@ test("mobile developer guide keeps every source excerpt accessible", async ({ pa
   expect(verticalCodeOverflow).toBeLessThanOrEqual(1);
   await page.getByRole("button", { name: /Visual Deterministic desktop/ }).click();
   await expect(page.getByText("Prove hierarchy, spacing, typography", { exact: false })).toBeVisible();
+  const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(pageOverflow).toBeLessThanOrEqual(1);
+});
+
+test("state playbook demonstrates shared cache, race recovery, and stale-write protection", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/guide#guide-state");
+
+  await expect(page.getByRole("heading", { name: "Put each kind of state where it can stay correct." })).toBeVisible();
+  await expect(page.getByRole("tab", { name: /Points update everywhere/ })).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("tab", { name: "Shared points" }).click();
+  await expect(page.getByLabel("Top bar points")).toHaveText("740 pts");
+  await page.getByRole("button", { name: "Award 25" }).click();
+  await expect(page.getByLabel("Top bar points")).toHaveText("765 pts");
+  await expect(page.getByLabel("Page points")).toHaveText("765");
+  await page.getByRole("button", { name: "Simulate rejection" }).click();
+  await expect(page.getByRole("status")).toContainText("rolled back");
+  await expect(page.getByLabel("Top bar points")).toHaveText("765 pts");
+
+  await page.getByRole("tab", { name: "Request race" }).click();
+  await page.getByRole("button", { name: "Run broken race" }).click();
+  await expect(page.getByText("A resolved late and overwrote", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Run fixed race" }).click();
+  await expect(page.getByText("A aborted: selection and query key changed")).toBeVisible();
+
+  await page.getByRole("tab", { name: "Two-window save" }).click();
+  await page.getByLabel("Window A value").fill("Launch: Nov 1");
+  await page.getByRole("button", { name: "Save expected rev 12" }).first().click();
+  await page.getByLabel("Window B value").fill("Launch: Nov 2");
+  await page.getByRole("button", { name: "Save expected rev 12" }).click();
+  await expect(page.getByRole("status")).toContainText("received 409");
+});
+
+test("mobile state playbook contains its horizontal workbenches", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/guide#guide-state");
+  await expect(page.getByRole("heading", { name: "Six hard cases, traced across real product surfaces." })).toBeVisible();
+  await page.getByRole("tab", { name: /Cookie auth without random logouts/ }).click();
+  await expect(page.getByText("Publishable key", { exact: true })).toBeVisible();
   const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(pageOverflow).toBeLessThanOrEqual(1);
 });
