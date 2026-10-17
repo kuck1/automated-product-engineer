@@ -121,9 +121,26 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Onboarding Operations" }).click();
   await expect(page).toHaveURL(/view=onboarding/);
   await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass(/reference-kit-minimal/);
+  await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
+  const tokenTab = page.getByRole("tab", { name: "Tokens" });
+  await expect(async () => {
+    await tokenTab.click();
+    await expect(tokenTab).toHaveAttribute("aria-selected", "true");
+  }).toPass();
+  await expect(page.getByText("Journey focus", { exact: true })).toBeVisible();
+  await expect(page.getByText("Primary text", { exact: true })).toBeVisible();
+  const journeyTokenValues = await page.evaluate(() => {
+    const kit = document.querySelector<HTMLElement>(".reference-kit-minimal");
+    const app = document.querySelector<HTMLElement>(".onboarding-journey");
+    return {
+      documented: kit ? getComputedStyle(kit).getPropertyValue("--journey-action").trim() : "",
+      consumed: app ? getComputedStyle(app).getPropertyValue("--journey-action").trim() : "",
+    };
+  });
+  expect(journeyTokenValues).toEqual({ documented: "#0066CC", consumed: "#0066CC" });
+  await expect(page.getByText("Clarity System · Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Design system" }).click();
   await expect(page.getByText("Journey before table", { exact: true })).toBeVisible();
-  await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const customer = page.getByRole("article").filter({ hasText: "Northstar Health" });
   await customer.getByRole("button", { name: "Begin training" }).click();
   await expect(page.getByRole("status")).toContainText("moved to training");
@@ -237,6 +254,13 @@ test("desktop release case study visual", async ({ page }, testInfo) => {
   await expect(page).toHaveScreenshot("release-readiness-desktop.png", { fullPage: true, animations: "disabled" });
 });
 
+test("desktop onboarding case study visual", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/examples?view=onboarding");
+  await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
+  await expect(page).toHaveScreenshot("onboarding-operations-desktop.png", { fullPage: true, animations: "disabled" });
+});
+
 test("desktop skills library visual", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
@@ -246,6 +270,7 @@ test("desktop skills library visual", async ({ page }, testInfo) => {
 test("mobile examples visual and overflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/examples?view=onboarding");
+  await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   await expect(page).toHaveScreenshot("examples-mobile.png", { fullPage: true, animations: "disabled" });

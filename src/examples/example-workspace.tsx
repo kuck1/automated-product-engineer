@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, ArrowRight, Check, Clock3, RefreshCw, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Check, Clock3, Database, RefreshCw, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ExampleSnapshot, Onboarding, OnboardingStage, Release, ReleaseStage } from "./contracts";
@@ -144,13 +144,14 @@ function OnboardingView({ onboardings, summary, pending, onMove }: { onboardings
     { id: "at_risk", label: "Needs attention", hint: "Recover momentum" },
   ];
   return <section className="onboarding-journey" style={clientTokenStyle(clientSystems.onboarding.tokens)} aria-label="Customer onboarding journey">
+    <div className="journey-runtime"><Database size={16} /><span><strong>Clarity System</strong> · Live policy service · deterministic memory adapter</span></div>
     <div className="journey-summary"><div><Sparkles size={17} /><span><strong>{onboardings.length}</strong> active journeys</span></div><div><Users size={17} /><span><strong>{summary.seats}</strong> seats in motion</span></div><div className={summary.atRisk ? "is-risk" : ""}><AlertTriangle size={17} /><span><strong>{summary.atRisk}</strong> account needs attention</span></div></div>
     <div className="journey-board">{stages.map((stage, stageIndex) => <section className={`journey-column journey-${stage.id}`} key={stage.id} aria-label={stage.label}>
       <header><span>{String(stageIndex + 1).padStart(2, "0")}</span><div><strong>{stage.label}</strong><small>{stage.hint}</small></div><i>{onboardings.filter((item) => item.stage === stage.id).length}</i></header>
       <div>{onboardings.filter((item) => item.stage === stage.id).map((onboarding) => {
         const health = onboardingHealth(onboarding);
         return <article className="journey-card" key={onboarding.id}>
-          <div className="journey-card-head"><div><small>{onboarding.plan}</small><h3>{onboarding.customer}</h3><p>{onboarding.owner} · launch {onboarding.targetLaunchDate}</p></div><div className="journey-health-ring" style={{ background: `conic-gradient(var(--journey-success) ${health.score * 3.6}deg, var(--journey-ring-track) 0)` }}><span>{health.score}</span></div></div>
+          <div className="journey-card-head"><div><small>{onboarding.plan}</small><h3>{onboarding.customer}</h3><p>{onboarding.owner} · launch {onboarding.targetLaunchDate}</p></div><div className="journey-health-ring" style={{ background: `conic-gradient(var(--journey-success) ${health.score * 3.6}deg, var(--journey-track) 0)` }}><span>{health.score}</span></div></div>
           <div className="adoption"><span><b>{onboarding.weeklyActiveUsers}</b> / {onboarding.seats} weekly active</span><i><b style={{ width: `${Math.round(health.adoptionRatio * 100)}%` }} /></i></div>
           <div className="journey-milestones">{onboarding.milestones.map((milestone) => <span className={milestone.completed ? "complete" : ""} key={milestone.id} title={`${milestone.label} · ${milestone.dueDate}`}>{milestone.completed ? <Check size={11} /> : null}</span>)}</div>
           <p className="journey-progress-copy">{health.completed}/{health.total} milestones complete{health.overdue ? ` · ${health.overdue} overdue` : " · on schedule"}</p>

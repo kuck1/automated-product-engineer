@@ -24,6 +24,10 @@ export const clientSystems = {
       { name: "Needs attention", variable: "--journey-danger", value: "#D92D20", purpose: "At-risk accounts and overdue work" },
       { name: "Stage surface", variable: "--journey-canvas", value: "#F5F5F7", purpose: "Journey columns and spatial grouping" },
       { name: "Account surface", variable: "--journey-surface", value: "#FFFFFF", purpose: "Account cards and operational details" },
+      { name: "Primary text", variable: "--journey-text", value: "#1D1D1F", purpose: "Account names, decisions, and primary content" },
+      { name: "Supporting text", variable: "--journey-muted", value: "#6E6E73", purpose: "Metadata, hints, and secondary context" },
+      { name: "Structure", variable: "--journey-line", value: "#DEDEE2", purpose: "Column, card, and control boundaries" },
+      { name: "Progress track", variable: "--journey-track", value: "#E4E4E9", purpose: "Health rings and incomplete progress" },
     ],
   },
 } as const satisfies Record<"releases" | "onboarding", { readonly tokens: readonly ClientToken[] }>;
