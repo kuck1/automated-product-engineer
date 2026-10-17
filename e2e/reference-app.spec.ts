@@ -152,10 +152,29 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Developer Guide" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "One action. Every boundary. No missing middle." })).toBeVisible();
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
-  await expect(page.getByText("authorize(actor, release.workspaceId);", { exact: false })).toBeVisible();
+  const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
+  await expect(sourceChooser).toHaveValue("release-policy");
+  await expect(page.getByText("async updateRelease(actor: Actor", { exact: false })).toBeVisible();
+  await sourceChooser.selectOption("onboarding-policy");
+  await expect(page.getByText("async updateOnboarding(actor: Actor", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L85-L103$/);
+  await expect(page.getByText("Readable implementation pattern", { exact: false })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
+});
+
+test("mobile developer guide keeps every source excerpt accessible", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile");
+  await page.goto("/guide#guide-layers");
+  await page.getByRole("button", { name: /Domain ExampleService/ }).click();
+  await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("scoring-policy");
+  await expect(page.getByText("export function releaseReadiness", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L31-L53$/);
+  const verticalCodeOverflow = await page.locator(".source-code").evaluate((element) => element.scrollHeight - element.clientHeight);
+  expect(verticalCodeOverflow).toBeLessThanOrEqual(1);
+  const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(pageOverflow).toBeLessThanOrEqual(1);
 });
 
 test("skills library exposes specialist workflows and copy-ready prompts", async ({ page }, testInfo) => {
@@ -261,6 +280,14 @@ test("desktop skills library visual", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
   await expect(page).toHaveScreenshot("skills-library-desktop.png", { fullPage: true, animations: "disabled" });
+});
+
+test("desktop developer guide source explorer visual", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/guide#guide-layers");
+  await page.getByRole("button", { name: /Domain ExampleService/ }).click();
+  await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("onboarding-policy");
+  await expect(page.locator(".layer-explorer")).toHaveScreenshot("developer-guide-source-explorer.png", { animations: "disabled" });
 });
 
 test("mobile examples visual and overflow", async ({ page }, testInfo) => {

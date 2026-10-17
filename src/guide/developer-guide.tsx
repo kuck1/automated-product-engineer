@@ -1,19 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Check, Code2, Database, LockKeyhole, Server, ShieldCheck, Sparkles, Workflow } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, Code2, Database, LockKeyhole, Server, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { architectureLayers, extensionRules, requestLifecycle, stateOwners, verificationLayers } from "@/src/examples/architecture-reference";
+
+type SourceFile = {
+  readonly id: string;
+  readonly label: string;
+  readonly path: string;
+  readonly startLine: number;
+  readonly endLine: number;
+  readonly summary: string;
+  readonly code: string;
+};
+
+function NumberedCode({ file }: { file: SourceFile }) {
+  return <pre className="source-code" aria-label={`${file.label} code excerpt`}><code>{file.code.split("\n").map((line, index) => <span className="source-code-line" key={`${file.id}-${index}`}><i>{index + 1}</i><b>{line || " "}</b></span>)}</code></pre>;
+}
 
 export function DeveloperGuide() {
   const [activeId, setActiveId] = useState<(typeof architectureLayers)[number]["id"]>("interaction");
+  const [activeFileId, setActiveFileId] = useState("interaction-contract");
   const active = architectureLayers.find((layer) => layer.id === activeId) ?? architectureLayers[0];
+  const activeFiles = active.files as readonly SourceFile[];
+  const activeFile = activeFiles.find((file) => file.id === activeFileId) ?? activeFiles[0];
+  const selectLayer = (layer: (typeof architectureLayers)[number]) => {
+    setActiveId(layer.id);
+    setActiveFileId(layer.files[0].id);
+  };
   return <article id="architecture" className="developer-guide">
     <header className="guide-intro"><div><span>COMPLETE IMPLEMENTATION GUIDE</span><h1>One action. Every boundary. No missing middle.</h1><p>This page contains the architecture decision, real source excerpts, state model, extension rules, and verification contract. Follow the same path when adding a vertical slice.</p></div><dl><div><dt>5</dt><dd>explicit boundaries</dd></div><div><dt>2</dt><dd>replaceable adapters</dd></div><div><dt>1</dt><dd>policy authority</dd></div></dl></header>
     <nav className="guide-nav" aria-label="Developer guide sections"><a href="#guide-layers">Layers</a><a href="#guide-lifecycle">Request lifecycle</a><a href="#guide-state">State ownership</a><a href="#guide-extension">Extension</a><a href="#guide-verification">Verification</a></nav>
 
     <section className="guide-section" id="guide-layers"><div className="guide-heading"><span>01 / LAYERS</span><div><h3>Explore the source by responsibility.</h3><p>Select a layer to see what it owns, why the boundary exists, and the code that implements it.</p></div></div>
-      <div className="layer-explorer"><div className="layer-stack">{architectureLayers.map((layer, index) => <button className={active.id === layer.id ? "active" : ""} key={layer.id} onClick={() => setActiveId(layer.id)} aria-pressed={active.id === layer.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{layer.label}</small><strong>{layer.title}</strong><p>{layer.detail}</p></div><ArrowRight size={16} /></button>)}</div>
-        <div className="source-reader"><header><div><span>{active.label}</span><strong>{active.title}</strong></div><code>{active.path}</code></header><p>{active.why}</p><pre><code>{active.code}</code></pre><footer><LockKeyhole size={14} /> Stable contracts keep this layer independently testable and replaceable.</footer></div>
+      <div className="layer-explorer"><div className="layer-stack">{architectureLayers.map((layer, index) => <button className={active.id === layer.id ? "active" : ""} key={layer.id} onClick={() => selectLayer(layer)} aria-pressed={active.id === layer.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{layer.label}</small><strong>{layer.title}</strong><p>{layer.detail}</p></div><ArrowRight size={16} /></button>)}</div>
+        <div className="source-reader"><header><div><span>{active.label}</span><strong>{active.title}</strong></div><div className="source-reader-actions"><label><span>Source file</span><select aria-label={`${active.title} source file`} value={activeFile.id} onChange={(event) => setActiveFileId(event.target.value)}>{activeFiles.map((file) => <option value={file.id} key={file.id}>{file.label}</option>)}</select></label><a href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/${activeFile.path}#L${activeFile.startLine}-L${activeFile.endLine}`} target="_blank" rel="noreferrer">View full source <ArrowUpRight size={13} /></a></div></header><p>{active.why}</p><div className="source-file-meta"><div><code>{activeFile.path}</code><span>Source area · L{activeFile.startLine}–L{activeFile.endLine}</span></div><strong>{activeFile.summary}</strong></div><NumberedCode file={activeFile} /><footer><LockKeyhole size={14} /> Readable implementation pattern based on the linked source. Open the file for the exact code.</footer></div>
       </div>
     </section>
 
