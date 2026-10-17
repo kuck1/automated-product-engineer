@@ -246,7 +246,7 @@ test("quick start connects installation, workflows, and the developer guide", as
   await page.goto("/quick-start");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Quick Start" })).toHaveAttribute("aria-current", "page");
   await expect(page.locator(".quick-start-hero h1")).toContainText("Install the workflow");
-  await expect(page.getByText("python3 scripts/install_ai_editor.py", { exact: false })).toBeVisible();
+  await expect(page.getByText("pnpm install:skills", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: /Open Automated Product Engineer/ })).toHaveAttribute("href", "/library?skill=automated-product-engineer#skills");
   await expect(page.getByRole("link", { name: /Open developer guide/ })).toHaveAttribute("href", "/guide");
 });

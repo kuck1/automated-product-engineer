@@ -49,7 +49,7 @@ Then use the workflow in your own codebase:
 Install the skills into another repository:
 
 ```bash
-python3 scripts/install_ai_editor.py \
+pnpm install:skills \
   --target codex \
   --project /path/to/your-nextjs-project
 ```

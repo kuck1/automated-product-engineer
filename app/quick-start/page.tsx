@@ -26,7 +26,7 @@ export default function QuickStartPage() {
 
       <section className="quick-start-command" aria-label="Installation command">
         <SquareTerminal size={20} />
-        <code>python3 scripts/install_ai_editor.py --target codex --project /your/app</code>
+        <code>pnpm install:skills --target codex --project /your/app</code>
         <Link href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Installation options <ArrowRight size={15} /></Link>
       </section>
 

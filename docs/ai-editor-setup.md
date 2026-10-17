@@ -7,7 +7,7 @@ The repository ships one conductor skill and focused specialist skills in the op
 Clone or download this repository, then run:
 
 ```bash
-python3 scripts/install_ai_editor.py \
+pnpm install:skills \
   --target codex \
   --project /path/to/your-nextjs-project
 ```
