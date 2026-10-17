@@ -223,6 +223,42 @@ test("state playbook demonstrates shared cache, race recovery, and stale-write p
   await expect(page.getByRole("status")).toContainText("received 409");
 });
 
+test("every state scenario has a live collaborative demo that accepts human input", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/guide#guide-state");
+
+  const pointsDemo = page.getByLabel("A shared balance changes across two surfaces live demo");
+  await pointsDemo.scrollIntoViewIfNeeded();
+  await expect(pointsDemo).toHaveAttribute("data-loop-duration-ms", "66000");
+  await expect(pointsDemo.getByText("LIVE USAGE · 66 SECOND LOOP")).toBeVisible();
+  await expect(pointsDemo.locator(".live-cursor").first()).toBeVisible({ timeout: 3_000 });
+  await pointsDemo.getByRole("button", { name: "Pause" }).click();
+  await pointsDemo.getByLabel("Award amount").fill("12");
+  await pointsDemo.getByRole("button", { name: "Award points" }).click();
+  await expect(pointsDemo.getByText("752 pts")).toBeVisible();
+
+  await page.getByRole("tab", { name: /Out-of-order responses/ }).click();
+  await expect(page.getByLabel("Two requests finish in the wrong order live demo")).toBeVisible();
+  await page.getByRole("tab", { name: /Two windows save one record/ }).click();
+  const windowsDemo = page.getByLabel("Two tabs edit one versioned record live demo");
+  await windowsDemo.getByRole("button", { name: "Pause" }).click();
+  await windowsDemo.getByLabel("Live Window A value").fill("Launch: Nov 8");
+  await windowsDemo.getByRole("button", { name: "Save" }).first().click();
+  await expect(windowsDemo.getByText("Launch: Nov 8")).toBeVisible();
+
+  await page.getByRole("tab", { name: /Chat, unread counts, and presence/ }).click();
+  const chatDemo = page.getByLabel("Messages, presence, and unread state move together live demo");
+  await chatDemo.getByRole("button", { name: "Pause" }).click();
+  await chatDemo.getByLabel("Live chat message").fill("Human input joins the same state flow");
+  await chatDemo.getByRole("button", { name: "Send live chat message" }).click();
+  await expect(chatDemo.getByText("Human input joins the same state flow")).toBeVisible();
+
+  await page.getByRole("tab", { name: /Collaborative document editor/ }).click();
+  await expect(page.getByLabel("Two collaborators edit and checkpoint one brief live demo")).toBeVisible();
+  await page.getByRole("tab", { name: /Cookie auth without random logouts/ }).click();
+  await expect(page.getByLabel("A cookie session survives sleep and refresh live demo")).toBeVisible();
+});
+
 test("mobile state playbook contains its horizontal workbenches", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/guide#guide-state");

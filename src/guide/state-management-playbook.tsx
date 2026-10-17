@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { LiveStateDemo } from "./live-state-demos";
 
 type ScenarioId = "points" | "release" | "windows" | "chat" | "document" | "auth";
 type LabId = "points" | "race" | "windows";
@@ -337,6 +338,7 @@ export function StateManagementPlaybook() {
     <div className="scenario-workbench">
       <div className="scenario-list" role="tablist" aria-label="State management scenarios">{scenarios.map((scenario) => <button role="tab" aria-selected={activeScenario.id === scenario.id} aria-controls="scenario-detail" className={activeScenario.id === scenario.id ? "active" : ""} key={scenario.id} onClick={() => setActiveScenarioId(scenario.id)}><span>{scenario.number}</span><div><small>{scenario.product}</small><strong>{scenario.title}</strong></div><ChevronDown size={14} /></button>)}</div>
       <article className="scenario-detail" id="scenario-detail" role="tabpanel"><header><div><span>{activeScenario.product}</span><h4>{activeScenario.title}</h4><p>{activeScenario.summary}</p></div><Link href={`/library?skill=${activeScenario.skill}#skills`} target="_blank">Relevant skill <ExternalLink size={13} /></Link></header>
+        <LiveStateDemo key={activeScenario.id} scenarioId={activeScenario.id} />
         <div className="scenario-surfaces"><span>SURFACES</span>{activeScenario.surfaces.map((surface) => <strong key={surface}>{surface}</strong>)}</div>
         <dl className="scenario-contract"><div><dt>Canonical owner</dt><dd>{activeScenario.owner}</dd></div><div><dt>Synchronization</dt><dd>{activeScenario.transport}</dd></div><div><dt>Failure protection</dt><dd>{activeScenario.protection}</dd></div></dl>
         <div className="pattern-compare"><section><span><Check size={13} /> PATTERN</span><p>{activeScenario.pattern}</p></section><section><span><AlertTriangle size={13} /> ANTIPATTERN</span><p>{activeScenario.antiPattern}</p></section></div>

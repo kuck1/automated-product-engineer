@@ -76,3 +76,14 @@ For every shared-state feature, test:
 - a hard refresh after success and after failure.
 
 Keep the public demo deterministic with synthetic data or a memory repository. Ship the same service and repository contracts against authenticated Supabase clients in a real application.
+
+## Living scenario demos
+
+When a reference app demonstrates these patterns, drive automated actors and human controls through the same typed command boundary. Keep playback timing, cursor positions, and fixture selection in a separate adapter. The rendered application should know only that it received a valid command from an actor.
+
+- Start playback when the example enters the viewport and pause it when it leaves so background tabs do not keep mutating invisible fixtures.
+- Give each actor a labeled cursor and reflect typing in the real controlled input before submitting the command.
+- Run a complete loop for at least one minute so success, contention, rejection, recovery, and reconciliation all appear.
+- Keep pause and replay controls available. A human edit should update the same reducer or query cache and remain visible to the next simulated action.
+- Respect reduced-motion preferences by removing cursor interpolation while preserving the state transitions and readable activity log.
+- Test the command contract directly, then use a focused browser test to prove viewport activation, human input, responsive containment, and one multi-actor conflict.
