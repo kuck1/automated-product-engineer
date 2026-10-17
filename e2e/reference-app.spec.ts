@@ -89,19 +89,17 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/examples?view=releases");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #1" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByLabel("Release readiness reference kit")).toHaveClass(/reference-kit-arcade/);
+  await expect(page.getByLabel("Release readiness reference kit")).toHaveClass("example-reference-kit");
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
   await expect(page.getByText("--release-action", { exact: true })).toBeVisible();
-  const releaseTokenValues = await page.evaluate(() => {
-    const kit = document.querySelector<HTMLElement>(".reference-kit-arcade");
+  const releaseTokenValue = await page.evaluate(() => {
     const app = document.querySelector<HTMLElement>(".release-control-tower");
-    return {
-      documented: kit ? getComputedStyle(kit).getPropertyValue("--release-action").trim() : "",
-      consumed: app ? getComputedStyle(app).getPropertyValue("--release-action").trim() : "",
-    };
+    return app ? getComputedStyle(app).getPropertyValue("--release-action").trim() : "";
   });
-  expect(releaseTokenValues).toEqual({ documented: "#FFD43B", consumed: "#FFD43B" });
+  expect(releaseTokenValue).toBe("#FFD43B");
+  await page.getByRole("tab", { name: "Architecture" }).click();
+  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/app/api/examples/releases/[id]/route.ts");
   await expect(page.getByText("Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Prompts" }).click();
   await expect(page.getByRole("link", { name: /Full-stack boundary map/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
@@ -120,7 +118,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.goto("/examples?view=releases");
   await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #2" }).click();
   await expect(page).toHaveURL(/view=onboarding/);
-  await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass(/reference-kit-minimal/);
+  await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass("example-reference-kit");
   await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const tokenTab = page.getByRole("tab", { name: "Tokens" });
   await expect(async () => {
@@ -129,15 +127,13 @@ test("onboarding transition uses URL state and reconciles the canonical response
   }).toPass();
   await expect(page.getByText("Journey focus", { exact: true })).toBeVisible();
   await expect(page.getByText("Primary text", { exact: true })).toBeVisible();
-  const journeyTokenValues = await page.evaluate(() => {
-    const kit = document.querySelector<HTMLElement>(".reference-kit-minimal");
+  const journeyTokenValue = await page.evaluate(() => {
     const app = document.querySelector<HTMLElement>(".onboarding-journey");
-    return {
-      documented: kit ? getComputedStyle(kit).getPropertyValue("--journey-action").trim() : "",
-      consumed: app ? getComputedStyle(app).getPropertyValue("--journey-action").trim() : "",
-    };
+    return app ? getComputedStyle(app).getPropertyValue("--journey-action").trim() : "";
   });
-  expect(journeyTokenValues).toEqual({ documented: "#0066CC", consumed: "#0066CC" });
+  expect(journeyTokenValue).toBe("#0066CC");
+  await page.getByRole("tab", { name: "Architecture" }).click();
+  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/app/api/examples/onboardings/[id]/route.ts");
   await expect(page.getByText("Clarity System · Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Design system" }).click();
   await expect(page.getByText("Journey before table", { exact: true })).toBeVisible();

@@ -1,7 +1,6 @@
 import { clientSystems, type ClientToken } from "./client-systems";
 
 export type ExampleReferenceKit = {
-  theme: "arcade" | "minimal";
   name: string;
   label: string;
   systemName: string;
@@ -11,13 +10,12 @@ export type ExampleReferenceKit = {
   principles: ReadonlyArray<readonly [name: string, detail: string]>;
   components: readonly string[];
   tokens: readonly ClientToken[];
-  architecture: ReadonlyArray<readonly [layer: string, detail: string, source: string]>;
+  architecture: ReadonlyArray<readonly [layer: string, detail: string, source: { readonly label: string; readonly path: string }]>;
   prompts: ReadonlyArray<{ readonly slug: string; readonly name: string; readonly use: string }>;
 };
 
 export const exampleReferenceKits = {
   releases: {
-    theme: "arcade",
     name: "Release readiness",
     label: "Client app 01",
     systemName: "Checkpoint OS",
@@ -37,11 +35,11 @@ export const exampleReferenceKits = {
     components: ["Release summary", "Policy gate", "Approval count", "Readiness score", "Decision action"],
     tokens: clientSystems.releases.tokens,
     architecture: [
-      ["UI state", "The URL selects the client app; each row owns only transient interaction state.", "src/examples/example-workspace.tsx"],
-      ["Server cache", "TanStack Query owns the snapshot, optimistic mutation, rollback, and reconciliation.", "queryKey: example-snapshot"],
-      ["API", "The PATCH route authenticates, validates the revision, and delegates the transition.", "/api/examples/releases/[id]"],
-      ["Policy", "The service recomputes gates and approvals before accepting ready.", "ExampleService.updateRelease"],
-      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with the authenticated Supabase adapter.", "MemoryExampleRepository → ExampleRepository ← SupabaseExampleRepository"],
+      ["UI state", "The URL selects the client app; each row owns only transient interaction state.", { label: "example-workspace.tsx", path: "src/examples/example-workspace.tsx" }],
+      ["Server cache", "TanStack Query owns the snapshot, optimistic mutation, rollback, and reconciliation.", { label: "example-workspace.tsx", path: "src/examples/example-workspace.tsx" }],
+      ["API", "The PATCH route authenticates, validates the revision, and delegates the transition.", { label: "releases/[id]/route.ts", path: "app/api/examples/releases/[id]/route.ts" }],
+      ["Policy", "The service recomputes gates and approvals before accepting ready.", { label: "ExampleService.updateRelease", path: "src/examples/service.ts" }],
+      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with the authenticated Supabase adapter.", { label: "ExampleRepository + adapters", path: "src/examples/repository.ts" }],
     ],
     prompts: [
       { slug: "components", name: "Typed component contract", use: "Specify the release row, gates, score, states, and callbacks." },
@@ -51,7 +49,6 @@ export const exampleReferenceKits = {
     ],
   },
   onboarding: {
-    theme: "minimal",
     name: "Onboarding operations",
     label: "Client app 02",
     systemName: "Clarity System",
@@ -71,11 +68,11 @@ export const exampleReferenceKits = {
     components: ["Journey summary", "Stage column", "Account card", "Health ring", "Milestone track"],
     tokens: clientSystems.onboarding.tokens,
     architecture: [
-      ["UI state", "The URL selects the client app; the board derives columns from canonical account stages.", "src/examples/example-workspace.tsx"],
-      ["Server cache", "TanStack Query moves cards optimistically, then reconciles the saved account.", "queryKey: example-snapshot"],
-      ["API", "The PATCH route authenticates, validates the revision, and delegates the stage change.", "/api/examples/onboardings/[id]"],
-      ["Policy", "The service blocks launch until milestones and adoption meet the product rules.", "ExampleService.updateOnboarding"],
-      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with tenant-scoped Supabase records.", "MemoryExampleRepository → ExampleRepository ← SupabaseExampleRepository"],
+      ["UI state", "The URL selects the client app; the board derives columns from canonical account stages.", { label: "example-workspace.tsx", path: "src/examples/example-workspace.tsx" }],
+      ["Server cache", "TanStack Query moves cards optimistically, then reconciles the saved account.", { label: "example-workspace.tsx", path: "src/examples/example-workspace.tsx" }],
+      ["API", "The PATCH route authenticates, validates the revision, and delegates the stage change.", { label: "onboardings/[id]/route.ts", path: "app/api/examples/onboardings/[id]/route.ts" }],
+      ["Policy", "The service blocks launch until milestones and adoption meet the product rules.", { label: "ExampleService.updateOnboarding", path: "src/examples/service.ts" }],
+      ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with tenant-scoped Supabase records.", { label: "ExampleRepository + adapters", path: "src/examples/repository.ts" }],
     ],
     prompts: [
       { slug: "responsive", name: "Responsive state matrix", use: "Specify the horizontal journey at wide, transition, and narrow widths." },

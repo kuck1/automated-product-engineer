@@ -285,7 +285,10 @@ footer > a:hover { color: white; }
 .reference-architecture article > span { color: var(--accent); font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
 .reference-architecture strong { margin: 25px 0 8px; display: block; font-size: 11px; }
 .reference-architecture p { min-height: 58px; margin: 0 0 13px; color: var(--muted); font-size: 8px; line-height: 1.55; }
-.reference-architecture code { color: #a99ed5; font-size: 7px; line-height: 1.4; }
+.reference-architecture a { width: fit-content; max-width: 100%; display: inline-flex; align-items: center; gap: 6px; color: #b7a9ff; }
+.reference-architecture a:hover { color: #d8d0ff; }
+.reference-architecture code { overflow-wrap: anywhere; color: inherit; font-size: 7px; line-height: 1.4; }
+.reference-architecture svg { flex: 0 0 auto; }
 .reference-prompts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .reference-prompts > a { min-height: 92px; padding: 15px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid var(--line); border-radius: 11px; background: var(--panel); }
 .reference-prompts > a:hover { border-color: rgba(169,145,255,.32); background: rgba(169,145,255,.055); }
@@ -294,70 +297,6 @@ footer > a:hover { color: white; }
 .reference-prompts p { margin: 5px 0 0; color: var(--muted); font-size: 8px; line-height: 1.45; }
 .reference-prompts svg { flex: 0 0 auto; color: var(--accent); }
 
-/* Each client reference kit owns its visual language instead of inheriting this site's system. */
-.reference-kit-arcade { --accent: #ffd43b; --mint: #45e6a8; --warning: #ff8a3d; --danger: #ff4d8d; --panel: #17172a; --line: #343653; --muted: #aaa7ba; border: 2px solid #494c70; border-radius: 4px; background: #0d0e1a; color: #fff9df; box-shadow: 7px 7px 0 #242640; }
-.reference-kit-arcade > header { position: relative; overflow: hidden; border-bottom: 2px solid #494c70; background-color: #131426; background-image: linear-gradient(rgba(255,212,59,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,212,59,.045) 1px,transparent 1px); background-size: 12px 12px; }
-.reference-kit-arcade > header::after { content: "SYSTEM ONLINE"; position: absolute; right: 20px; bottom: 12px; color: #45e6a8; font: 700 6px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1.4px; }
-.reference-kit-arcade .reference-kit-badge { border: 1px solid #ffd43b; border-radius: 2px; background: #ffd43b; color: #161623; box-shadow: 3px 3px 0 #ff4d8d; }
-.reference-kit-arcade > header h3 { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: -.04em; text-transform: uppercase; }
-.reference-kit-arcade > header > a { color: #ffd43b; text-transform: uppercase; }
-.reference-kit-arcade .reference-kit-tabs { gap: 0; padding: 0; border-bottom: 2px solid #494c70; background: #10111f; }
-.reference-kit-arcade .reference-kit-tabs button { min-height: 42px; border: 0; border-right: 1px solid #343653; border-radius: 0; color: #9695aa; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
-.reference-kit-arcade .reference-kit-tabs button:hover { color: #fff9df; background: #1d1e33; }
-.reference-kit-arcade .reference-kit-tabs button.active { border-color: #343653; background: #ffd43b; color: #17172a; box-shadow: inset 0 -3px 0 #ff8a3d; }
-.reference-kit-arcade .reference-kit-panel { background: linear-gradient(180deg,#111220,#0d0e1a); }
-.reference-kit-arcade .reference-section-heading small { color: #45e6a8; }
-.reference-kit-arcade .reference-section-heading h4 { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
-.reference-kit-arcade .reference-principles { gap: 10px; }
-.reference-kit-arcade .reference-principles article { position: relative; border: 2px solid #343653; border-radius: 3px; background: #18192d; box-shadow: 4px 4px 0 #090a12; }
-.reference-kit-arcade .reference-principles article::after { content: ""; position: absolute; inset: 6px; pointer-events: none; border: 1px dashed rgba(255,212,59,.13); }
-.reference-kit-arcade .reference-principles span { color: #ffd43b; }
-.reference-kit-arcade .reference-principles strong { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
-.reference-kit-arcade .reference-components { border: 2px solid #343653; border-radius: 3px; background: #0b0c16; box-shadow: 4px 4px 0 #242640; }
-.reference-kit-arcade .reference-components > small { color: #45e6a8; }
-.reference-kit-arcade .reference-components > span { min-height: 34px; border: 1px solid #343653; border-left: 5px solid #ff8a3d; background: #17172a; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
-.reference-kit-arcade .reference-components > span:nth-of-type(2n) { border-left-color: #ff4d8d; }
-.reference-kit-arcade .reference-components i { color: #ffd43b; text-transform: uppercase; }
-.reference-kit-arcade .reference-tokens { gap: 10px; }
-.reference-kit-arcade .reference-tokens article { position: relative; min-height: 178px; border: 2px solid #343653; border-radius: 3px; background: #17172a; box-shadow: 4px 4px 0 #090a12; }
-.reference-kit-arcade .reference-tokens article > i { width: 100%; height: 38px; border: 1px solid rgba(255,255,255,.28); border-radius: 1px; box-shadow: inset 0 -7px 0 rgba(0,0,0,.17); }
-.reference-kit-arcade .reference-tokens strong { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
-.reference-kit-arcade .reference-tokens code { color: #45e6a8; }
-.reference-kit-arcade .reference-tokens article > span { color: #aaa7ba; }
-
-.reference-kit-minimal { --accent: var(--journey-action); --mint: var(--journey-success); --danger: var(--journey-danger); --panel: var(--journey-surface); --line: var(--journey-line); --muted: var(--journey-muted); border: 1px solid var(--journey-line); border-radius: 24px; background: var(--journey-canvas); color: var(--journey-text); box-shadow: 0 18px 50px rgba(0,0,0,.08); }
-.reference-kit-minimal > header { border-bottom-color: var(--journey-line); background: var(--journey-surface); }
-.reference-kit-minimal > header h3 { font-size: 20px; font-weight: 650; letter-spacing: -.035em; }
-.reference-kit-minimal > header > a { color: var(--journey-action); }
-.reference-kit-minimal .reference-kit-badge { min-height: 22px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--journey-muted); letter-spacing: .12em; }
-.reference-kit-minimal .reference-kit-tabs { width: max-content; max-width: calc(100% - 32px); margin: 12px 16px 0; padding: 4px; gap: 2px; border: 0; border-radius: 12px; background: #e8e8ed; }
-.reference-kit-minimal .reference-kit-tabs button { min-height: 34px; border: 0; border-radius: 9px; color: var(--journey-muted); }
-.reference-kit-minimal .reference-kit-tabs button:hover { color: var(--journey-text); }
-.reference-kit-minimal .reference-kit-tabs button.active { border: 0; background: var(--journey-surface); color: var(--journey-text); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
-.reference-kit-minimal .reference-kit-panel { background: var(--journey-canvas); }
-.reference-kit-minimal .reference-section-heading { max-width: 620px; }
-.reference-kit-minimal .reference-section-heading small { color: var(--journey-muted); letter-spacing: .13em; }
-.reference-kit-minimal .reference-section-heading h4 { margin-top: 11px; font-size: 23px; font-weight: 600; letter-spacing: -.045em; }
-.reference-kit-minimal .reference-principles { gap: 12px; }
-.reference-kit-minimal .reference-principles article { min-height: 158px; padding: 18px; border: 1px solid var(--journey-line); border-radius: 18px; background: var(--journey-surface); box-shadow: 0 8px 24px rgba(0,0,0,.035); }
-.reference-kit-minimal .reference-principles span { color: var(--journey-muted); font-weight: 500; }
-.reference-kit-minimal .reference-principles strong { margin-top: 31px; color: var(--journey-text); font-size: 13px; letter-spacing: -.02em; }
-.reference-kit-minimal .reference-components { padding: 18px; border: 1px solid var(--journey-line); border-radius: 18px; background: var(--journey-surface); }
-.reference-kit-minimal .reference-components > small { color: var(--journey-muted); letter-spacing: .12em; }
-.reference-kit-minimal .reference-components > span { min-height: 36px; margin-top: 4px; padding: 0; border: 0; border-bottom: 1px solid var(--journey-line); background: transparent; color: var(--journey-text); }
-.reference-kit-minimal .reference-components > span:last-child { border-bottom: 0; }
-.reference-kit-minimal .reference-components i { color: var(--journey-muted); }
-.reference-kit-minimal .reference-tokens { gap: 12px; }
-.reference-kit-minimal .reference-tokens article { min-height: 188px; padding: 18px; border: 1px solid var(--journey-line); border-radius: 18px; background: var(--journey-surface); box-shadow: 0 8px 24px rgba(0,0,0,.035); }
-.reference-kit-minimal .reference-tokens article > i { width: 100%; height: 54px; border: 1px solid rgba(0,0,0,.07); border-radius: 13px; }
-.reference-kit-minimal .reference-tokens strong { margin-top: 18px; color: var(--journey-text); font-size: 12px; letter-spacing: -.01em; }
-.reference-kit-minimal .reference-tokens p { color: var(--journey-muted); }
-.reference-kit-minimal .reference-tokens code { color: var(--journey-action); }
-.reference-kit-minimal .reference-tokens article > span { color: var(--journey-muted); }
-.reference-kit-minimal .reference-ownership { background: var(--journey-surface); color: var(--journey-muted); }
-.reference-kit-minimal .reference-brief dd, .reference-kit-minimal .reference-architecture strong, .reference-kit-minimal .reference-prompts strong { color: var(--journey-text); }
-.reference-kit-minimal .reference-architecture code { color: var(--journey-action); }
-.reference-kit-minimal .reference-prompts > a:hover { border-color: color-mix(in srgb,var(--journey-action) 32%,var(--journey-line)); background: var(--journey-surface); }
 .notice { min-height: 48px; padding: 0 15px; margin-bottom: 18px; border-radius: 10px; display: flex; align-items: center; gap: 9px; font-size: 12px; }
 .notice-danger { color: #ffb3ad; background: rgba(255,136,127,.1); border: 1px solid rgba(255,136,127,.18); }
 .notice-success { color: #a3ecd6; background: rgba(114,226,192,.08); border: 1px solid rgba(114,226,192,.16); }
