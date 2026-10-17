@@ -374,7 +374,9 @@ test("desktop developer guide source explorer visual", async ({ page }, testInfo
   await page.goto("/guide#guide-layers");
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("onboarding-policy");
-  await expect(page.locator(".layer-explorer")).toHaveScreenshot("developer-guide-source-explorer.png", { animations: "disabled" });
+  const layerExplorer = page.locator(".layer-explorer");
+  await layerExplorer.evaluate((element) => window.scrollTo(0, window.scrollY + element.getBoundingClientRect().top));
+  await expect(layerExplorer).toHaveScreenshot("developer-guide-source-explorer.png", { animations: "disabled" });
 });
 
 test("mobile examples visual and overflow", async ({ page }, testInfo) => {
