@@ -1,20 +1,21 @@
 import { ArrowRight, BookOpen, Check, GitFork, Layers3, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { HeroPipeline } from "@/src/landing/hero-pipeline";
 import { Badge, Brand, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 const skills = [
-  "Architecture design",
-  "Race-condition debugging",
-  "Decoupled state management",
-  "Code review",
-  "Design polish",
-  "Design systems",
-  "Designs-to-app delivery",
-  "Full-stack vertical slices",
-  "Manual UI QA",
-  "PR review and CI",
-  "Responsive and security review",
-];
+  ["Architecture design", "architecture-building"],
+  ["Race-condition debugging", "frontend-api-db"],
+  ["Decoupled state management", "architecture-building"],
+  ["Code review", "code-review"],
+  ["Design polish", "design-polish"],
+  ["Design systems", "design-system"],
+  ["Designs-to-app delivery", "figma-to-app-feature"],
+  ["Full-stack vertical slices", "frontend-api-db"],
+  ["Manual UI QA", "manual-ui-qa"],
+  ["PR review and CI", "pr-workflow"],
+  ["Responsive and security review", "security-review"],
+] as const;
 
 export default function HomePage() {
   return (
@@ -95,7 +96,7 @@ export default function HomePage() {
 
       <section className="section skill-section">
         <div className="section-heading compact"><div><SectionEyebrow>PORTABLE SKILLS</SectionEyebrow><h2>Call the same workflow from any AI agent.</h2></div><p>Install one conductor and focused skills for each stage. Progressive references keep prompts concise while preserving depth.</p></div>
-        <div className="skill-cloud">{skills.map((skill, index) => <span key={skill}><i>{String(index + 1).padStart(2, "0")}</i>{skill}</span>)}</div>
+        <div className="skill-cloud">{skills.map(([skill, slug], index) => <Link key={skill} href={`/library?skill=${slug}#skills`} aria-label={`Open the ${skill} skill`}><i>{String(index + 1).padStart(2, "0")}</i><span>{skill}</span><ArrowRight size={15} /></Link>)}</div>
       </section>
 
       <section className="section final-cta">

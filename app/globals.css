@@ -188,7 +188,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .layers-card small { color: var(--muted); }
 .section-heading.compact { margin-bottom: 36px; }
 .skill-cloud { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
-.skill-cloud span { min-height: 58px; display: flex; align-items: center; gap: 13px; padding: 0 16px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.02); font-size: 13px; }
+.skill-cloud a { min-height: 58px; display: flex; align-items: center; gap: 13px; padding: 0 16px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.02); color: inherit; font-size: 13px; text-decoration: none; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+.skill-cloud a > span { flex: 1; }
+.skill-cloud a > svg { color: var(--accent); opacity: 0; transform: translateX(-4px); transition: opacity .15s ease, transform .15s ease; }
+.skill-cloud a:hover, .skill-cloud a:focus-visible { border-color: color-mix(in srgb,var(--accent) 58%,var(--line)); background: rgba(169,145,255,.08); transform: translateY(-1px); outline: none; }
+.skill-cloud a:hover > svg, .skill-cloud a:focus-visible > svg { opacity: 1; transform: translateX(0); }
 .skill-cloud i { color: #7a8490; font: normal 9px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
 .final-cta { text-align: center; display: grid; justify-items: center; }
 .cta-icon { width: 58px; height: 58px; display: grid; place-items: center; border-radius: 18px; color: var(--ink-dark); background: var(--accent); box-shadow: 0 0 50px rgba(169,145,255,.22); }

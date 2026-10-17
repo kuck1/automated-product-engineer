@@ -4,7 +4,8 @@ import { Braces, Check, Code2, Database, Layers3, ShieldCheck, Sparkles } from "
 import { useEffect, useRef } from "react";
 
 const tiles = ["Typography", "Actions", "Data", "Architecture", "Quality", "Tokens"] as const;
-const FLOW_PERIOD = 28_000;
+const FLOW_PERIOD = 52_000;
+const FLOW_SPEED = 2;
 
 type ParticleSeed = {
   height: number;
@@ -191,7 +192,7 @@ export function HeroPipeline() {
 
     function draw() {
       const cycle = (card + gap) * tiles.length;
-      const phase = (((elapsed.current % FLOW_PERIOD) + FLOW_PERIOD) % FLOW_PERIOD) / FLOW_PERIOD;
+      const phase = ((((elapsed.current * FLOW_SPEED) % FLOW_PERIOD) + FLOW_PERIOD) % FLOW_PERIOD) / FLOW_PERIOD;
       const offset = (phase - 1) * cycle;
       before!.style.transform = `translate3d(${offset}px,0,0)`;
       after!.style.transform = `translate3d(${offset}px,0,0)`;
