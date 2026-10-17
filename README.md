@@ -1,12 +1,12 @@
 # Automated Product Engineer for Next.js
 
-An open-source reference app, prompt kit, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
+An open-source reference app, portable skill system, architecture guide, and handoff contract for turning Figma or Claude Design work into production-ready Next.js features.
 
 Design tools are excellent at defining intent, interaction, and visual direction. Production applications also need clear ownership across components, hooks, APIs, services, persistence, analytics, accessibility, responsive behavior, and tests. This repository connects those two worlds.
 
 ## What this gives you
 
-- Twelve copy-ready prompts for auditing Figma, requesting Claude Design output, extracting tokens, prototyping HTML, specifying components, mapping full-stack boundaries, verifying UI, and packaging delivery.
+- Adaptive intake in every skill: the agent inspects available context, asks only for decisions that materially affect the work, and generates a tailored handoff request when another tool or teammate must supply missing input.
 - Concise and comprehensive Claude Design export contracts for focused and complex features.
 - A dependency-free HTML prototype contract with deterministic states.
 - Semantic token templates in JSON and CSS.
@@ -37,15 +37,12 @@ Open `http://localhost:3100` for the landing page, `http://localhost:3100/system
 
 Then use the workflow in your own codebase:
 
-1. Copy [`prompts/claude-design-quick.md`](prompts/claude-design-quick.md) and fill in the bracketed product context.
-2. Attach your Figma frames, screenshots, existing component links, and product rules.
-3. Ask Claude for the complete offline handoff folder.
-4. Audit the handoff using [`checklists/integration.md`](checklists/integration.md).
-5. Map the export to your existing application using [`docs/architecture.md`](docs/architecture.md).
-6. Implement the smallest stable visual contract first, then add hooks, APIs, persistence, analytics, and tests.
-7. Capture deterministic demo evidence, run the retrospective, fix in-scope findings, and open a draft PR.
-
-For multi-step, data-heavy, or permission-sensitive work, use [`prompts/claude-design-full-export.md`](prompts/claude-design-full-export.md). For a focused artifact, choose one of the granular prompts in [`prompts/`](prompts) or browse and copy it from `/library#prompts` in the reference app.
+1. Install the skills in your target repository.
+2. Attach or link the available brief, Figma frames, screenshots, export, and product rules.
+3. Invoke `automated-product-engineer` for the complete workflow or a specialist for a focused task.
+4. Let the skill inspect the repository and source material before it asks for anything.
+5. Answer only the material decisions it cannot infer. When Claude Design, Figma, or a teammate must provide something, the skill returns a filled-in request for that exact gap.
+6. Review the resulting contract, then let the workflow implement, verify, capture evidence, run retrospective fix-back, and prepare the draft PR.
 
 ## Use it with your AI agent
 
@@ -103,7 +100,6 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/retrospective-fix-back.md`](docs/retrospective-fix-back.md): reflect, correct, reverify, and record durable lessons.
 - [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md): install and invoke the workflow from supported editors and agent environments.
 - [`docs/declassification-audit.md`](docs/declassification-audit.md): what reusable skill material was included or deliberately excluded.
-- [`prompts/`](prompts): twelve copy-ready requests covering design intake, artifact generation, implementation boundaries, QA, PR evidence, and retrospective fix-back.
 - [`checklists/`](checklists): implementation and review gates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.

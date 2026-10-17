@@ -51,7 +51,7 @@ export function SkillBrowser({ skills, initialSlug }: { skills: SkillEntry[]; in
     </div>
     <div className="skill-browser-controls">
       <label><Search size={15} /><span className="sr-only">Search skills</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search skills" /></label>
-      <div className="prompt-category-tabs" aria-label="Skill categories">{categories.map(option => <button type="button" aria-pressed={category === option} className={category === option ? "active" : ""} key={option} onClick={() => setCategory(option)}>{option}</button>)}</div>
+      <div className="skill-category-tabs" aria-label="Skill categories">{categories.map(option => <button type="button" aria-pressed={category === option} className={category === option ? "active" : ""} key={option} onClick={() => setCategory(option)}>{option}</button>)}</div>
     </div>
     <div className="skill-browser-layout">
       <nav className="skill-list" aria-label="All skills">
@@ -59,7 +59,7 @@ export function SkillBrowser({ skills, initialSlug }: { skills: SkillEntry[]; in
         {visible.map((skill, index) => <button type="button" className={active?.slug === skill.slug ? "active" : ""} key={skill.slug} onClick={() => selectSkill(skill.slug)}>
           <span>{String(index + 1).padStart(2, "0")}</span><div><small>{skill.category}</small><strong>{skill.title}</strong><p>{skill.description}</p></div>
         </button>)}
-        {visible.length === 0 && <div className="prompt-empty">No skills match that search.</div>}
+        {visible.length === 0 && <div className="skill-empty">No skills match that search.</div>}
       </nav>
       {active && <article className="skill-preview">
         <header><div><span><Sparkles size={16} /></span><div><small>{active.category}</small><h3>{active.title}</h3><p>{active.description}</p></div></div><a className="button button-secondary" href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/skills/${active.slug}/SKILL.md`} target="_blank" rel="noreferrer">Source <ArrowUpRight size={14} /></a></header>

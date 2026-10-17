@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Badge, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 const steps = [
-  ["01", "Install the workflow", "Copy the skills and prompts into your project so your agent can call them by name."],
+  ["01", "Install the workflow", "Copy the conductor and specialist skills into your project so your agent can call them by name."],
   ["02", "Choose the scope", "Run the complete product-engineering workflow or invoke one specialist for a focused task."],
   ["03", "Provide product context", "Give the agent the design, acceptance criteria, repository instructions, and current branch."],
   ["04", "Review working evidence", "Inspect the implementation, responsive screenshots, tests, CI results, and draft pull request."],

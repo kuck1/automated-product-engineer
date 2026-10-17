@@ -9,6 +9,11 @@ Review the change, not the entire repository. Prefer a few verified findings wit
 
 Read [references/verified-review.md](references/verified-review.md) for the candidate-finding matrix, verification procedure, severity model, and examples of useful findings.
 
+
+## Intake and pushback
+
+Resolve the exact base, head, diff, intended behavior, and repository rules from local evidence before asking the user. Ask only when the target diff or intended contract remains ambiguous enough to change the review conclusion. If an external owner must clarify behavior, provide a concise request containing the observed code path, the concrete ambiguity, and the decision needed to verify correctness.
+
 ## Establish scope
 
 - Identify the exact base, head, staged changes, and uncommitted changes that are in scope.

@@ -41,13 +41,13 @@ globs:
 alwaysApply: false
 ---
 
-Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to for the current task.
+Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to for the current task. Inspect available context before asking questions; when a material input is still missing, ask only for that decision and generate a tailored handoff request when another tool or teammate must provide it.
 """,
         force,
     )
     write_file(
         project / ".cursor" / "commands" / "automated-product-engineer.md",
-        """Use the workflow in `.ai/skills/automated-product-engineer/SKILL.md` to complete the requested feature from intake through a review-ready draft pull request. Load only relevant specialist skills. Preserve repository instructions and do not merge.
+        """Use the workflow in `.ai/skills/automated-product-engineer/SKILL.md` to complete the requested feature from intake through a review-ready draft pull request. Load only relevant specialist skills. Inspect available context before asking questions and generate a tailored request only when a material input must come from another tool or teammate. Preserve repository instructions and do not merge.
 """,
         force,
     )
@@ -59,7 +59,7 @@ def windsurf_adapter(project: Path, force: bool) -> None:
         project / ".windsurf" / "rules" / "automated-product-engineer.md",
         """# Automated Product Engineer
 
-For substantial feature, redesign, or design-to-app work, read `.ai/skills/automated-product-engineer/SKILL.md` and load only the specialist skills it routes to. Preserve repository instructions, produce current QA and screenshot evidence, run retrospective fix-back, and stop at a review-ready draft pull request unless the user explicitly authorizes more.
+For substantial feature, redesign, or design-to-app work, read `.ai/skills/automated-product-engineer/SKILL.md` and load only the specialist skills it routes to. Inspect available context before asking questions; ask only for material missing decisions and generate a tailored handoff request when another tool or teammate must supply them. Preserve repository instructions, produce current QA and screenshot evidence, run retrospective fix-back, and stop at a review-ready draft pull request unless the user explicitly authorizes more.
 """,
         force,
     )
@@ -69,7 +69,7 @@ def copilot_adapter(project: Path, force: bool) -> None:
     copy_skills(project / ".agents" / "skills", force)
     write_file(
         project / ".github" / "prompts" / "automated-product-engineer.prompt.md",
-        """Use the `automated-product-engineer` agent skill to complete the requested feature from intake through a review-ready draft pull request. Load only relevant specialist skills, preserve repository instructions, capture current desktop and mobile evidence, run retrospective fix-back, and do not merge.
+        """Use the `automated-product-engineer` agent skill to complete the requested feature from intake through a review-ready draft pull request. Load only relevant specialist skills, inspect available context before asking questions, and generate a tailored request only when a material input must come from another tool or teammate. Preserve repository instructions, capture current desktop and mobile evidence, run retrospective fix-back, and do not merge.
 """,
         force,
     )
@@ -81,7 +81,7 @@ def generic_adapter(project: Path, force: bool) -> None:
         project / "AI_WORKFLOW.md",
         """# Automated Product Engineer
 
-For substantial feature, redesign, or design-to-app work, begin with `.ai/skills/automated-product-engineer/SKILL.md`. Load only the specialist skills it routes to. Follow the target repository's instructions and preserve human authority over merge and release.
+For substantial feature, redesign, or design-to-app work, begin with `.ai/skills/automated-product-engineer/SKILL.md`. Load only the specialist skills it routes to. Inspect available context before asking questions; ask only for material missing decisions and generate a tailored handoff request when another tool or teammate must supply them. Follow the target repository's instructions and preserve human authority over merge and release.
 """,
         force,
     )

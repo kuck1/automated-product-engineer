@@ -9,6 +9,11 @@ Review the pull request GitHub actually contains. Do not substitute the local wo
 
 Read [references/remote-review-playbook.md](references/remote-review-playbook.md) for exact remote evidence, review angles, line-comment rules, stale-head handling, and the recommended output structure.
 
+
+## Intake and pushback
+
+Infer the repository, pull request, base, head, intended outcome, and review history from the current task and GitHub before asking. If the pull request cannot be identified or its intended contract remains materially ambiguous, ask for the single missing identifier or decision. When a product owner must clarify expected behavior, provide a short request with the exact PR, observed behavior, disputed case, and decision needed.
+
 ## Gather authoritative context
 
 - Fetch the title, body, author, state, base and head refs, exact SHAs, labels, commits, changed files, and check results.

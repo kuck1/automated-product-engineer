@@ -101,8 +101,8 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   await page.getByRole("tab", { name: "Architecture" }).click();
   await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/app/api/examples/releases/[id]/route.ts");
   await expect(page.getByText("Live policy service · deterministic memory adapter")).toBeVisible();
-  await page.getByRole("tab", { name: "Prompts" }).click();
-  await expect(page.getByRole("link", { name: /Full-stack boundary map/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
+  await page.getByRole("tab", { name: "Skills" }).click();
+  await expect(page.getByRole("link", { name: /Architecture Design/ })).toHaveAttribute("href", "/library?skill=architecture-building#skills");
   await expect(page.getByLabel("Release policy control tower")).toBeVisible();
   const release = page.getByRole("article").filter({ hasText: "Mobile checkout refresh" });
   await release.getByRole("button", { name: "Mark ready" }).click();
@@ -167,7 +167,6 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(lifecycleDetail.getByText("The service is the authority for ownership", { exact: false })).toBeVisible();
   await expect(lifecycleDetail.getByRole("link", { name: /View implementation/ })).toHaveAttribute("href", /src\/examples\/service\.ts#L66-L83$/);
   await expect(lifecycleDetail.getByRole("link", { name: /Open Architecture Design skill/ })).toHaveAttribute("href", "/library?skill=architecture-building#skills");
-  await expect(lifecycleDetail.getByRole("link", { name: /Use Full-stack boundary map prompt/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
   const browserEvidence = page.getByRole("button", { name: /Browser Optimistic rollback/ });
@@ -177,7 +176,6 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(verificationDetail.getByText("Prove the composed feature works", { exact: false })).toBeVisible();
   await expect(verificationDetail.getByRole("link", { name: /View verification source/ })).toHaveAttribute("href", /e2e\/reference-app\.spec\.ts#L88-L147$/);
   await expect(verificationDetail.getByRole("link", { name: /Open Manual UI QA skill/ })).toHaveAttribute("href", "/library?skill=manual-ui-qa#skills");
-  await expect(verificationDetail.getByRole("link", { name: /Use Visual QA evidence prompt/ })).toHaveAttribute("href", "/library?prompt=visual-qa#prompts");
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
 });
 
@@ -196,7 +194,7 @@ test("mobile developer guide keeps every source excerpt accessible", async ({ pa
   expect(pageOverflow).toBeLessThanOrEqual(1);
 });
 
-test("skills library exposes specialist workflows and copy-ready prompts", async ({ page }, testInfo) => {
+test("skills library exposes specialist workflows with adaptive intake", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/library");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("aria-current", "page");
@@ -205,14 +203,9 @@ test("skills library exposes specialist workflows and copy-ready prompts", async
   await page.getByRole("button", { name: /SHIP FROM CLAUDE Claude Design to App/ }).click();
   await expect(page.locator(".skill-preview").getByRole("heading", { name: "Choose the workflow" })).toBeVisible();
   await expect(page).toHaveURL(/skill=claude-design-to-app/);
-  await expect(page.getByRole("heading", { name: "Ask for one artifact or the whole handoff." })).toBeVisible();
-  await page.getByRole("button", { name: /Semantic token export/ }).click();
-  await expect(page.locator(".prompt-preview .markdown-content").getByRole("heading", { name: "Semantic Token Export Prompt" })).toBeVisible();
-  await expect(page.getByText("Provide DTCG-compatible", { exact: false })).toBeVisible();
-  await expect(page.getByText("# Semantic Token Export Prompt", { exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Implementation", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Full-stack boundary map/ })).toBeVisible();
-  await expect(page.getByRole("button", { name: /Semantic token export/ })).toHaveCount(0);
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Adaptive intake" })).toBeVisible();
+  await expect(page.getByText("generate one tailored copy-ready request", { exact: false })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Ask for one artifact/ })).toHaveCount(0);
 });
 
 test("mobile workflow library remains readable without page overflow", async ({ page }, testInfo) => {
@@ -224,11 +217,11 @@ test("mobile workflow library remains readable without page overflow", async ({ 
   await expect(page.locator(".skill-preview").getByRole("heading", { name: "Intake contract" })).toBeVisible();
 });
 
-test("example reference links open the requested prompt", async ({ page }, testInfo) => {
+test("example reference links open the relevant skill", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
-  await page.goto("/library?prompt=boundaries#prompts");
-  await expect(page.getByRole("heading", { name: "Full-stack boundary map", exact: true })).toBeVisible();
-  await expect(page.getByText("Design the production boundaries", { exact: false })).toBeVisible();
+  await page.goto("/library?skill=architecture-building#skills");
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Architecture Design" })).toBeVisible();
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Intake and pushback" })).toBeVisible();
 });
 
 test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
@@ -245,7 +238,7 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   await expect(page.getByText("Mint focus + Soft + compact", { exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Recover without losing intent" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Browse 12 prompts/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Open Design System skill/ })).toHaveAttribute("href", "/library?skill=design-system#skills");
 });
 
 test("quick start connects installation, workflows, and the developer guide", async ({ page }, testInfo) => {

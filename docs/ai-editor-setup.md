@@ -26,6 +26,8 @@ Supported targets:
 
 The installer refuses to overwrite different existing files unless `--force` is supplied. Review the diff after installation and keep repository-specific commands, architecture, and permissions in the target project's own `AGENTS.md` or equivalent instructions.
 
+Every installed skill uses adaptive intake. It inspects the repository and available source material first, asks only for missing decisions that affect the work, and generates one contextual request when another design tool or teammate must supply an artifact or answer.
+
 ## A good first request
 
 ```text

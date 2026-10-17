@@ -11,7 +11,7 @@ export type ExampleReferenceKit = {
   components: readonly string[];
   tokens: readonly ClientToken[];
   architecture: ReadonlyArray<readonly [layer: string, detail: string, source: { readonly label: string; readonly path: string }]>;
-  prompts: ReadonlyArray<{ readonly slug: string; readonly name: string; readonly use: string }>;
+  skills: ReadonlyArray<{ readonly slug: string; readonly name: string; readonly use: string }>;
 };
 
 export const exampleReferenceKits = {
@@ -41,11 +41,11 @@ export const exampleReferenceKits = {
       ["Policy", "The service recomputes gates and approvals before accepting ready.", { label: "ExampleService.updateRelease", path: "src/examples/service.ts" }],
       ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with the authenticated Supabase adapter.", { label: "ExampleRepository + adapters", path: "src/examples/repository.ts" }],
     ],
-    prompts: [
-      { slug: "components", name: "Typed component contract", use: "Specify the release row, gates, score, states, and callbacks." },
-      { slug: "boundaries", name: "Full-stack boundary map", use: "Trace Mark ready through optimism, API validation, policy, and persistence." },
-      { slug: "visual-qa", name: "Visual QA evidence", use: "Cover dense rows, horizontal pressure, statuses, and failure recovery." },
-      { slug: "tokens", name: "Semantic token export", use: "Document decision, ready, pending, blocked, and surface roles." },
+    skills: [
+      { slug: "architecture-building", name: "Architecture Design", use: "Trace Mark ready through UI state, server cache, policy, and persistence." },
+      { slug: "frontend-api-db", name: "Frontend / API / Database", use: "Implement the typed mutation, authorization, revision check, and canonical response." },
+      { slug: "design-system", name: "Design System", use: "Govern decision, ready, pending, blocked, and surface roles with semantic tokens." },
+      { slug: "manual-ui-qa", name: "Manual UI QA", use: "Exercise dense rows, horizontal pressure, status changes, and failure recovery." },
     ],
   },
   onboarding: {
@@ -74,11 +74,11 @@ export const exampleReferenceKits = {
       ["Policy", "The service blocks launch until milestones and adoption meet the product rules.", { label: "ExampleService.updateOnboarding", path: "src/examples/service.ts" }],
       ["Persistence", "This public demo runs the deterministic memory adapter. Production integrations use the same port with tenant-scoped Supabase records.", { label: "ExampleRepository + adapters", path: "src/examples/repository.ts" }],
     ],
-    prompts: [
-      { slug: "responsive", name: "Responsive state matrix", use: "Specify the horizontal journey at wide, transition, and narrow widths." },
-      { slug: "components", name: "Typed component contract", use: "Define columns, account cards, health, milestones, and actions." },
-      { slug: "boundaries", name: "Full-stack boundary map", use: "Trace a stage transition through optimism, policy, and persistence." },
-      { slug: "visual-qa", name: "Visual QA evidence", use: "Cover empty stages, long customer names, risk states, and mobile overflow." },
+    skills: [
+      { slug: "responsive-design", name: "Responsive Design", use: "Define the horizontal journey at wide, transition, and narrow widths." },
+      { slug: "design-system", name: "Design System", use: "Specify columns, account cards, health, milestones, and action variants." },
+      { slug: "frontend-api-db", name: "Frontend / API / Database", use: "Trace a stage transition through optimism, policy, and persistence." },
+      { slug: "manual-ui-qa", name: "Manual UI QA", use: "Cover empty stages, long customer names, risk states, and mobile overflow." },
     ],
   },
 } as const satisfies Record<"releases" | "onboarding", ExampleReferenceKit>;

@@ -9,6 +9,11 @@ Use this skill when the UI presents state as durable or shared. Optimistic state
 
 Read [references/full-stack-vertical-slice.md](references/full-stack-vertical-slice.md) for a concrete contract, race-handling sequence, migration questions, and focused test matrix.
 
+
+## Intake and pushback
+
+Inspect current types, routes, services, schema, policies, query keys, and callers first. Establish the user-visible mutation, authoritative data owner, actors and tenant boundary, persistence lifetime, validation, concurrency and idempotency rules, migration compatibility, and failure recovery. Ask only when a missing decision changes durable behavior, authorization, schema safety, or reconciliation. If a product or platform owner must answer, provide a concise request containing the observed contract, exact unresolved rule, and required decision or sample payload.
+
 ## Classify state first
 
 - **Local UI:** open surfaces, draft input, hover, selection, and animation.

@@ -2,8 +2,6 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { ArrowUpRight, FileText, Palette } from "lucide-react";
 import Link from "next/link";
-import { PromptBrowser } from "@/src/library/prompt-browser";
-import { promptCatalog, type PromptEntry } from "@/src/library/prompt-catalog";
 import { SkillBrowser, type SkillEntry } from "@/src/library/skill-browser";
 import { Badge, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
@@ -23,19 +21,17 @@ const skills = [
   ["Security Review", "Security", "Traces identity, tenancy, permissions, sensitive data, abuse paths, and server authority.", "security-review"],
 ] as const;
 
-const prompts: PromptEntry[] = promptCatalog.map(prompt => ({ ...prompt, body: readFileSync(path.join(process.cwd(), "prompts", prompt.file), "utf8") }));
 const skillEntries: SkillEntry[] = skills.map(([title, category, description, slug, featuredLabel]) => ({
   title, category, description, slug, featuredLabel,
   body: readFileSync(path.join(process.cwd(), "skills", slug, "SKILL.md"), "utf8").replace(/^---[\s\S]*?---\s*/, ""),
 }));
 
-export default async function LibraryPage({ searchParams }: { searchParams: Promise<{ prompt?: string; skill?: string }> }) {
-  const { prompt, skill } = await searchParams;
+export default async function LibraryPage({ searchParams }: { searchParams: Promise<{ skill?: string }> }) {
+  const { skill } = await searchParams;
   return <main className="library-shell">
     <SiteHeader active="library" />
     <section className="library-hero"><SectionEyebrow>PORTABLE AGENT WORKFLOWS</SectionEyebrow><h1>Install once.<br /><span>Orchestrate everything.</span></h1><p>Add the workflow to your AI agent once. Run the complete delivery cycle or call one focused skill.</p><div><code>python3 scripts/install_ai_editor.py --target codex --project /your/app</code></div><Link className="button button-secondary library-system-link" href="/system"><Palette size={16} /> Tour tokens &amp; components</Link></section>
-    <section className="library-section" id="skills"><div className="library-heading"><div><Badge tone="info">13 reusable skills</Badge><h2>Start with the workflow, then inspect the playbook.</h2></div><p>Five high-leverage workflows lead. Search the specialist library when you need a narrower boundary. Every skill is readable here and portable to Codex, Claude Code, Cursor, Windsurf, Copilot, Orca, and other agents.</p></div><SkillBrowser skills={skillEntries} initialSlug={skill} /></section>
-    <section className="library-section prompts-section" id="prompts"><div className="library-heading"><div><Badge tone="success">12 copy-ready prompts</Badge><h2>Ask for one artifact or the whole handoff.</h2></div><p>The granular prompts are back. Browse, search, read, and copy them here without leaving the application.</p></div><PromptBrowser prompts={prompts} initialSlug={prompt} /></section>
+    <section className="library-section" id="skills"><div className="library-heading"><div><Badge tone="info">13 reusable skills</Badge><h2>Start with the workflow, then inspect the playbook.</h2></div><p>Every skill inspects the repository and available source material before it asks for anything. If a decision is still missing, the agent asks only the questions that affect the work and generates a focused handoff prompt when another tool or teammate must provide the answer.</p></div><SkillBrowser skills={skillEntries} initialSlug={skill} /></section>
     <section className="library-section library-footer"><FileText size={21} /><div><h2>Start with a working example.</h2><p>The release and onboarding case studies show the preferred boundaries from these skills in executable code.</p></div><Link className="button button-primary" href="/examples?view=releases">Open Release Readiness <ArrowUpRight size={15} /></Link></section>
   </main>;
 }

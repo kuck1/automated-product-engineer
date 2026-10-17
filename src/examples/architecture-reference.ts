@@ -408,7 +408,6 @@ export const requestLifecycle = [
     failure: "Unsupported transitions never appear as controls, and pending mutations disable repeated submission.",
     source: { path: "src/examples/example-workspace.tsx", startLine: 14, endLine: 29, label: "Action contracts" },
     skill: { slug: "architecture-building", label: "Architecture Design" },
-    prompt: { slug: "components", label: "Typed component contract" },
   },
   {
     id: "optimism",
@@ -419,7 +418,6 @@ export const requestLifecycle = [
     failure: "A rejected request restores the exact snapshot captured before the optimistic update and presents the server error.",
     source: { path: "src/examples/example-workspace.tsx", startLine: 52, endLine: 69, label: "Optimistic mutation" },
     skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "boundary",
@@ -430,7 +428,6 @@ export const requestLifecycle = [
     failure: "Validation and domain failures are normalized into stable API responses; the route does not duplicate policy.",
     source: { path: "app/api/examples/releases/[id]/route.ts", startLine: 1, endLine: 15, label: "Release PATCH route" },
     skill: { slug: "security-review", label: "Security Review" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "policy",
@@ -441,7 +438,6 @@ export const requestLifecycle = [
     failure: "Each rejected invariant returns a typed domain error with an actionable message and stable status code.",
     source: { path: "src/examples/service.ts", startLine: 66, endLine: 83, label: "Release transition policy" },
     skill: { slug: "architecture-building", label: "Architecture Design" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "persistence",
@@ -452,7 +448,6 @@ export const requestLifecycle = [
     failure: "The revision predicate rejects stale writes, while database row-level security repeats tenant isolation below the service.",
     source: { path: "src/examples/adapters/supabase-repository.ts", startLine: 54, endLine: 85, label: "Supabase adapter" },
     skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "reconcile",
@@ -463,7 +458,6 @@ export const requestLifecycle = [
     failure: "Errors restore the prior cache snapshot and leave a visible recovery message instead of silently drifting from server state.",
     source: { path: "src/examples/example-workspace.tsx", startLine: 61, endLine: 68, label: "Mutation reconciliation" },
     skill: { slug: "frontend-api-db", label: "Frontend / API / Database" },
-    prompt: { slug: "visual-qa", label: "Visual QA evidence" },
   },
 ] as const;
 
@@ -491,7 +485,6 @@ export const verificationLayers = [
     evidence: "Happy and rejected transitions, tenant isolation, deterministic scoring, revision increments, and stale-write rejection with stable error codes.",
     source: { path: "src/examples/service.test.ts", startLine: 9, endLine: 68, label: "Domain policy tests" },
     skill: { slug: "architecture-building", label: "Architecture Design" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "transport",
@@ -501,7 +494,6 @@ export const verificationLayers = [
     evidence: "Malformed payloads, missing identity, normalized error codes, safe internal failures, and a thin success response containing the canonical DTO.",
     source: { path: "app/api/examples/releases/[id]/route.ts", startLine: 1, endLine: 15, label: "Authenticated route boundary" },
     skill: { slug: "security-review", label: "Security Review" },
-    prompt: { slug: "boundaries", label: "Full-stack boundary map" },
   },
   {
     id: "browser",
@@ -511,7 +503,6 @@ export const verificationLayers = [
     evidence: "Successful transitions, rejected policy, optimistic rollback, server reconciliation, back navigation, semantic roles, and actionable recovery copy.",
     source: { path: "e2e/reference-app.spec.ts", startLine: 88, endLine: 147, label: "End-to-end product flows" },
     skill: { slug: "manual-ui-qa", label: "Manual UI QA" },
-    prompt: { slug: "visual-qa", label: "Visual QA evidence" },
   },
   {
     id: "visual",
@@ -519,9 +510,8 @@ export const verificationLayers = [
     detail: "Deterministic desktop and mobile states reviewed before baseline updates.",
     goal: "Prove hierarchy, spacing, typography, states, and responsive behavior against deterministic fixtures at meaningful breakpoints.",
     evidence: "Reviewed desktop and mobile captures, overflow assertions, stable reduced-motion states, and an explicit decision for every changed baseline.",
-    source: { path: "e2e/reference-app.spec.ts", startLine: 258, endLine: 307, label: "Visual regression coverage" },
+    source: { path: "e2e/reference-app.spec.ts", startLine: 262, endLine: 312, label: "Visual regression coverage" },
     skill: { slug: "design-polish", label: "Design Polish" },
-    prompt: { slug: "visual-qa", label: "Visual QA evidence" },
   },
   {
     id: "delivery",
@@ -531,6 +521,5 @@ export const verificationLayers = [
     evidence: "Independent five-minute content, code, and browser jobs; a deployable build; preview URL; screenshots; risk notes; and clean PR status.",
     source: { path: ".github/workflows/validate.yml", startLine: 15, endLine: 61, label: "Pull-request verification" },
     skill: { slug: "pr-workflow", label: "PR Workflow" },
-    prompt: { slug: "pull-request", label: "Pull request evidence" },
   },
 ] as const;

@@ -9,6 +9,13 @@ Start from observed repository facts and the accepted product contract. Optimize
 
 Read [references/feature-boundaries.md](references/feature-boundaries.md) when designing or reviewing a cross-layer feature, decomposing a large component, or deciding where an extension point belongs.
 
+
+## Intake and pushback
+
+Inspect the current code, callers, data flow, and existing extension seams before asking questions. Establish the user action, authoritative state owner, persistence lifetime, identity and authorization boundary, failure contract, integration points, and expected future variation.
+
+Ask only when a missing answer would change ownership, public contracts, persistence, security, or a required extension point. Ask one to three concrete questions and keep independent analysis moving. If another person must supply the decision, return a filled-in request that summarizes the observed architecture, names the exact unresolved choices, and asks for a decision in a usable form.
+
 ## Discover before designing
 
 - Read repository instructions, the living feature guide, relevant decision records, schemas, tests, and the closest implemented patterns.

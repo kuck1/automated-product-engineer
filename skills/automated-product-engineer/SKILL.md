@@ -7,6 +7,15 @@ description: Build or substantially redesign a production application feature fr
 
 Deliver a complete, reviewable product change rather than a disconnected mockup or code sample. Preserve the user's scope, the repository's architecture, and human authority over material product decisions, release, and merge.
 
+
+## Adaptive intake
+
+Inspect the conversation, repository, existing design sources, active branch or pull request, and available environment before asking the user for information. Build the working contract from: the user and outcome; entry points and acceptance behavior; important states and failure recovery; data authority and persistence; identity and permissions; design-system, responsive, accessibility, and motion constraints; rollout; and required evidence.
+
+If a missing decision would materially change product behavior, architecture, data safety, or the review contract, ask one to three focused questions and continue any discovery that does not depend on the answer. Do not ask the user for implementation facts the repository can answer. If enough context exists, state reasonable assumptions briefly and proceed.
+
+When the missing input belongs to Figma, Claude Design, a product owner, or another teammate, generate one tailored, copy-ready request at that moment. Fill it with everything already known, ask only for the missing decisions or artifacts, name the expected output and acceptance criteria, and preserve unresolved choices explicitly. Do not send the user to a catalog of generic prompts.
+
 ## Establish the contract
 
 - Read repository instructions and inspect existing work before creating a parallel implementation.

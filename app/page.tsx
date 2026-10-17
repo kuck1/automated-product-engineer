@@ -96,7 +96,7 @@ export default function HomePage() {
       </section>
 
       <section className="section skill-section">
-        <div className="section-heading compact"><div><SectionEyebrow>PORTABLE SKILLS</SectionEyebrow><h2>Call the same workflow from any AI agent.</h2></div><p>Install one conductor and focused skills for each stage. Progressive references keep prompts concise while preserving depth.</p></div>
+        <div className="section-heading compact"><div><SectionEyebrow>PORTABLE SKILLS</SectionEyebrow><h2>Call the same workflow from any AI agent.</h2></div><p>Install one conductor and focused skills for each stage. Progressive references keep requests concise while preserving depth.</p></div>
         <div className="skill-cloud">{skills.map(([skill, slug], index) => <Link key={skill} href={`/library?skill=${slug}#skills`} aria-label={`Open the ${skill} skill`}><i>{String(index + 1).padStart(2, "0")}</i><span>{skill}</span><ArrowRight size={15} /></Link>)}</div>
       </section>
 
