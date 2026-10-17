@@ -418,7 +418,7 @@ footer > a:hover { color: white; }
 .journey-empty p { margin: 0; color: var(--journey-muted); font-size: 8px; }
 .onboarding-journey .journey-note { color: var(--journey-muted); }
 
-/* Embedded developer guide */
+/* Embedded behind-the-scenes guide */
 .developer-guide { min-width: 0; max-width: 100%; display: grid; grid-template-columns: minmax(0,1fr); gap: 0; }
 .guide-intro { padding: 32px; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 40px; border: 1px solid rgba(169,145,255,.2); border-radius: 18px 18px 0 0; background: radial-gradient(circle at 80% 20%,rgba(169,145,255,.16),transparent 34%),#171c22; }
 .guide-intro > div > span, .guide-heading > span { color: var(--accent); font: 750 8px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1.35px; }
@@ -1226,7 +1226,7 @@ footer > a:hover { color: white; }
 .state-sources a { min-height: 28px; padding: 0 8px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 6px; color: #9fa8b0; font-size: 7px; }
 .state-sources a:hover { color: white; border-color: rgba(169,145,255,.4); }
 
-/* Standalone developer guide */
+/* Standalone behind-the-scenes guide */
 .guide-shell { min-height: 100vh; background: var(--bg); }
 .guide-page-content { width: min(1500px,89%); margin: 0 auto; padding: 64px 0 108px; }
 

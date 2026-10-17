@@ -56,7 +56,7 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(navigation.getByRole("link", { name: "Case Study #1" })).toHaveAttribute("href", "/examples?view=releases");
   await expect(navigation.getByRole("link", { name: "Case Study #2" })).toHaveAttribute("href", "/examples?view=onboarding");
   await expect(navigation.getByRole("link", { name: "Quick Start" })).toHaveAttribute("href", "/quick-start");
-  await expect(navigation.getByRole("link", { name: "Developer Guide" })).toHaveAttribute("href", "/guide");
+  await expect(navigation.getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("href", "/guide");
   await expect(navigation.getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("href", "/library");
   await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
@@ -146,11 +146,11 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await expect(page).toHaveURL(/view=releases/);
 });
 
-test("developer guide embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {
+test("behind the scenes embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/guide");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Developer Guide" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("heading", { name: "One action. Every boundary. No missing middle." })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day." })).toBeVisible();
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
   await expect(sourceChooser).toHaveValue("release-policy");
@@ -179,7 +179,7 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);
 });
 
-test("mobile developer guide keeps every source excerpt accessible", async ({ page }, testInfo) => {
+test("mobile behind the scenes keeps every source excerpt accessible", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/guide#guide-layers");
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
@@ -321,14 +321,14 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   await expect(page.getByRole("link", { name: /Open Design System skill/ })).toHaveAttribute("href", "/library?skill=design-system#skills");
 });
 
-test("quick start connects installation, workflows, and the developer guide", async ({ page }, testInfo) => {
+test("quick start connects installation, workflows, and behind the scenes", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/quick-start");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Quick Start" })).toHaveAttribute("aria-current", "page");
   await expect(page.locator(".quick-start-hero h1")).toContainText("Install the system");
   await expect(page.getByText("pnpm dlx automated-product-engineer", { exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: /Open Automated Product Engineer/ })).toHaveAttribute("href", "/library?skill=automated-product-engineer#skills");
-  await expect(page.getByRole("link", { name: /Open developer guide/ })).toHaveAttribute("href", "/guide");
+  await expect(page.getByRole("link", { name: /Open behind the scenes/ })).toHaveAttribute("href", "/guide");
 });
 
 test("mobile design system tour stays within the viewport", async ({ page }, testInfo) => {
@@ -374,7 +374,7 @@ test("desktop skills library visual", async ({ page }, testInfo) => {
   await expect(page).toHaveScreenshot("skills-library-desktop.png", { fullPage: true, animations: "disabled" });
 });
 
-test("desktop developer guide source explorer visual", async ({ page }, testInfo) => {
+test("desktop behind the scenes source explorer visual", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/guide#guide-layers");
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();

@@ -1,6 +1,6 @@
 # Reference App Architecture
 
-This document is the implementation contract for the two reference applications in `/examples`. The same material is embedded as an interactive developer guide in the application, including real source excerpts and a layer-by-layer explorer.
+This document is the implementation contract for the two reference applications in `/examples`. The same material appears in the application’s interactive Behind the scenes section, including real source excerpts and a layer-by-layer explorer.
 
 ## What the reference demonstrates
 

@@ -82,7 +82,7 @@ export default function HomePage() {
           <p>Stable contracts at every boundary make the code easy to extend without turning each new feature into a rewrite.</p>
           <div className="system-actions">
             <a className="button button-secondary" href="/system"><Layers3 size={17} /> Tour the design system</a>
-            <Link className="text-link" href="/guide"><BookOpen size={15} /> Read the developer guide</Link>
+            <Link className="text-link" href="/guide"><BookOpen size={15} /> Go behind the scenes</Link>
           </div>
         </div>
         <div className="layers-card">
@@ -107,7 +107,7 @@ export default function HomePage() {
         <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
       </section>
 
-      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Developer guide</Link><Link href="/library">Complete skill library</Link></footer>
+      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
     </main>
   );
 }
