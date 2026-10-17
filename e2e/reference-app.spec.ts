@@ -396,7 +396,7 @@ test("component library onboarding explains ownership and renders interactive st
   await expect(page.getByText("Every new screen starts from tested decisions.")).toBeVisible();
   const workbench = page.locator(".cl-workbench");
   await workbench.getByRole("button", { name: /Text field/ }).click();
-  await workbench.getByRole("button", { name: "Error" }).click();
+  await workbench.getByRole("button", { name: "Error", exact: true }).click();
   await expect(workbench.getByText("Use at least three characters.")).toBeVisible();
   await workbench.getByLabel("Project name").fill("Release train");
   await expect(workbench.getByLabel("Project name")).toHaveValue("Release train");
@@ -409,9 +409,10 @@ test("component library onboarding explains ownership and renders interactive st
 test("mobile component library onboarding stays inside the page", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/guide#guide-components");
-  await page.getByRole("button", { name: /Text field/ }).click();
-  await page.getByRole("button", { name: "Error" }).click();
-  await expect(page.getByText("Use at least three characters.")).toBeVisible();
+  const workbench = page.locator(".cl-workbench");
+  await workbench.getByRole("button", { name: /Text field/ }).click();
+  await workbench.getByRole("button", { name: "Error", exact: true }).click();
+  await expect(workbench.getByText("Use at least three characters.")).toBeVisible();
   const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(pageOverflow).toBeLessThanOrEqual(1);
 });

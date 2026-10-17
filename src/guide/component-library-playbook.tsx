@@ -125,7 +125,7 @@ function LiveSpecimen({ item, state, density }: { item: LibraryItem; state: stri
   if (item.id === "button") {
     const loading = state === "Loading";
     const disabled = state === "Disabled" || loading;
-    return <div className={`cl-preview-center ${compact ? "compact" : ""}`}><Button tone={state === "Secondary" ? "secondary" : "primary"} disabled={disabled} onClick={() => setFeedback("The caller received the action. The component did not decide what happens next.")}>{loading ? "Saving…" : disabled ? "Unavailable" : "Save changes"}</Button><p role="status">{feedback}</p></div>;
+    return <div className={`cl-preview-center ${compact ? "compact" : ""}`}><Button tone={state === "Secondary" ? "secondary" : "primary"} disabled={disabled} onClick={() => setFeedback("The caller received the action. The component did not decide what happens next.")}>{loading ? "Saving…" : disabled ? "Unavailable" : "Save changes"}</Button><p>{feedback}</p></div>;
   }
   if (item.id === "badge") {
     const tone = state === "Complete" ? "success" : state === "At risk" ? "warning" : state === "In review" ? "info" : "neutral";
@@ -141,11 +141,11 @@ function LiveSpecimen({ item, state, density }: { item: LibraryItem; state: stri
     const message = feedback === "Ready for human input."
       ? state === "Danger" ? "Your work is preserved. Review the error and try again." : "The message explains what changed and the next useful action."
       : feedback;
-    return <article className={`cl-notice-preview tone-${state.toLowerCase()} ${compact ? "compact" : ""}`}><span>{icon}</span><div><strong>{state === "Success" ? "Ready to share" : state === "Information" ? "Preview generated" : state === "Danger" ? "Publish failed" : "One check remains"}</strong><p role="status">{message}</p></div><Button tone="quiet" onClick={() => setFeedback("The recovery action stayed with the product caller.")}>{state === "Success" ? "View proof" : "Open details"}</Button></article>;
+    return <article className={`cl-notice-preview tone-${state.toLowerCase()} ${compact ? "compact" : ""}`}><span>{icon}</span><div><strong>{state === "Success" ? "Ready to share" : state === "Information" ? "Preview generated" : state === "Danger" ? "Publish failed" : "One check remains"}</strong><p>{message}</p></div><Button tone="quiet" onClick={() => setFeedback("The recovery action stayed with the product caller.")}>{state === "Success" ? "View proof" : "Open details"}</Button></article>;
   }
   const blocked = state === "Blocked";
   const approving = state === "Approving";
-  return <article className={`cl-panel-preview ${compact ? "compact" : ""}`}><header><div><Badge tone={blocked ? "danger" : state === "Ready" ? "success" : "info"}>{state}</Badge><h5>Release approval</h5></div><span>REV 18</span></header><p>Checkout refresh is ready for a decision. Evidence and remaining risk stay beside the action.</p><ul><li><Check size={13} /> Design QA</li><li><Check size={13} /> Browser tests</li><li className={blocked ? "blocked" : ""}>{blocked ? <AlertTriangle size={13} /> : <Check size={13} />} Security review</li></ul><footer><small role="status">{blocked ? "Resolve the security review before approval." : feedback === "Ready for human input." ? "3 checks attached to this revision." : feedback}</small><Button disabled={blocked || approving} onClick={() => setFeedback("Approval intent reached the product caller.")}>{approving ? "Approving…" : "Approve release"}</Button></footer></article>;
+  return <article className={`cl-panel-preview ${compact ? "compact" : ""}`}><header><div><Badge tone={blocked ? "danger" : state === "Ready" ? "success" : "info"}>{state}</Badge><h5>Release approval</h5></div><span>REV 18</span></header><p>Checkout refresh is ready for a decision. Evidence and remaining risk stay beside the action.</p><ul><li><Check size={13} /> Design QA</li><li><Check size={13} /> Browser tests</li><li className={blocked ? "blocked" : ""}>{blocked ? <AlertTriangle size={13} /> : <Check size={13} />} Security review</li></ul><footer><small>{blocked ? "Resolve the security review before approval." : feedback === "Ready for human input." ? "3 checks attached to this revision." : feedback}</small><Button disabled={blocked || approving} onClick={() => setFeedback("Approval intent reached the product caller.")}>{approving ? "Approving…" : "Approve release"}</Button></footer></article>;
 }
 
 export function ComponentLibraryPlaybook() {
