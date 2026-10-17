@@ -93,7 +93,7 @@ export function DesignSystemExplorer() {
       <section className="system-tour-hero">
         <div>
           <SectionEyebrow>DESIGN SYSTEM TOUR</SectionEyebrow>
-          <h1>See the rules.<br /><span>Feel the system.</span></h1>
+          <h1>Design tokens.<br /><span>Components and patterns.</span></h1>
         </div>
         <div className="system-tour-intro">
           <p>Start with meaning, then inspect implementation. Every token explains the job it performs, and every component shows where it belongs.</p>

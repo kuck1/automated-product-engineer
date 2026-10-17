@@ -127,7 +127,7 @@ test("design system tour explains hierarchy and swaps semantic tokens", async ({
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/system");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "System" })).toHaveAttribute("aria-current", "page");
-  const heading = page.getByRole("heading", { name: "See the rules. Feel the system." });
+  const heading = page.getByRole("heading", { name: "Design tokens. Components and patterns." });
   await expect(heading).toBeVisible();
   expect((await heading.boundingBox())?.y).toBeLessThan(340);
   await expect(page.getByText("Interactive focus and brand expression")).toBeVisible();
