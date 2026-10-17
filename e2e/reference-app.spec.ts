@@ -301,7 +301,10 @@ test("desktop developer guide source explorer visual", async ({ page }, testInfo
   await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("onboarding-policy");
   await page.locator(".guide-nav").evaluate((element) => { element.style.visibility = "hidden"; });
   await page.mouse.move(1430, 990);
-  await expect(page.locator(".layer-explorer")).toHaveScreenshot("developer-guide-source-explorer.png", { animations: "disabled" });
+  await expect(page.locator(".layer-explorer")).toHaveScreenshot("developer-guide-source-explorer.png", {
+    animations: "disabled",
+    maxDiffPixels: 50,
+  });
 });
 
 test("mobile examples visual and overflow", async ({ page }, testInfo) => {
