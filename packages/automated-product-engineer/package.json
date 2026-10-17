@@ -21,7 +21,7 @@
     "url": "git+https://github.com/kuck1/automated-product-engineer-nextjs.git",
     "directory": "packages/automated-product-engineer"
   },
-  "homepage": "https://github.com/kuck1/automated-product-engineer-nextjs#readme",
+  "homepage": "https://automated-product-engineer-nextjs.vercel.app",
   "bugs": "https://github.com/kuck1/automated-product-engineer-nextjs/issues",
   "keywords": [
     "ai-agent",
