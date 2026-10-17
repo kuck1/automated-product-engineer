@@ -4,7 +4,7 @@ import { Braces, Check, Code2, Database, Layers3, ShieldCheck, Sparkles } from "
 import { useEffect, useRef } from "react";
 
 const tiles = ["Typography", "Actions", "Data", "Architecture", "Quality", "Tokens"] as const;
-const FLOW_PERIOD = 52_000;
+const FLOW_PERIOD = 28_000;
 
 type ParticleSeed = {
   height: number;
