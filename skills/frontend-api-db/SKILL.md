@@ -9,6 +9,8 @@ Use this skill when the UI presents state as durable or shared. Optimistic state
 
 Read [references/full-stack-vertical-slice.md](references/full-stack-vertical-slice.md) for a concrete contract, race-handling sequence, migration questions, and focused test matrix.
 
+Read [references/analytics-instrumentation.md](references/analytics-instrumentation.md) when the feature adds or changes product analytics, experiments, impressions, mutation outcomes, or failure telemetry.
+
 
 ## Intake and pushback
 
@@ -23,6 +25,8 @@ Inspect current types, routes, services, schema, policies, query keys, and calle
 - **External authority:** data owned by another service, synchronized through an explicit contract.
 
 Define precedence when multiple sources participate. Browser storage is a hydration-safe convenience, never an undeclared authority over an explicit URL or durable default.
+
+Define user actions precisely when defaults participate. Clearing working filters or search must not immediately reapply a saved default in the same mounted session; resetting should intentionally restore that default. Keep the distinction explicit in hook state, URL writes, copy, and tests.
 
 ## Backend contract
 

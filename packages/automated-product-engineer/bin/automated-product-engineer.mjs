@@ -201,6 +201,7 @@ ${included}
 ## Where to start
 
 - \`docs/how-to-use.md\`: end-to-end workflow.
+- \`docs/knowledge-coverage.md\`: source-library coverage and deliberate exclusions.
 - \`docs/architecture.md\`: application boundaries and ownership.
 - \`docs/reference-app-architecture.md\`: the complete reference implementation map.
 - \`docs/design-system-blueprint.md\`: semantic tokens and component hierarchy.

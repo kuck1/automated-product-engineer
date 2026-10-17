@@ -5,6 +5,8 @@ description: Design, implement, harden, or review feature architecture from a se
 
 # Architecture Building
 
+Read [references/discovery-and-spec-analysis.md](references/discovery-and-spec-analysis.md) when the task starts from a broad request, an existing specification, an unfamiliar repository, or a defect whose owning boundary is unclear. It preserves the original library's codebase-analysis, specification-review, and debugging workflow without requiring separate prompt commands.
+
 Start from observed repository facts and the accepted product contract. Optimize for clear ownership and safe evolution, not abstract purity.
 
 Read [references/feature-boundaries.md](references/feature-boundaries.md) when designing or reviewing a cross-layer feature, decomposing a large component, or deciding where an extension point belongs.
