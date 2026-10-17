@@ -159,6 +159,14 @@ test("developer guide embeds the ownership chain and real source excerpts", asyn
   await expect(page.getByText("async updateOnboarding(actor: Actor", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L85-L103$/);
   await expect(page.getByText("Readable implementation pattern", { exact: false })).toBeVisible();
+  const policyStep = page.getByRole("button", { name: /Policy The service verifies/ });
+  await policyStep.click();
+  await expect(policyStep).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByRole("heading", { name: "Policy", exact: true })).toBeVisible();
+  await expect(page.getByText("The service is the authority for ownership", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /View implementation/ })).toHaveAttribute("href", /src\/examples\/service\.ts#L66-L83$/);
+  await expect(page.getByRole("link", { name: /Open Architecture Design skill/ })).toHaveAttribute("href", "/library?skill=architecture-building#skills");
+  await expect(page.getByRole("link", { name: /Use Full-stack boundary map prompt/ })).toHaveAttribute("href", "/library?prompt=boundaries#prompts");
   await expect(page.getByRole("heading", { name: "Give every state one owner." })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Evidence follows the architecture." })).toBeVisible();
   await expect(page.getByRole("link", { name: /architecture decision/i })).toHaveCount(0);

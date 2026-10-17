@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, ArrowUpRight, Check, Code2, Database, LockKeyhole, Server, ShieldCheck, Sparkles, Workflow } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, ChevronDown, Code2, Database, LockKeyhole, Server, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { architectureLayers, extensionRules, requestLifecycle, stateOwners, verificationLayers } from "@/src/examples/architecture-reference";
 
 type SourceFile = {
@@ -21,9 +22,11 @@ function NumberedCode({ file }: { file: SourceFile }) {
 export function DeveloperGuide() {
   const [activeId, setActiveId] = useState<(typeof architectureLayers)[number]["id"]>("interaction");
   const [activeFileId, setActiveFileId] = useState("interaction-contract");
+  const [activeLifecycleId, setActiveLifecycleId] = useState<(typeof requestLifecycle)[number]["id"]>("intent");
   const active = architectureLayers.find((layer) => layer.id === activeId) ?? architectureLayers[0];
   const activeFiles = active.files as readonly SourceFile[];
   const activeFile = activeFiles.find((file) => file.id === activeFileId) ?? activeFiles[0];
+  const activeLifecycle = requestLifecycle.find((step) => step.id === activeLifecycleId) ?? requestLifecycle[0];
   const selectLayer = (layer: (typeof architectureLayers)[number]) => {
     setActiveId(layer.id);
     setActiveFileId(layer.files[0].id);
@@ -38,7 +41,10 @@ export function DeveloperGuide() {
       </div>
     </section>
 
-    <section className="guide-section" id="guide-lifecycle"><div className="guide-heading"><span>02 / REQUEST LIFECYCLE</span><div><h3>Trace a mutation end to end.</h3><p>The happy path and failure path use the same six steps. Optimism improves speed; the server still owns truth.</p></div></div><ol className="lifecycle-grid">{requestLifecycle.map(([title, detail], index) => <li key={title}><span>{String(index + 1).padStart(2, "0")}</span><Workflow size={18} /><strong>{title}</strong><p>{detail}</p></li>)}</ol></section>
+    <section className="guide-section" id="guide-lifecycle"><div className="guide-heading"><span>02 / REQUEST LIFECYCLE</span><div><h3>Trace a mutation end to end.</h3><p>The happy path and failure path use the same six steps. Select a step to inspect its owner, recovery contract, source, and reusable guidance.</p></div></div>
+      <ol className="lifecycle-grid">{requestLifecycle.map((step, index) => <li className={activeLifecycle.id === step.id ? "active" : ""} key={step.id}><button type="button" onClick={() => setActiveLifecycleId(step.id)} aria-expanded={activeLifecycle.id === step.id} aria-controls="lifecycle-detail"><span>{String(index + 1).padStart(2, "0")}</span><Workflow size={18} /><strong>{step.title}</strong><p>{step.detail}</p><small>{activeLifecycle.id === step.id ? "Showing details" : "View details"}<ChevronDown size={13} /></small></button></li>)}</ol>
+      <article className="lifecycle-detail" id="lifecycle-detail" aria-live="polite"><header><div><span>{activeLifecycle.owner}</span><h4>{activeLifecycle.title}</h4></div><code>{activeLifecycle.source.label}</code></header><div className="lifecycle-detail-grid"><section><small>RESPONSIBILITY</small><p>{activeLifecycle.behavior}</p></section><section><small>FAILURE CONTRACT</small><p>{activeLifecycle.failure}</p></section></div><footer><a href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/${activeLifecycle.source.path}#L${activeLifecycle.source.startLine}-L${activeLifecycle.source.endLine}`} target="_blank" rel="noreferrer">View implementation <ArrowUpRight size={13} /></a><Link href={`/library?skill=${activeLifecycle.skill.slug}#skills`} target="_blank">Open {activeLifecycle.skill.label} skill <ArrowUpRight size={13} /></Link><Link href={`/library?prompt=${activeLifecycle.prompt.slug}#prompts`} target="_blank">Use {activeLifecycle.prompt.label} prompt <ArrowUpRight size={13} /></Link></footer></article>
+    </section>
 
     <section className="guide-section" id="guide-state"><div className="guide-heading"><span>03 / STATE</span><div><h3>Give every state one owner.</h3><p>UI state, navigation, cached server state, durable records, and identity have different lifetimes and authorities.</p></div></div><div className="state-table"><div className="state-table-head"><span>State class</span><span>What lives there</span><span>Owner</span></div>{stateOwners.map(([kind, content, owner]) => <div key={kind}><strong>{kind}</strong><p>{content}</p><code>{owner}</code></div>)}</div></section>
 
