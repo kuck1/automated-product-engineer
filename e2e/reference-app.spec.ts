@@ -27,6 +27,27 @@ test("every public page uses the shared top bar", async ({ page }, testInfo) => 
   }
 });
 
+test("the shared top bar remains legible at tablet width", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.setViewportSize({ width: 820, height: 900 });
+  await page.goto("/");
+
+  const headerGeometry = await page.locator(".site-header").evaluate((header) => {
+    const viewportWidth = document.documentElement.clientWidth;
+    const links = [...header.querySelectorAll("nav a, .header-action")];
+    return links.map((link) => {
+      const box = link.getBoundingClientRect();
+      return { left: box.left, right: box.right, viewportWidth };
+    });
+  });
+
+  expect(headerGeometry).toHaveLength(6);
+  for (const item of headerGeometry) {
+    expect(item.left).toBeGreaterThanOrEqual(0);
+    expect(item.right).toBeLessThanOrEqual(item.viewportWidth);
+  }
+});
+
 test("landing page explains the complete delivery workflow", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
