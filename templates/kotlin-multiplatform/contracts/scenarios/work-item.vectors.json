@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "feature": "work-item",
+  "vectors": [
+    {
+      "id": "draft-begins-validation",
+      "initial": { "stage": "DRAFT", "revision": 4 },
+      "command": { "operationId": "op-1", "expectedRevision": 4, "nextStage": "VALIDATING" },
+      "expected": { "kind": "APPLIED", "stage": "VALIDATING", "revision": 5 }
+    },
+    {
+      "id": "stale-write-returns-canonical",
+      "initial": { "stage": "VALIDATING", "revision": 7 },
+      "command": { "operationId": "op-2", "expectedRevision": 6, "nextStage": "READY" },
+      "expected": { "kind": "CONFLICT", "stage": "VALIDATING", "revision": 7 }
+    },
+    {
+      "id": "ready-is-terminal",
+      "initial": { "stage": "READY", "revision": 8 },
+      "command": { "operationId": "op-3", "expectedRevision": 8, "nextStage": "VALIDATING" },
+      "expected": { "kind": "REJECTED", "stage": "READY", "revision": 8 }
+    }
+  ]
+}

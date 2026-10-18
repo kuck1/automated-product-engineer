@@ -90,6 +90,24 @@ Evaluate the capability with actor and tenant context at the server-owned action
 
 Extract repeated behavior, semantic token roles, typed variants, interaction states, compact layouts, keyboard behavior, and usage guidance. Avoid styling-only card collections and open-ended boolean prop combinations.
 
+## Cross-platform architecture
+
+### `shared-product-kernel` — Share product truth, preserve native edges
+
+Use when Android and iOS repeat business rules, transitions, validation, sync, or failure recovery. Keep deterministic policy and application orchestration in common Kotlin; keep platform composition, navigation, lifecycle, UI, capabilities, accessibility, secure storage, and distribution native.
+
+### `ports-at-platform-edge` — Inject capabilities explicitly
+
+Use ordinary interfaces for clocks, identity, transport, persistence, telemetry, and schedulers so common behavior stays host-testable. Reserve `expect`/`actual` for narrow construction facts that cannot be injected cleanly.
+
+### `generated-semantic-contracts` — Generate platform representations
+
+Use canonical product language, token, component, protocol, error, analytics, and scenario sources. Emit Kotlin, Swift, CSS, clients, and docs deterministically with a source digest; fail CI when checked-in projections drift.
+
+### `small-swift-facade` — Keep the exported boundary intentional
+
+Expose immutable feature state, typed intent, subscription, and close. Adapt it to an `@MainActor` Swift observable model, map expected failures to values, limit public Kotlin declarations, and compile a Swift consumer in CI.
+
 ## Evidence
 
 ### `evidence-follows-owner` — Prove invariants where they live

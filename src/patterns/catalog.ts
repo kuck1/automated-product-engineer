@@ -7,6 +7,7 @@ export type PatternFamily =
   | "long-running-work"
   | "delivery-controls"
   | "product-infrastructure"
+  | "cross-platform-architecture"
   | "evidence";
 
 export type PatternDefinition = {
@@ -276,6 +277,62 @@ export const patternCatalog: PatternDefinition[] = [
     proof: ["Interactive state matrix", "compact pressure", "keyboard and screen-reader path"],
     examples: ["component-library onboarding guide"],
     skills: ["design-system", "responsive-design", "manual-ui-qa"],
+  },
+  {
+    id: "shared-product-kernel",
+    family: "cross-platform-architecture",
+    title: "Share product truth, preserve native edges",
+    situation: "Android and iOS implement the same product policy, state transitions, sync rules, and failure recovery while retaining native experiences.",
+    failure: "Rules drift across platforms, or an oversized shared layer hides lifecycle and operating-system behavior behind leaky abstractions.",
+    owner: "A platform-free Kotlin product kernel owns invariant decisions; native composition roots own lifecycle, UI, capabilities, accessibility, and distribution.",
+    pattern: "Share deterministic domain policy and application orchestration behind explicit ports, expose a small feature facade, and project it through independently tested native shells.",
+    antiPatterns: ["Shared-code percentage as a goal", "Platform APIs in commonMain", "One cross-platform screen abstraction for every feature"],
+    inspect: ["commonMain imports", "duplicated native policy", "feature facades", "native composition roots", "scenario parity"],
+    proof: ["Shared scenario vectors", "Android native journey", "iOS native journey", "mixed-version compatibility"],
+    examples: ["KMP product-kernel blueprint", "Field Relay strangler migration"],
+    skills: ["kotlin-multiplatform-app", "architecture-building"],
+  },
+  {
+    id: "ports-at-platform-edge",
+    family: "cross-platform-architecture",
+    title: "Inject capabilities at the platform edge",
+    situation: "Shared product behavior needs clocks, identity, transport, persistence, telemetry, secure storage, or operating-system capabilities.",
+    failure: "Platform imports spread through common code, expect/actual becomes a service locator, and shared tests require device infrastructure.",
+    owner: "Common code owns narrow capability interfaces; Android and iOS composition roots own concrete implementations and lifetimes.",
+    pattern: "Pass ordinary interfaces into shared use cases and controllers; reserve expect/actual for narrow construction facts that cannot be expressed cleanly as behavior.",
+    antiPatterns: ["Global platform singleton", "Broad expect/actual service surface", "Database driver types in domain policy"],
+    inspect: ["Platform imports", "expect declarations", "constructor dependencies", "fake adapters", "composition roots"],
+    proof: ["Host test with deterministic fakes", "Native adapter contract test", "Cancellation and lifecycle cleanup"],
+    examples: ["WorkItemRepository, OperationIdSource, and ProductTelemetry ports"],
+    skills: ["kotlin-multiplatform-app", "code-review"],
+  },
+  {
+    id: "generated-semantic-contracts",
+    family: "cross-platform-architecture",
+    title: "Generate representations from semantic contracts",
+    situation: "Tokens, component behavior, protocols, analytics, errors, and test scenarios must mean the same thing across Kotlin, Swift, web, server, and documentation.",
+    failure: "Copied constants and handwritten models drift while each platform still passes its isolated tests.",
+    owner: "A canonical, reviewable contract source plus deterministic generators and drift checks.",
+    pattern: "Version canonical sources, validate typed aliases and compatibility, emit platform-native projections with the source digest, and reject stale generated artifacts in CI.",
+    antiPatterns: ["Editing generated files", "Raw-value token sharing without semantic roles", "Separate scenario fixtures per platform"],
+    inspect: ["Canonical sources", "generator determinism", "source digest", "compatibility policy", "generated artifact ownership"],
+    proof: ["Clean regeneration", "Alias-cycle rejection", "Kotlin/Swift digest parity", "Same scenario IDs on both platforms"],
+    examples: ["DTCG token compiler", "Component behavior contract", "Work-item scenario vectors"],
+    skills: ["kotlin-multiplatform-app", "design-system"],
+  },
+  {
+    id: "small-swift-facade",
+    family: "cross-platform-architecture",
+    title: "Export a deliberate Swift-facing feature facade",
+    situation: "SwiftUI consumes shared Kotlin behavior without making Kotlin coroutine and collection details part of every view.",
+    failure: "A huge generated framework API leaks unstable names, exceptions, mutable collections, and lifecycle ambiguity into Swift callers.",
+    owner: "A small shared controller API and an @MainActor Swift observable adapter with explicit subscription cancellation.",
+    pattern: "Expose immutable state, typed intent, current snapshot, subscribe, and close; map expected failures to values and keep most Kotlin declarations internal.",
+    antiPatterns: ["Export every domain type", "Undeclared Kotlin exception crossing into Swift", "Subscription without deterministic cleanup"],
+    inspect: ["Framework public API", "Swift names", "error mapping", "collection conversion", "main-actor ownership", "close semantics"],
+    proof: ["Swift compile smoke test", "Subscription cancellation", "Main-thread state update", "Framework API compatibility report"],
+    examples: ["WorkItemController and WorkItemModel"],
+    skills: ["kotlin-multiplatform-app", "ios-native-app"],
   },
   {
     id: "evidence-follows-owner",

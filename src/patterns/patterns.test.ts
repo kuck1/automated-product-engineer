@@ -19,6 +19,12 @@ test("catalog entries have stable unique IDs and actionable routing", () => {
   }
   assert.equal(getPattern("offline-outbox")?.family, "durable-consistency");
   assert.ok(patternsForSkill("security-review").some((pattern) => pattern.id === "webhook-inbox"));
+  assert.deepEqual(patternsForSkill("kotlin-multiplatform-app").map((pattern) => pattern.id), [
+    "shared-product-kernel",
+    "ports-at-platform-edge",
+    "generated-semantic-contracts",
+    "small-swift-facade",
+  ]);
 });
 
 test("derived state follows the source without a synchronization step", () => {

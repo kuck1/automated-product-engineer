@@ -20,6 +20,8 @@ const entries = [
   "ios/case-studies",
   "android/examples",
   "android/case-studies",
+  "multiplatform/examples",
+  "multiplatform/case-studies",
   "app/api/examples",
   "app/examples/page.tsx",
   "app/guide/page.tsx",

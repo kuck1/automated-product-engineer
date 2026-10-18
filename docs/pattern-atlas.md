@@ -74,6 +74,7 @@ Audit output carries atlas IDs so an agent can load the exact decision guide and
 | Long-running work | imports, exports, media processing, background jobs | durable job state machine |
 | Delivery controls | feature flags, migrations, compatibility, rollback | server authority and release contract |
 | Product infrastructure | components, tokens, responsive behavior, accessibility | governed component system |
+| Cross-platform architecture | shared product rules, platform ports, generated contracts, native projections | product kernel and native composition roots |
 | Evidence | failure paths, races, security, compact layouts, release | tests and real browser or device proof |
 
 ## Pre-build feedback contract

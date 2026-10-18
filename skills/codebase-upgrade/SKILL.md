@@ -1,6 +1,6 @@
 ---
 name: codebase-upgrade
-description: Inspect an existing web, Expo, or React Native codebase, preserve strong patterns, identify high-confidence risks and upgrade opportunities, connect each recommendation to a working example and owning specialist skill, and ask the user which evidence-backed upgrade to pursue before changing architecture.
+description: Inspect an existing web, Expo, React Native, native iOS, native Android, or Kotlin Multiplatform codebase, preserve strong patterns, identify high-confidence risks and upgrade opportunities, connect each recommendation to a working example and owning specialist skill, and ask the user which evidence-backed upgrade to pursue before changing architecture.
 ---
 
 # Codebase Upgrade

@@ -1,6 +1,6 @@
 # Automated Product Engineer for Web and Native
 
-An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js, Expo, React Native, SwiftUI, UIKit, Kotlin, and native Android features.
+An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready web, native Android, native iOS, and Kotlin Multiplatform features.
 
 [Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [Install from npm](https://www.npmjs.com/package/automated-product-engineer)
 
@@ -17,6 +17,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - Native product architecture for Expo Router or React Navigation, OAuth and deep links, app lifecycle, offline work, device capabilities, EAS builds and updates, and store delivery.
 - First-class native iOS architecture for SwiftUI or UIKit, Observation, Swift 6 concurrency, AuthenticationServices, Keychain, local persistence, Apple capabilities, Xcode testing, privacy manifests, signing, TestFlight, and App Store delivery.
 - First-class native Android architecture for Kotlin, Jetpack Compose or Views, ViewModel and Flow, coroutines, Room, DataStore, WorkManager, Credential Manager, App Links, Play Integrity, Android testing, signing, and Play delivery.
+- A Kotlin Multiplatform product-kernel architecture that shares documentation, domain policy, application orchestration, protocols, state and sync rules, semantic tokens, component contracts, and scenario vectors while retaining slim native Compose and SwiftUI shells.
 - Encapsulation and extension-over-modification rules for stable, composable feature boundaries.
 - A complete design-system blueprint with token layers, component hierarchy, enum-driven variants, slots, metadata, and change policy.
 - Decoupled view/controller examples and typed state-machine patterns.
@@ -59,7 +60,7 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command detects Next.js, Expo, bare React Native, native iOS, Swift Package, or native Android projects and installs 18 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, bare React Native, native iOS, Swift Package, native Android, or Kotlin Multiplatform projects and installs 19 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
 
 In an interactive terminal, the installer then offers to analyze the repository. It lets you choose review domains and creates a project-owned onboarding workspace plus a local skill overlay. Run the workflow directly or refresh its static evidence at any time:
 
@@ -123,6 +124,19 @@ pnpm dlx automated-product-engineer launch
 
 The `android-native-app` specialist routes Kotlin work through explicit Compose or View state ownership, structured coroutines, Room/DataStore/WorkManager persistence, Credential Manager and App Links, Android capabilities, real emulator and device proof, signing, internal Play delivery, and staged release readiness.
 
+### Kotlin Multiplatform
+
+In a KMP monorepo, the zero-flag install detects shared modules, source sets, native targets, Android and iOS shells, canonical token and component sources, scenario vectors, modern Android KMP plugin use, and optional Compose Multiplatform. The default launcher opens Android Studio; `--ios` opens the connected Xcode workspace or project.
+
+```bash
+pnpm dlx automated-product-engineer doctor
+pnpm dlx automated-product-engineer audit
+pnpm dlx automated-product-engineer launch
+pnpm dlx automated-product-engineer launch --ios
+```
+
+The `kotlin-multiplatform-app` specialist uses a shared product kernel rather than a shared-code quota: product rules, state transitions, protocols, semantic decisions, and generated contracts stay identical; navigation, lifecycle, UI, secure storage, capabilities, accessibility, and distribution remain native unless a feature-level decision justifies shared UI.
+
 ## Recommended export
 
 ```text
@@ -159,6 +173,8 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
 - [`docs/native-ios-delivery.md`](docs/native-ios-delivery.md): native Swift and Xcode detection, architecture, capabilities, privacy, simulator and device proof, signing, TestFlight, and App Store delivery.
 - [`docs/native-android-delivery.md`](docs/native-android-delivery.md): Kotlin and Gradle detection, Compose architecture, persistence, identity, capabilities, emulator and device proof, signing, and Play delivery.
+- [`docs/kotlin-multiplatform-delivery.md`](docs/kotlin-multiplatform-delivery.md): shared product-kernel architecture, KMP project detection, native shell launch, generated contracts, and parallel delivery.
+- [`docs/research/kotlin-multiplatform-product-kernel.md`](docs/research/kotlin-multiplatform-product-kernel.md): official-source research and the complete cross-platform design rationale.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
 - [`docs/state-and-data-architecture.md`](docs/state-and-data-architecture.md): local, URL, cache, database, controller, API, and service ownership.
@@ -175,9 +191,12 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`ios/case-studies/`](ios/case-studies): native Swift application notes for the Field Relay workflow.
 - [`android/examples/`](android/examples): executable Kotlin versioning, outbox, and identity-scope invariants.
 - [`android/case-studies/`](android/case-studies): native Android application notes for the Field Relay workflow.
+- [`multiplatform/examples/`](multiplatform/examples): cross-platform feature ledgers and scenario ownership contracts.
+- [`multiplatform/case-studies/`](multiplatform/case-studies): incremental shared-kernel migrations built from the native case studies.
 - [`templates/native/`](templates/native): Expo Router auth shell, EAS profiles, and Maestro workflow templates.
 - [`templates/ios/`](templates/ios): SwiftUI composition, Observation, semantic component, and privacy-manifest starting points.
 - [`templates/android/`](templates/android): Compose state, semantic design-system, secure networking, and Android CI starting points.
+- [`templates/kotlin-multiplatform/`](templates/kotlin-multiplatform): runnable shared kernel, native projections, canonical contracts, deterministic token compiler, and parallel CI blueprint.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.
 - [`templates/state/`](templates/state): controller-hook example.

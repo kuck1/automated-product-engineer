@@ -1,6 +1,6 @@
 {
   "name": "automated-product-engineer",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Onboard codebases and install product-engineering skills, architecture guides, testable upgrade plans, templates, and delivery automation for AI coding agents.",
   "type": "module",
   "bin": {
@@ -38,6 +38,9 @@
     "android",
     "jetpack-compose",
     "android-studio",
+    "kotlin-multiplatform",
+    "kmp",
+    "cross-platform",
     "design-system",
     "product-engineering"
   ],
