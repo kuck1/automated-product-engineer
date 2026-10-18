@@ -20,6 +20,7 @@ The original reusable workflows are represented by these installed skills:
 | frontend, API, persistence, and cache work | `frontend-api-db` |
 | Expo and React Native architecture, launch, auth, lifecycle, device capabilities, native QA, builds, updates, and release | `expo-native-app` |
 | native Swift and iOS architecture, Xcode launch, Observation, concurrency, Apple auth, Keychain, persistence, capabilities, privacy, native QA, signing, TestFlight, and App Store delivery | `ios-native-app` |
+| native Kotlin and Android architecture, Gradle launch, Compose and Views, ViewModel and Flow, coroutines, Credential Manager, Room, DataStore, WorkManager, capabilities, native QA, signing, and Play delivery | `android-native-app` |
 | real-browser exploratory QA | `manual-ui-qa` |
 | remote pull-request review | `pr-review` |
 | branch, evidence, CI, and draft-PR workflow | `pr-workflow` |
@@ -43,6 +44,7 @@ The concise `SKILL.md` files route to references when a task needs more depth. T
 - Templates preserve semantic tokens, enum-backed variants, component contracts, extension registries, hooks, focused tests, E2E and visual checks, CI, screenshot capture, retrospective, and pull-request structure.
 - The native profile preserves project detection, development-build selection, OAuth and deep-link rules, lifecycle-aware sessions, offline conflict contracts, permissions, notification routing, EAS runtime compatibility, Maestro verification, and staged update recovery.
 - The native iOS profile preserves Xcode project and Swift package detection, shared schemes, SwiftUI and UIKit boundaries, Observation state ownership, Swift concurrency migration, AuthenticationServices and Keychain contracts, lifecycle and offline recovery, capability and entitlement review, privacy manifests, Swift Testing and XCUI, signing, TestFlight, and App Store release evidence.
+- The native Android profile preserves Gradle project and module detection, Compose and Views boundaries, state-holder and coroutine ownership, Credential Manager and App Link contracts, Room/DataStore/WorkManager persistence, process-death recovery, capability and permission review, Kotlin and device testing, signing, internal tracks, and staged Play release evidence.
 
 ## Deliberate exclusions
 
