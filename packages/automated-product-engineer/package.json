@@ -1,6 +1,6 @@
 {
   "name": "automated-product-engineer",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Onboard codebases and install product-engineering skills, architecture guides, testable upgrade plans, templates, and delivery automation for AI coding agents.",
   "type": "module",
   "bin": {
@@ -30,6 +30,10 @@
     "nextjs",
     "expo",
     "react-native",
+    "swift",
+    "swiftui",
+    "ios",
+    "xcode",
     "design-system",
     "product-engineering"
   ],

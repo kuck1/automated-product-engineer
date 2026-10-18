@@ -73,6 +73,10 @@ def validate_public_content() -> list[str]:
         ".mjs",
         ".py",
         ".sh",
+        ".swift",
+        ".xcprivacy",
+        ".entitlements",
+        ".plist",
     }
     for path in files("*"):
         if (

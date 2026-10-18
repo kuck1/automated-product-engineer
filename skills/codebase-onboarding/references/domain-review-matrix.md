@@ -11,7 +11,7 @@ Review the domains that participate in the product. Mark absent domains as not a
 | Database | Do schema, constraints, indexes, transactions, migrations, retention, and tenancy enforce the model? | migrations, query plans, policies, repositories | `frontend-api-db` |
 | Auth and security | How are identity, cookies or tokens, refresh, authorization, secrets, tenant boundaries, and logout handled? | clients, middleware, RLS, negative tests, incidents | `security-review` |
 | Design system | Are semantic tokens, primitives, components, states, variants, accessibility, and adoption governed? | token sources, component catalog, usage search, visual tests | `design-system` |
-| Responsive and native | Does behavior adapt by content and capability across browser, iOS, and Android lifecycles? | layouts, device runtime, deep links, permissions, offline recovery | `responsive-design`, `expo-native-app` |
+| Responsive and native | Does behavior adapt by content and capability across browser, iOS, and Android lifecycles? | layouts, device runtime, deep links, permissions, offline recovery, Swift concurrency, scenes, entitlements, privacy manifests | `responsive-design`, `expo-native-app`, `ios-native-app` |
 | Testing | Does proof follow ownership, cover failure paths, and avoid brittle implementation mirroring? | unit, integration, component, visual, E2E, native, CI | `manual-ui-qa`, `code-review` |
 | Delivery | Are flags, migrations, observability, rollback, evidence, and release authority explicit? | CI, deploy config, telemetry, runbooks, PR templates | `pr-workflow` |
 | Documentation | Can a new teammate find current decisions, commands, boundaries, and exceptions? | instructions, ADRs, runbooks, generated docs | `codebase-onboarding` |

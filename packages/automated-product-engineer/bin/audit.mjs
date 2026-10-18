@@ -25,6 +25,7 @@ const sourceExtensions = new Set([
   ".mts",
   ".scss",
   ".sql",
+  ".swift",
   ".ts",
   ".tsx",
   ".yaml",
@@ -88,12 +89,80 @@ export function auditProject(project, profile) {
   const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
   const files = collectFiles(project).filter((file) => !path.relative(project, file).startsWith(`packages${path.sep}automated-product-engineer${path.sep}payload${path.sep}`));
   const entries = corpus(project, files);
-  const source = entries.filter((entry) => /\.(?:[cm]?[jt]sx?|sql)$/.test(entry.path) && entry.path !== "packages/automated-product-engineer/bin/audit.mjs");
+  const source = entries.filter((entry) => /\.(?:[cm]?[jt]sx?|sql|swift)$/.test(entry.path) && entry.path !== "packages/automated-product-engineer/bin/audit.mjs");
   const applicationSource = source.filter((entry) => !isTestPath(entry.path));
   const routeFiles = applicationSource.filter((entry) => /(?:^|\/)(?:app\/api|pages\/api|routes?|controllers?)(?:\/|\.)/i.test(entry.path));
   const clientFiles = applicationSource.filter((entry) => /(?:^|\/)(?:app|pages|src|components|hooks)(?:\/|\.)/i.test(entry.path) && !/(?:server|route|api|service|repository|migration)/i.test(entry.path));
   const testFiles = entries.filter((entry) => isTestPath(entry.path));
   const findings = [];
+
+  if (["ios", "swift-package"].includes(profile.kind)) {
+    const swiftSource = applicationSource.filter((entry) => entry.path.endsWith(".swift"));
+    const swiftViews = swiftSource.filter((entry) => /\b(?:SwiftUI|View)\b/.test(entry.text));
+    const observation = matches(swiftSource, /@Observable\b|\bObservableObject\b|@State\b|@Binding\b/);
+    const isolation = matches(swiftSource, /\bactor\s+\w+|@MainActor\b|\bSendable\b/);
+    const uncheckedSendable = matches(swiftSource, /@unchecked\s+Sendable/);
+    const directViewNetworking = swiftViews.filter((entry) => /URLSession\.shared|\bURLSession\s*\(/.test(entry.text));
+    const insecureCredentialStorage = matches(swiftSource, /UserDefaults[\s\S]{0,180}(?:token|secret|password|credential)|(?:token|secret|password|credential)[\s\S]{0,180}UserDefaults/i);
+    const keychain = matches(swiftSource, /\b(?:SecItemAdd|SecItemCopyMatching|SecItemUpdate|SecItemDelete|Keychain)\b/);
+
+    findings.push(finding({
+      id: "ios-state-ownership", patternId: "state-owner-by-lifetime", title: observation.length ? "SwiftUI state ownership is visible" : "Make native state ownership explicit",
+      status: observation.length ? "established" : "opportunity", confidence: observation.length ? "high" : "medium", impact: "high",
+      summary: observation.length ? "The Swift source uses Observation or SwiftUI state wrappers. Verify that each value has one owner at the correct scene, feature, or view lifetime." : "The scan did not find a visible Observation or SwiftUI state contract. Trace one journey before adding shared mutable state.",
+      action: "Classify transient presentation, navigation, feature coordination, remote snapshots, durable local work, secrets, and server policy; keep each in its owning layer.",
+      skill: "ios-native-app + architecture-building", reference: "skills/ios-native-app/references/swiftui-architecture-and-state.md", example: "Swift WorkItem model and identity-scoped cache", evidence: evidence(observation),
+      question: "Which native journey currently has the most state shared across screens, scenes, or devices?",
+    }));
+
+    if (uncheckedSendable.length) findings.push(finding({
+      id: "ios-concurrency", patternId: "versioned-idempotent-write", title: "Verify unchecked Sendable assumptions", status: "risk", confidence: "high", impact: "high",
+      summary: "The project opts mutable or imported types out of Swift's concurrency checks. A false synchronization assumption can reintroduce data races.",
+      action: "Inspect each unchecked conformance, document its synchronization proof, and replace it with isolation or immutable transfer values where possible.",
+      skill: "ios-native-app + code-review", reference: "skills/ios-native-app/references/swiftui-architecture-and-state.md", example: "Actor-isolated versioned store", evidence: evidence(uncheckedSendable),
+      question: "May the first concurrency slice remove or prove these unchecked boundaries?",
+    }));
+    else findings.push(finding({
+      id: "ios-concurrency", patternId: "latest-intent-wins", title: isolation.length ? "Swift concurrency boundaries are visible" : "Adopt explicit Swift concurrency ownership",
+      status: isolation.length ? "established" : "opportunity", confidence: isolation.length ? "high" : "medium", impact: "high",
+      summary: isolation.length ? "Actor, main-actor, or Sendable boundaries exist. Verify cancellation and enable complete checking before Swift 6 mode." : "No actor, main-actor, or Sendable boundary was visible in the Swift scan.",
+      action: "Isolate UI models on MainActor, mutable shared resources in actors, and cross-isolation values as Sendable snapshots; prove an out-of-order response cannot win.",
+      skill: "ios-native-app", reference: "skills/ios-native-app/references/swiftui-architecture-and-state.md", example: "Actor-isolated versioned store", evidence: evidence(isolation),
+      question: "Which async journey is most likely to overlap, retry, or complete out of order?",
+    }));
+
+    if (directViewNetworking.length) findings.push(finding({
+      id: "ios-network-boundary", patternId: "thin-server-boundary", title: "Move networking out of SwiftUI views", status: "risk", confidence: "high", impact: "high",
+      summary: "A SwiftUI view appears to create or use URLSession directly, coupling rendering lifetime to transport and recovery policy.",
+      action: "Inject a Sendable service protocol, keep cancellation explicit, normalize transport failures, and let a main-actor feature model project state for the view.",
+      skill: "ios-native-app + architecture-building", reference: "skills/ios-native-app/references/networking-auth-and-security.md", example: "SwiftUI WorkItem feature template", evidence: evidence(directViewNetworking),
+      question: "Should this view become the first service-boundary migration?",
+    }));
+
+    if (insecureCredentialStorage.length) findings.push(finding({
+      id: "ios-secret-storage", patternId: "identity-scoped-cache", title: "Move credentials out of UserDefaults", status: "risk", confidence: "high", impact: "critical",
+      summary: "A token, secret, password, or credential appears near UserDefaults usage. UserDefaults is not secret storage.",
+      action: "Rotate exposed credentials when applicable, move minimal secrets to a Keychain adapter, and clear identity-scoped data on account transition.",
+      skill: "ios-native-app + security-review", reference: "skills/ios-native-app/references/networking-auth-and-security.md", example: "IdentityScopedCache", evidence: evidence(insecureCredentialStorage),
+      question: "Can the first security slice replace this storage and exercise restore, refresh, logout, and account switch?",
+    }));
+    else if (keychain.length) findings.push(finding({
+      id: "ios-secret-storage", patternId: "identity-scoped-cache", title: "Keychain-backed secret storage", status: "established", confidence: "high", impact: "high",
+      summary: "Keychain usage is present. Verify accessibility, access group, migration, deletion, and concurrent refresh behavior.",
+      action: "Keep only minimal secrets in Keychain and exercise restore, expiry, revocation, logout, and account switching.",
+      skill: "ios-native-app + security-review", reference: "skills/ios-native-app/references/networking-auth-and-security.md", example: "IdentityScopedCache", evidence: evidence(keychain),
+      question: "Do you want the next pass to trace one complete session lifecycle?",
+    }));
+
+    findings.push(finding({
+      id: "ios-privacy-manifest", patternId: "evidence-follows-owner", title: profile.xcode?.privacyManifests?.length ? "Privacy manifest is present" : "Add and reconcile the privacy manifest",
+      status: profile.xcode?.privacyManifests?.length ? "established" : "opportunity", confidence: "high", impact: "high",
+      summary: profile.xcode?.privacyManifests?.length ? "A PrivacyInfo.xcprivacy file was detected. Its declarations still need to match source, dependencies, analytics, retention, and App Store answers." : "No PrivacyInfo.xcprivacy file was detected for the native iOS project.",
+      action: "Generate the privacy report and reconcile collected data, tracking domains, required-reason APIs, dependency manifests, product copy, and App Store disclosures.",
+      skill: "ios-native-app + security-review", reference: "skills/ios-native-app/references/testing-signing-and-release.md", example: "Native iOS privacy manifest template", evidence: profile.xcode?.privacyManifests ?? [],
+      question: "Should privacy inventory be part of the first native readiness slice?",
+    }));
+  }
 
   const services = matches(applicationSource, /\b(?:class|function|const)\s+\w*(?:Service|Repository)|\b(?:service|repository)\.[A-Za-z_]/i);
   const directRoutePersistence = matches(routeFiles, /(?:from\s+["']@?\/?(?:lib\/)?(?:supabase|prisma)|\b(?:prisma|supabase)\.(?:from|rpc|\w+\.(?:create|update|delete|upsert)))/i);

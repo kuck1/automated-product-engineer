@@ -18,24 +18,24 @@ const components = ["skills", "docs", "templates", "examples"];
 
 const adapters = {
   cursorRule: `---
-description: Apply the automated product engineering workflow for substantial product work across web, React Native, and Expo.
+description: Apply the automated product engineering workflow for substantial product work across web, React Native, Expo, Swift, and native iOS.
 globs:
 alwaysApply: false
 ---
 
-Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. For Expo or React Native work, load the expo-native-app skill before changing routing, auth, native configuration, device capabilities, builds, updates, or store delivery.
+Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. Use expo-native-app for Expo or React Native and ios-native-app for Swift, SwiftUI, UIKit, Xcode, Apple capabilities, signing, TestFlight, or App Store work.
 `,
-  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. For Expo or React Native, use the \`expo-native-app\` specialist and verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
+  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS. Verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
 `,
   windsurfRule: `# Automated Product Engineer
 
-For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. For Expo or React Native, load \`expo-native-app\` before changing navigation, auth, native configuration, device capabilities, builds, updates, or store delivery. Preserve repository instructions and verify on the actual target platform.
+For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS before changing navigation, auth, capabilities, builds, or distribution. Preserve repository instructions and verify on the actual target platform.
 `,
-  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. If this is Expo or React Native, use \`expo-native-app\`, verify native lifecycle and platform behavior, and include simulator or device evidence.
+  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS. Verify lifecycle and platform behavior and include simulator or device evidence.
 `,
   genericWorkflow: `# Automated Product Engineer
 
-Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\` and be verified in the relevant native runtime rather than inferred from a browser viewport.
+Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\`; Swift and native iOS work must use \`ios-native-app\`. Verify native behavior in a simulator or device rather than inferring it from a browser viewport.
 `,
 };
 
@@ -45,6 +45,7 @@ const sharedEntries = {
 };
 const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/patterns", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
 const nativeExamples = ["native/examples", "native/case-studies"];
+const iosExamples = ["ios/examples", "ios/case-studies"];
 const onboardingDomains = [
   ["product-requirements", "Product requirements and journeys", "automated-product-engineer"],
   ["architecture", "Architecture and ownership boundaries", "architecture-building"],
@@ -53,7 +54,7 @@ const onboardingDomains = [
   ["database", "Database design, migrations, tenancy, and retention", "frontend-api-db"],
   ["auth-security", "Authentication, sessions, authorization, and secrets", "security-review"],
   ["design-system", "Design system, semantic tokens, and component adoption", "design-system"],
-  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app"],
+  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app + ios-native-app"],
   ["testing-ci", "Testing, visual evidence, E2E, and CI", "manual-ui-qa + code-review"],
   ["delivery-observability", "Delivery, flags, observability, and rollback", "pr-workflow"],
   ["documentation", "Documentation, decisions, and developer experience", "codebase-onboarding"],
@@ -69,7 +70,7 @@ function usage() {
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch [--ios|--android|--web] [--tunnel] [--clear]",
     "  pnpm dlx automated-product-engineer install [--target <target>] [--project <path>] [--only <parts>] [--force]", "",
-    "The installer detects Next.js, Expo, or bare React Native automatically.",
+    "The installer detects Next.js, Expo, bare React Native, native iOS, or a Swift package automatically.",
     "The onboarding command creates a project-owned engineering contract and upgrade program.",
     "The audit command reads the codebase without executing application source.",
     `Targets: ${targets.join(", ")}`,
@@ -135,20 +136,95 @@ function detectPackageManager(project, manifest) {
   return String(manifest?.packageManager ?? "npm").split("@")[0];
 }
 
+function findXcodeContainers(project) {
+  const result = [];
+  const visit = (directory, depth) => {
+    if (depth > 2 || !existsSync(directory)) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      if (entry.name.startsWith(".") || ["node_modules", "Pods", "build", "DerivedData"].includes(entry.name)) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory() && /\.(?:xcworkspace|xcodeproj)$/.test(entry.name)) result.push(path.relative(project, absolute));
+      else if (entry.isDirectory()) visit(absolute, depth + 1);
+    }
+  };
+  visit(project, 0);
+  return result;
+}
+
+function firstBuildSetting(text, key) {
+  const match = text.match(new RegExp(`${key}\\s*=\\s*([^;]+);`));
+  return match ? match[1].trim().replace(/^\"|\"$/g, "") : null;
+}
+
+function detectXcodeProject(project, containers) {
+  const workspaces = containers.filter((item) => item.endsWith(".xcworkspace") && !item.includes(".xcodeproj/"));
+  const projects = containers.filter((item) => item.endsWith(".xcodeproj"));
+  const projectFile = projects[0] ? path.join(project, projects[0], "project.pbxproj") : null;
+  const settings = projectFile && existsSync(projectFile) ? readFileSync(projectFile, "utf8") : "";
+  const schemes = [...workspaces, ...projects].flatMap((item) => {
+    const directory = path.join(project, item, "xcshareddata", "xcschemes");
+    return existsSync(directory) ? readdirSync(directory).filter((name) => name.endsWith(".xcscheme")).map((name) => name.replace(/\.xcscheme$/, "")) : [];
+  });
+  const entitlements = [];
+  const privacyManifests = [];
+  const swiftFiles = [];
+  const visit = (directory, depth = 0) => {
+    if (depth > 6 || !existsSync(directory)) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (entry.name.startsWith(".") || ["node_modules", "Pods", "build", "DerivedData", ".build"].includes(entry.name)) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory() && !/\.(?:xcworkspace|xcodeproj)$/.test(entry.name)) visit(absolute, depth + 1);
+      else if (entry.isFile()) {
+        const relative = path.relative(project, absolute);
+        if (entry.name.endsWith(".entitlements")) entitlements.push(relative);
+        if (entry.name === "PrivacyInfo.xcprivacy") privacyManifests.push(relative);
+        if (entry.name.endsWith(".swift") && entry.name !== "Package.swift") swiftFiles.push(relative);
+      }
+    }
+  };
+  visit(project);
+  const entitlementText = entitlements.map((item) => readFileSync(path.join(project, item), "utf8")).join("\n");
+  const capabilityKeys = [
+    ["associated-domains", "com.apple.developer.associated-domains"],
+    ["sign-in-with-apple", "com.apple.developer.applesignin"],
+    ["push-notifications", "aps-environment"],
+    ["keychain-sharing", "keychain-access-groups"],
+    ["app-groups", "com.apple.security.application-groups"],
+    ["icloud", "com.apple.developer.icloud-services"],
+  ];
+  return {
+    workspace: workspaces[0] ?? null,
+    project: projects[0] ?? null,
+    schemes: [...new Set(schemes)].sort(),
+    bundleIdentifier: firstBuildSetting(settings, "PRODUCT_BUNDLE_IDENTIFIER"),
+    deploymentTarget: firstBuildSetting(settings, "IPHONEOS_DEPLOYMENT_TARGET"),
+    swiftVersion: firstBuildSetting(settings, "SWIFT_VERSION"),
+    entitlements,
+    privacyManifests,
+    swiftFileCount: swiftFiles.length,
+    hasTests: swiftFiles.some((item) => /(?:^|\/).*Tests?(?:\/|$)|Tests?\.swift$/i.test(item)),
+    capabilities: capabilityKeys.filter(([, key]) => entitlementText.includes(`<key>${key}</key>`)).map(([name]) => name),
+  };
+}
+
 function detectProject(project) {
   const manifest = readJson(path.join(project, "package.json")) ?? {};
   const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
   const hasExpo = Boolean(dependencies.expo);
   const hasReactNative = Boolean(dependencies["react-native"]);
   const hasNext = Boolean(dependencies.next);
-  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : "unknown";
+  const xcodeContainers = findXcodeContainers(project);
+  const hasSwiftPackage = existsSync(path.join(project, "Package.swift"));
+  const hasNativeIOS = xcodeContainers.some((item) => item.endsWith(".xcodeproj") || item.endsWith(".xcworkspace"));
+  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : hasNativeIOS ? "ios" : hasSwiftPackage ? "swift-package" : "unknown";
   const appJson = readJson(path.join(project, "app.json"));
   const expoConfig = appJson?.expo ?? appJson ?? {};
   const dynamicConfigFile = ["app.config.ts", "app.config.js", "app.config.mjs", "app.config.cjs"]
     .find((name) => existsSync(path.join(project, name))) ?? null;
-  const configSource = appJson ? "app.json" : dynamicConfigFile ?? null;
-  const packageManager = detectPackageManager(project, manifest);
-  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : "unknown";
+  const configSource = appJson ? "app.json" : dynamicConfigFile ?? (["ios", "swift-package"].includes(kind) ? (xcodeContainers.find((item) => item.endsWith(".xcworkspace")) ?? xcodeContainers.find((item) => item.endsWith(".xcodeproj")) ?? "Package.swift") : null);
+  const packageManager = kind === "ios" ? "xcode" : kind === "swift-package" ? "swiftpm" : detectPackageManager(project, manifest);
+  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : kind === "ios" ? "swiftui-or-uikit" : "unknown";
+  const xcode = detectXcodeProject(project, xcodeContainers);
   const nativeDirectories = ["ios", "android"].filter((name) => existsSync(path.join(project, name)));
   const capabilities = [
     ["auth", ["expo-auth-session", "@react-native-google-signin/google-signin", "@supabase/supabase-js"]],
@@ -161,17 +237,20 @@ function detectProject(project) {
     ["background-tasks", ["expo-background-task", "expo-task-manager"]],
   ].filter(([, packages]) => packages.some((name) => dependencies[name])).map(([name]) => name);
   const findings = [];
-  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, or React Native dependency was detected." });
+  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, React Native, Xcode project, or Swift package was detected." });
   if (["expo", "react-native"].includes(kind) && !expoConfig.scheme && !dynamicConfigFile) findings.push({ level: "warning", code: "scheme-missing", message: "No app scheme was found. OAuth redirects and production deep links need a stable scheme." });
   if (kind === "expo" && dynamicConfigFile && !appJson) findings.push({ level: "note", code: "dynamic-config", message: `Detected ${dynamicConfigFile}. Run Expo config to verify resolved schemes, identifiers, plugins, and permissions.` });
   if (kind === "expo" && !existsSync(path.join(project, "eas.json"))) findings.push({ level: "note", code: "eas-unconfigured", message: "No eas.json was found. Local development still works; EAS builds and updates are not configured yet." });
   if (kind === "expo" && dependencies["expo-auth-session"] && !dependencies["expo-dev-client"]) findings.push({ level: "warning", code: "auth-needs-dev-build", message: "OAuth is present without expo-dev-client. Stable native redirects should be tested in a development build, not Expo Go." });
   if (kind === "expo" && dependencies["expo-notifications"] && !dependencies["expo-dev-client"]) findings.push({ level: "warning", code: "push-needs-dev-build", message: "Push notifications require a development build or release build." });
+  if (kind === "ios" && !xcode.schemes.length) findings.push({ level: "warning", code: "shared-scheme-missing", message: "No shared Xcode scheme was found. Share the application scheme so launch and CI do not depend on one developer's local state." });
+  if (kind === "ios" && !xcode.privacyManifests.length) findings.push({ level: "note", code: "privacy-manifest-missing", message: "No PrivacyInfo.xcprivacy was found. Verify collected data, tracking domains, and required-reason APIs before distribution." });
+  if (kind === "ios" && !xcode.hasTests) findings.push({ level: "note", code: "ios-tests-missing", message: "No Swift test source was detected. Add focused domain tests and at least one critical XCUI journey." });
   return {
     schemaVersion: 1, kind, packageManager, router,
     configSource,
-    app: { name: expoConfig.name ?? manifest.name ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? null, iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? null, androidPackage: expoConfig.android?.package ?? null },
-    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities, findings,
+    app: { name: expoConfig.name ?? manifest.name ?? xcode.schemes[0] ?? xcode.project?.replace(/\.xcodeproj$/, "") ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? (kind === "ios" ? xcode.schemes[0] ?? null : null), iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? xcode.bundleIdentifier, androidPackage: expoConfig.android?.package ?? null },
+    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities: kind === "ios" ? xcode.capabilities : capabilities, xcode, findings,
   };
 }
 
@@ -234,6 +313,15 @@ function installationGuide(target, selected, profile) {
 - Run \`pnpm dlx automated-product-engineer doctor\` after native configuration changes.
 - Run \`pnpm dlx automated-product-engineer launch\` to start the detected Expo development runtime.
 ` : "";
+  const iosStart = ["ios", "swift-package"].includes(profile.kind) ? `
+## Native iOS project path
+
+- Start with \`skills/ios-native-app/SKILL.md\` for SwiftUI or UIKit architecture, Observation, Swift concurrency, auth, persistence, capabilities, testing, signing, TestFlight, and App Store delivery.
+- Read \`docs/native-ios-delivery.md\` and \`checklists/ios-release.md\` before planning distribution.
+- Use \`ios/examples/\` for executable domain invariants and \`templates/ios/\` for SwiftUI integration patterns. Adapt them into the application; do not import this reference directory at runtime.
+- Run \`pnpm dlx automated-product-engineer doctor\` after changing targets, schemes, entitlements, privacy declarations, signing, or deployment settings.
+- Run \`pnpm dlx automated-product-engineer launch\` to open the detected workspace or project in Xcode.
+` : "";
   return `# Automated Product Engineer — Local Toolkit
 
 This is an installed reference kit. Adapt its patterns to the host repository; do not import this directory as application runtime code.
@@ -248,7 +336,7 @@ This is an installed reference kit. Adapt its patterns to the host repository; d
 ## Installed parts
 
 ${included}
-${nativeStart}
+${nativeStart}${iosStart}
 ## Shared starting points
 
 - \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
@@ -378,7 +466,7 @@ async function install(options) {
   if (options.only.includes("skills")) copySkills(project, options.target, options.force, installedFiles);
   for (const component of ["docs", "templates"]) if (options.only.includes(component)) for (const entry of sharedEntries[component]) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   if (options.only.includes("examples")) {
-    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples];
+    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : ["ios", "swift-package"].includes(profile.kind) ? iosExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples, ...iosExamples];
     for (const entry of entries) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   }
   writeManagedFile(path.join(toolkitRoot, "INSTALLATION.md"), installationGuide(options.target, options.only, profile), options.force);
@@ -389,7 +477,7 @@ async function install(options) {
   console.log(`Parts: ${options.only.join(", ")}`);
   console.log(`Toolkit: ${toolkitRoot}`);
   if (profile.findings.length) console.log(`Doctor: ${profile.findings.length} item${profile.findings.length === 1 ? "" : "s"} to review. Run: pnpm dlx automated-product-engineer doctor`);
-  console.log(profile.kind === "expo" ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
+  console.log(["expo", "ios", "swift-package"].includes(profile.kind) ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
   if (isInteractive() && options.only.includes("skills")) {
     const answer = await ask("Analyze this codebase and prepare its onboarding workspace now? [Y/n] ");
     if (!/^n(?:o)?$/i.test(answer)) await onboard(options, true);
@@ -409,6 +497,15 @@ function doctor(options) {
   console.log(`Scheme: ${profile.app.scheme ?? "missing"}`);
   console.log(`Native projects: ${profile.nativeDirectories.join(", ") || "managed/CNG"}`);
   console.log(`Capabilities: ${profile.capabilities.join(", ") || "none detected"}`);
+  if (["ios", "swift-package"].includes(profile.kind)) {
+    console.log(`Xcode workspace: ${profile.xcode.workspace ?? "not found"}`);
+    console.log(`Xcode project: ${profile.xcode.project ?? "not found"}`);
+    console.log(`Shared schemes: ${profile.xcode.schemes.join(", ") || "none"}`);
+    console.log(`Bundle identifier: ${profile.xcode.bundleIdentifier ?? "not resolved"}`);
+    console.log(`iOS deployment target: ${profile.xcode.deploymentTarget ?? "not resolved"}`);
+    console.log(`Swift language version: ${profile.xcode.swiftVersion ?? "not resolved"}`);
+    console.log(`Privacy manifests: ${profile.xcode.privacyManifests.join(", ") || "none"}`);
+  }
   if (!profile.findings.length) console.log("Doctor: ready — no configuration warnings detected.");
   for (const finding of profile.findings) console.log(`${finding.level.toUpperCase()} ${finding.code}: ${finding.message}`);
 }
@@ -423,7 +520,21 @@ function audit(options) {
 function launch(options) {
   const project = resolveProject(options.project);
   const profile = detectProject(project);
-  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo or React Native project.");
+  if (["ios", "swift-package"].includes(profile.kind)) {
+    if (options.platform && options.platform !== "ios") throw new Error("Native iOS launch supports the iOS platform only.");
+    if (options.tunnel || options.clear) throw new Error("--tunnel and --clear are Expo options and are unavailable for native iOS projects.");
+    const target = profile.xcode.workspace ?? profile.xcode.project ?? (existsSync(path.join(project, "Package.swift")) ? "Package.swift" : null);
+    if (!target) throw new Error("No Xcode workspace, Xcode project, or Package.swift was found.");
+    const command = "open";
+    const args = ["-a", "Xcode", path.join(project, target)];
+    console.log(`Opening ${profile.app.name} in Xcode with ${command} ${args.join(" ")}`);
+    if (options.dryRun) return;
+    const result = spawnSync(command, args, { cwd: project, stdio: "inherit", env: process.env });
+    if (result.error) throw result.error;
+    process.exitCode = result.status ?? 0;
+    return;
+  }
+  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo, React Native, native iOS, or Swift package project.");
   const runners = { pnpm: ["pnpm", ["exec"]], npm: ["npx", []], yarn: ["yarn", []], bun: ["bunx", []] };
   const [command, prefix] = runners[profile.packageManager] ?? runners.npm;
   const args = [...prefix];
