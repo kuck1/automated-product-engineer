@@ -13,6 +13,8 @@ Read [references/supabase-auth-sessions.md](references/supabase-auth-sessions.md
 
 Use `codebase-upgrade` for a broad repository assessment. Return here only after the audit identifies a concrete auth, secret, authorization, session, or data-isolation path that needs exploitability review.
 
+Read [`../codebase-upgrade/references/pattern-atlas.md`](../codebase-upgrade/references/pattern-atlas.md) for `identity-scoped-cache`, `object-tenant-authorization`, `webhook-inbox`, `resumable-upload`, and `server-enforced-feature-flag`. Use the atlas proof as the minimum negative-test matrix, then extend it for the repository's actual threat boundary.
+
 
 ## Intake and pushback
 

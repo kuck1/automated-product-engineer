@@ -42,7 +42,7 @@ const sharedEntries = {
   docs: ["README.md", "AGENTS.md", "LICENSE", "docs", "checklists"],
   templates: ["templates"],
 };
-const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
+const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/patterns", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
 const nativeExamples = ["native/examples", "native/case-studies"];
 
 function usage() {
@@ -232,6 +232,7 @@ ${nativeStart}
 
 - \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
 - \`docs/codebase-upgrades.md\`: audit interpretation, pattern mapping, and user decision workflow.
+- \`docs/pattern-atlas.md\`: stable pattern IDs, executable references, proof, and specialist routing.
 - \`docs/how-to-use.md\`: end-to-end workflow.
 - \`docs/knowledge-coverage.md\`: maintained capability coverage.
 - \`docs/architecture.md\`: ownership and boundaries.

@@ -11,6 +11,8 @@ Read [references/full-stack-vertical-slice.md](references/full-stack-vertical-sl
 
 Read [references/state-management-scenarios.md](references/state-management-scenarios.md) when state crosses components, pages, tabs, windows, realtime channels, or users. It includes ownership decisions, points and aggregate updates, request races, multi-window writes, chat, collaborative editing, and a focused failure matrix.
 
+Read [`../codebase-upgrade/references/pattern-atlas.md`](../codebase-upgrade/references/pattern-atlas.md) when the feature involves offline replay, webhook delivery, background jobs, resumable uploads, rate limits, feature flags, multi-system compensation, or when an existing codebase needs a pattern recommendation before implementation.
+
 Read [references/analytics-instrumentation.md](references/analytics-instrumentation.md) when the feature adds or changes product analytics, experiments, impressions, mutation outcomes, or failure telemetry.
 
 For a whole-codebase state or persistence assessment, start with `codebase-upgrade` and its pattern catalog, then use this skill to implement the selected vertical slice.

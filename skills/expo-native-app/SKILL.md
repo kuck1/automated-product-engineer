@@ -5,6 +5,8 @@ description: Build, launch, debug, and deliver production Expo or React Native a
 
 # Expo Native App
 
+Read [`../codebase-upgrade/references/pattern-atlas.md`](../codebase-upgrade/references/pattern-atlas.md) when native work involves offline outboxes, identity-scoped cache cleanup, resumable uploads, retries, or cross-device concurrency. Adapt the framework-light invariant to the app's lifecycle and storage adapters; verify it in a development build or release runtime when native capabilities participate.
+
 Treat iOS, Android, and web as distinct runtimes sharing a product contract. Do not infer native correctness from a responsive browser view or treat Expo Go as a production-equivalent host.
 
 ## Establish the native contract

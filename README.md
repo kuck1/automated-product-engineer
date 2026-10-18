@@ -109,6 +109,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 - [`app/`](app): public product site, interactive examples, and thin API routes.
 - [`src/examples/`](src/examples): full-stack case studies with UI state, server cache, domain services, authorization, repositories, and adapters.
+- [`src/patterns/`](src/patterns): typed pattern registry plus executable references and focused tests for races, retries, offline work, trust boundaries, long-running work, and delivery controls.
 - [`src/ui/tokens.ts`](src/ui/tokens.ts): human-readable semantic token registry and swappable theme and shape presets.
 - [`app/system/`](app/system): interactive design-system tour, live token playground, and hierarchy-based component catalog.
 - [`supabase/migrations/`](supabase/migrations): normalized example schema, constraints, indexes, and row-level security.
@@ -117,6 +118,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
 - [`docs/codebase-upgrades.md`](docs/codebase-upgrades.md): evidence-backed repository audit, pattern mapping, and reviewable upgrade selection.
+- [`docs/pattern-atlas.md`](docs/pattern-atlas.md): the high-level content architecture, stable IDs, product situations, proofs, and agent routing contract.
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.

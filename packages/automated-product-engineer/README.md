@@ -18,7 +18,9 @@ Audit an existing application before choosing an upgrade:
 pnpm dlx automated-product-engineer audit
 ```
 
-The audit is static and read-only. It returns evidence-backed risks, opportunities, patterns to preserve, related working examples, the specialist skill for each concern, and a focused question for the user. Add `--json` for agent-readable output.
+The audit is static and read-only. It returns a pre-build current-system feedback block, evidence-backed risks and opportunities, patterns to preserve, stable pattern-atlas IDs, related executable examples, the specialist skill for each concern, and a focused question only when a material decision remains. Add `--json` for agent-readable output.
+
+The installed pattern atlas covers state ownership, stale requests, optimistic rollback, versioned and idempotent writes, offline outboxes, realtime echo, cross-tab leadership, identity-scoped caches, object and tenant authorization, webhooks, background jobs, resumable uploads, rate-limit backoff, compensated workflows, server-enforced flags, governed components, and evidence. Framework-light examples include focused tests and are reference material rather than runtime dependencies.
 
 For Expo projects:
 
