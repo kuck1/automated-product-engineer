@@ -71,7 +71,7 @@ function Specimen({ level, name, description, children }: { level: string; name:
   );
 }
 
-export function DesignSystemExplorer() {
+export function DesignSystemExplorer({ embedded = false }: { embedded?: boolean }) {
   const [themeName, setThemeName] = useState<ThemePresetName>("violet");
   const [shapeName, setShapeName] = useState<ShapePresetName>("balanced");
   const [density, setDensity] = useState<DensityName>("comfortable");
@@ -86,13 +86,15 @@ export function DesignSystemExplorer() {
     "--radius-lg": shape.lg,
   };
 
+  const Shell = embedded ? "section" : "main";
+
   return (
-    <main className="design-system-shell">
-      <SiteHeader />
+    <Shell className={`design-system-shell${embedded ? " design-system-embedded" : ""}`} id={embedded ? "guide-design-system" : undefined}>
+      {!embedded && <SiteHeader />}
 
       <section className="system-tour-hero">
         <div>
-          <SectionEyebrow>DESIGN SYSTEM TOUR</SectionEyebrow>
+          <SectionEyebrow>{embedded ? "03 / DESIGN SYSTEM" : "DESIGN SYSTEM TOUR"}</SectionEyebrow>
           <h1>Design tokens.<br /><span>Components and patterns.</span></h1>
         </div>
         <div className="system-tour-intro">
@@ -186,6 +188,6 @@ export function DesignSystemExplorer() {
           </CatalogSection>
         </div>
       </div>
-    </main>
+    </Shell>
   );
 }

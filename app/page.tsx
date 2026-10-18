@@ -26,16 +26,16 @@ export default function HomePage() {
         <div className="hero-grid">
           <div>
             <SectionEyebrow>OPEN-SOURCE PRODUCT ENGINEERING SYSTEM</SectionEyebrow>
-            <h1>Beautiful features.<span>In a day. Not a week.</span></h1>
+            <h1>Daily product work starts with business needs.<span>Not technical wrangling.</span></h1>
           </div>
           <div className="hero-copy">
-            <p>A practical Next.js reference for turning designs and product intent into typed UI, secure APIs, durable state, tested workflows, and a reviewable pull request.</p>
+            <p>Describe the outcome. The system handles state, security, persistence, failure recovery, testing, and delivery behind the scenes, so you can stay focused on what the product should do.</p>
             <div className="hero-actions">
               <Link className="button button-primary" href="/quick-start">Quick start <ArrowRight size={17} /></Link>
               <Link className="text-link" href="/examples?view=releases">Explore the case studies <ArrowRight size={15} /></Link>
               <a className="text-link" href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
             </div>
-            <small className="live-note"><i /> The site is the reference implementation.</small>
+            <small className="live-note"><i /> Inspect the technical system whenever you need it.</small>
           </div>
         </div>
         <HeroPipeline />
@@ -47,42 +47,43 @@ export default function HomePage() {
 
       <section className="section examples-section" id="examples">
         <div className="section-heading">
-          <div><SectionEyebrow>WORKING CASE STUDIES</SectionEyebrow><h2>Two complete vertical slices.</h2></div>
-          <p>Explore two distinct client applications with authorization, validation, optimistic state, concurrency protection, persistence adapters, and failure UX.</p>
+          <div><SectionEyebrow>BUSINESS NEEDS IN PRACTICE</SectionEyebrow><h2>See how little the technical work asks of you.</h2></div>
+          <p>Choose the next business action: decide what can ship or move a customer toward value. State, policy, persistence, failure recovery, and verification stay behind the workflow.</p>
         </div>
         <div className="case-grid">
           <Link className="case-card case-release" href="/examples?view=releases" aria-label="Open the Release Readiness case study">
-            <div className="case-top"><Badge tone="info">Case study 01</Badge><span>Release operations</span></div>
+            <div className="case-top"><Badge tone="info">Case study 01</Badge><span className="case-system-name">Checkpoint OS · release operations</span></div>
             <div className="case-visual release-visual">
+              <small className="case-visual-label">Release / mobile checkout</small>
               <div className="mini-release-row"><i className="status-dot status-violet" /><span>Mobile checkout</span><strong>82%</strong></div>
               <div className="mini-progress"><i /></div>
               <div className="mini-gates"><span><Check size={12} /> Design QA</span><span><Check size={12} /> E2E</span><span className="is-pending">• Security</span></div>
             </div>
             <h3>Release Readiness</h3>
-            <p>Dependency-aware gates, approval policy, guarded state transitions, optimistic mutations, and stale-write protection.</p>
-            <span className="card-link">Open Release Readiness <ArrowRight size={16} /></span>
+            <p>Decide what can ship, resolve what is blocked, and move a release forward. Gates, approvals, concurrency, and rollback stay behind the workflow.</p>
+            <span className="card-link">Decide what can ship <ArrowRight size={16} /></span>
           </Link>
           <Link className="case-card case-onboarding" href="/examples?view=onboarding" aria-label="Open the Onboarding Operations case study">
-            <div className="case-top"><Badge tone="success">Case study 02</Badge><span>Customer operations</span></div>
+            <div className="case-top"><Badge tone="success">Case study 02</Badge><span className="case-system-name">Clarity System · customer operations</span></div>
             <div className="case-visual onboarding-visual">
               <div className="health-ring"><span>74</span><small>health</small></div>
-              <div><strong>Northstar Health</strong><small>3 of 4 milestones</small><div className="milestone-dots"><i /><i /><i /><i className="pending" /></div></div>
+              <div><span className="journey-kicker">Customer journey</span><strong>Northstar Health</strong><small>3 of 4 milestones</small><div className="milestone-dots"><i /><i /><i /><i className="pending" /></div></div>
             </div>
             <h3>Onboarding Operations</h3>
-            <p>SLA and adoption scoring, owner workload, milestone policy, tenant boundaries, and a validated launch transition.</p>
-            <span className="card-link">Open Onboarding Operations <ArrowRight size={16} /></span>
+            <p>See which customer needs attention and move each account toward value. Health scoring, tenant safety, persistence, and recovery stay behind the workflow.</p>
+            <span className="card-link">Move customers toward value <ArrowRight size={16} /></span>
           </Link>
         </div>
       </section>
 
       <section className="section system-section" id="system">
         <div className="system-copy">
-          <SectionEyebrow>THE REPOSITORY IS THE PLAYBOOK</SectionEyebrow>
-          <h2>Opinionated where architecture matters.</h2>
-          <p>Stable contracts at every boundary make the code easy to extend without turning each new feature into a rewrite.</p>
+          <SectionEyebrow>TECHNICAL DECISIONS, ALREADY MADE</SectionEyebrow>
+          <h2>Stay focused on what the product should do.</h2>
+          <p>Stable contracts keep state, security, persistence, and failure recovery out of the daily product conversation while leaving every decision open to inspection.</p>
           <div className="system-actions">
-            <a className="button button-secondary" href="/system"><Layers3 size={17} /> Tour the design system</a>
-            <Link className="text-link" href="/guide"><BookOpen size={15} /> Read the developer guide</Link>
+            <a className="button button-secondary" href="/guide#guide-design-system"><Layers3 size={17} /> Tour the design system</a>
+            <Link className="text-link" href="/guide"><BookOpen size={15} /> Go behind the scenes</Link>
           </div>
         </div>
         <div className="layers-card">
@@ -102,12 +103,12 @@ export default function HomePage() {
 
       <section className="section final-cta">
         <span className="cta-icon"><Sparkles size={26} /></span>
-        <h2>Build against a system you can inspect.</h2>
-        <p>Copy the skills, run the examples, and adapt the same contracts to your own product.</p>
+        <h2>Start with the outcome.</h2>
+        <p>Bring the business need. The system supplies the implementation path, safeguards, tests, and evidence.</p>
         <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
       </section>
 
-      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Developer guide</Link><Link href="/library">Complete skill library</Link></footer>
+      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
     </main>
   );
 }

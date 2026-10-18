@@ -22,7 +22,6 @@ export function ExampleReferenceKit({ kit }: { kit: ReferenceKit }) {
     <section className="example-reference-kit" aria-label={`${kit.name} reference kit`}>
       <header>
         <div><span className="reference-kit-badge">{kit.label} · {kit.systemName}</span><h3>Inspect how this client app was built.</h3><p>Product intent, visual rules, implementation boundaries, and the skills that guide this example.</p></div>
-        <Link href="/system">Open our shared system <ArrowUpRight size={14} /></Link>
       </header>
       <div className="reference-kit-tabs" role="tablist" aria-label="Reference kit sections">
         {sections.map(({ id, label, icon: Icon }) => <button type="button" role="tab" aria-selected={section === id} className={section === id ? "active" : ""} key={id} onClick={() => setSection(id)}><Icon size={14} />{label}</button>)}

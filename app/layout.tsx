@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Automated Product Engineer",
-  description: "An opinionated, open-source Next.js reference for shipping complete product work with AI.",
+  description: "Start daily product work with business needs while an open-source engineering system handles the technical details behind the scenes.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

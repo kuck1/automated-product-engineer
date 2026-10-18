@@ -16,7 +16,7 @@ export default function QuickStartPage() {
       <section className="quick-start-hero">
         <div>
           <SectionEyebrow>QUICK START</SectionEyebrow>
-          <h1>Install the system.<br /><span>Ship a complete feature.</span></h1>
+          <h1>Install the system.<br /><span>Ship any feature.</span></h1>
         </div>
         <div className="quick-start-intro">
           <p>Add the system to your AI agent, provide the product contract, and follow the same path from implementation through review evidence.</p>
@@ -48,8 +48,8 @@ export default function QuickStartPage() {
 
       <section className="quick-start-next">
         <Copy size={22} />
-        <div><h2>See the architecture before adapting it.</h2><p>The developer guide traces one action through UI state, transport, domain policy, persistence, and verification.</p></div>
-        <Link className="button button-secondary" href="/guide">Open developer guide <ArrowRight size={15} /></Link>
+        <div><h2>See what happens behind the scenes.</h2><p>Trace one action through UI state, transport, domain policy, persistence, and verification before adapting the system.</p></div>
+        <Link className="button button-secondary" href="/guide">Open behind the scenes <ArrowRight size={15} /></Link>
       </section>
     </main>
   );
