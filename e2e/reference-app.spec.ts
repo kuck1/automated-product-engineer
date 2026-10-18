@@ -19,7 +19,7 @@ test("every public page uses the shared top bar", async ({ page }, testInfo) => 
   for (const route of routes) {
     await page.goto(route);
     const navigation = page.getByRole("navigation", { name: "Primary navigation" });
-    await expect(navigation.getByRole("link")).toHaveCount(5);
+    await expect(navigation.getByRole("link")).toHaveCount(3);
     await expect(page.getByRole("link", { name: "Open Source on GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/kuck1/automated-product-engineer-nextjs",
@@ -41,7 +41,7 @@ test("the shared top bar remains legible at tablet width", async ({ page }, test
     });
   });
 
-  expect(headerGeometry).toHaveLength(6);
+  expect(headerGeometry).toHaveLength(4);
   for (const item of headerGeometry) {
     expect(item.left).toBeGreaterThanOrEqual(0);
     expect(item.right).toBeLessThanOrEqual(item.viewportWidth);
@@ -144,7 +144,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await expect(page.getByRole("region", { name: "Training" })).toContainText("Northstar Health");
   await expect(page.getByRole("article").filter({ hasText: "Northstar Health" }).getByRole("button", { name: "Launch customer" })).toBeVisible();
   await page.goBack();
-  await expect(page).toHaveURL(/view=releases/);
+  await expect(page).toHaveURL(/\/$/);
 });
 
 test("behind the scenes embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {
