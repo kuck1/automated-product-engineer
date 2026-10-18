@@ -10,6 +10,7 @@ The original reusable workflows are represented by these installed skills:
 | --- | --- |
 | end-to-end orchestration | `automated-product-engineer` |
 | architecture and codebase analysis | `architecture-building` |
+| evidence-backed codebase audit and upgrade selection | `codebase-upgrade` |
 | local correctness review | `code-review` |
 | interaction and visual refinement | `design-polish` |
 | tokens, components, and governed reuse | `design-system` |
@@ -32,6 +33,7 @@ The concise `SKILL.md` files route to references when a task needs more depth. T
 - Architecture guidance retains encapsulation, extension over modification, typed boundaries, server-owned policy, failure contracts, and reviewable vertical slices.
 - Product analytics guidance retains measurement-first event design, client/server authority, semantic timing, identity and dedupe behavior, privacy-safe properties, and focused instrumentation tests.
 - Working case studies demonstrate UI state, server cache, transport, domain policy, repository ports, Supabase adapters, authorization, concurrency, optimistic updates, rollback, and browser verification.
+- The codebase-upgrade catalog maps those working lessons to observable code signals, concrete anti-patterns, specialist ownership, reviewable upgrade slices, and the user decision required before broad changes.
 - The state-management playbook covers shared counters, request cancellation, multi-window revision conflicts, chat, collaborative documents, realtime roles, and Supabase cookie-session debugging; the same guidance ships in the frontend and security skills.
 - Templates preserve semantic tokens, enum-backed variants, component contracts, extension registries, hooks, focused tests, E2E and visual checks, CI, screenshot capture, retrospective, and pull-request structure.
 - The native profile preserves project detection, development-build selection, OAuth and deep-link rules, lifecycle-aware sessions, offline conflict contracts, permissions, notification routing, EAS runtime compatibility, Maestro verification, and staged update recovery.

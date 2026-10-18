@@ -6,6 +6,8 @@ The key rule is simple: **design tools define intent, states, and visual referen
 
 For Expo or React Native, read `project-profile.json` and load `expo-native-app`. Establish whether the work runs in Expo Go, a development build, a preview build, or a store build before implementation. Verify iOS and Android behavior in their actual runtimes; a responsive browser view is useful additional coverage but is not native evidence.
 
+When the request is to improve an existing codebase rather than build a named feature, run `pnpm dlx automated-product-engineer audit --json` and load `codebase-upgrade`. Validate its static signals against the relevant code path, connect confirmed findings to the pattern catalog and working examples, and prepare up to three product-sized upgrade options. Ask the user which outcome matters most before changing a broad boundary.
+
 ## 1. Prepare the product brief
 
 Before asking Claude or working from Figma, write down the minimum product contract:

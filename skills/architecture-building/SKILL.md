@@ -11,6 +11,8 @@ Start from observed repository facts and the accepted product contract. Optimize
 
 Read [references/feature-boundaries.md](references/feature-boundaries.md) when designing or reviewing a cross-layer feature, decomposing a large component, or deciding where an extension point belongs.
 
+When the request is to assess or modernize an existing application rather than implement a named feature, use `codebase-upgrade` first. Its pattern catalog connects observed code to the real reference slices, anti-patterns, owning specialists, and the user decision needed before a broad architecture change.
+
 
 ## Intake and pushback
 

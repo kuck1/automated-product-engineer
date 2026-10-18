@@ -9,6 +9,8 @@ Use this skill when a visual rule should become shared infrastructure. Keep feat
 
 Read [references/system-extension.md](references/system-extension.md) for the token-to-component pipeline, catalog and inspector contracts, migration sequencing, and visual-baseline discipline. Read [references/component-library-onboarding.md](references/component-library-onboarding.md) when introducing the library to a team, documenting why it matters, or planning adoption from existing product screens.
 
+For a repository-wide assessment of repeated UI and adoption friction, start with `codebase-upgrade`. Use its component-infrastructure pattern to choose a real product slice before extracting tokens or components.
+
 
 ## Intake and pushback
 

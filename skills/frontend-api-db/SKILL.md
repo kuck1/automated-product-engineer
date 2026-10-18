@@ -13,6 +13,8 @@ Read [references/state-management-scenarios.md](references/state-management-scen
 
 Read [references/analytics-instrumentation.md](references/analytics-instrumentation.md) when the feature adds or changes product analytics, experiments, impressions, mutation outcomes, or failure telemetry.
 
+For a whole-codebase state or persistence assessment, start with `codebase-upgrade` and its pattern catalog, then use this skill to implement the selected vertical slice.
+
 
 ## Intake and pushback
 

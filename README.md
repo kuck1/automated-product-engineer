@@ -25,6 +25,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - An `AGENTS.md` you can adapt for coding agents working in your repository.
 - A portable Agent Skills library with adapters for Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic builders.
 - Progressive skill references with concrete architecture, race handling, review, persistence, responsive, security, QA, and PR-delivery examples.
+- A read-only codebase audit that connects observed evidence to concrete patterns, anti-patterns, working examples, specialist skills, and a user-selected upgrade slice.
 
 ## Quick start
 
@@ -55,7 +56,15 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command detects Next.js, Expo, or bare React Native and installs 14 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, or bare React Native and installs 15 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+
+Inspect an existing codebase before selecting a migration:
+
+```bash
+pnpm dlx automated-product-engineer audit
+```
+
+The audit reads source and configuration without executing application code. It separates high-confidence risks from upgrade opportunities and established patterns, cites the files that triggered each finding, points to a working example and owning skill, and ends with the decisions the agent should ask you to make. Use `--json` when an agent will consume the report directly.
 
 Use `--target`, `--project`, or `--only` only when you need a narrower or non-default installation. See [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md) for those options.
 
@@ -107,6 +116,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for all three examples.
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
+- [`docs/codebase-upgrades.md`](docs/codebase-upgrades.md): evidence-backed repository audit, pattern mapping, and reviewable upgrade selection.
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
