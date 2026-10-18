@@ -4,8 +4,6 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "reac
 import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipes";
 
 const siteNavigation = [
-  { id: "releases", label: "Case Study #1", href: "/examples?view=releases" },
-  { id: "onboarding", label: "Case Study #2", href: "/examples?view=onboarding" },
   { id: "quick-start", label: "Quick Start", href: "/quick-start" },
   { id: "guide", label: "Behind the scenes", href: "/guide" },
   { id: "library", label: "Complete Skill Library", href: "/library" },

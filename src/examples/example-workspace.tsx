@@ -96,7 +96,7 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
 
   return (
     <main className="workspace-shell">
-      <SiteHeader active={view} />
+      <SiteHeader />
       <div className="workspace-layout">
         <section className="workspace-main">
           <div className="workspace-title"><div><Badge tone="info">Sample client app · Interactive demo</Badge><h2>{view === "releases" ? "Release readiness" : "Customer onboarding operations"}</h2><p>{view === "releases" ? "A policy control tower for deciding what can ship." : "A customer journey board for moving accounts toward value."}</p></div><Button tone="secondary" onClick={() => snapshotQuery.refetch()} disabled={snapshotQuery.isFetching}><RefreshCw size={15} /> Refresh</Button></div>
