@@ -1430,8 +1430,37 @@ footer > a:hover { color: white; }
   .guide-nav { margin: 0; padding: 0 10px; }
   .guide-section { padding: 44px 0; }
   .guide-heading { grid-template-columns: 1fr; gap: 10px; }
-  .layer-stack { width: 100%; margin-right: 0; padding-right: 16px; grid-template-columns: repeat(5,minmax(175px,1fr)); }
-  .layer-stack button { min-width: 175px; min-height: 104px; }
+  .layer-stack {
+    width: 100%;
+    margin-right: 0;
+    padding: 0 18px 8px 0;
+    grid-template-columns: repeat(5,158px);
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 0 18px;
+    scroll-snap-type: inline proximity;
+  }
+  .layer-stack button {
+    width: 158px;
+    min-width: 158px;
+    min-height: 100px;
+    padding: 12px 10px 12px 12px;
+    grid-template-columns: 18px minmax(0,1fr) 22px;
+    align-items: start;
+    gap: 7px;
+    scroll-snap-align: start;
+  }
+  .layer-stack button > div { min-width: 0; }
+  .layer-stack button > span { margin-top: 16px; }
+  .layer-stack button strong { font-size: 10px; line-height: 1.2; overflow-wrap: anywhere; }
+  .layer-stack button p { font-size: 7px; line-height: 1.38; }
+  .layer-stack button > svg {
+    width: 14px;
+    height: 14px;
+    margin-top: 13px;
+    justify-self: center;
+  }
   .source-reader { min-height: 0; padding: 18px; }
   .source-reader > header { display: grid; }
   .source-reader-actions { width: 100%; min-width: 0; justify-items: stretch; }

@@ -184,6 +184,22 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
 test("mobile behind the scenes keeps every source excerpt accessible", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/guide#guide-layers");
+  const layerCardGeometry = await page.locator(".layer-stack button").evaluateAll((cards) => cards.map((card) => {
+    const bounds = card.getBoundingClientRect();
+    const arrow = card.querySelector("svg")?.getBoundingClientRect();
+    const title = card.querySelector("strong")?.getBoundingClientRect();
+    return {
+      width: bounds.width,
+      rightInset: arrow ? bounds.right - arrow.right : 0,
+      titleArrowOffset: arrow && title ? Math.abs(arrow.top - title.top) : Number.POSITIVE_INFINITY,
+    };
+  }));
+  expect(layerCardGeometry).toHaveLength(5);
+  for (const card of layerCardGeometry) {
+    expect(card.width).toBeLessThanOrEqual(159);
+    expect(card.rightInset).toBeGreaterThanOrEqual(12);
+    expect(card.titleArrowOffset).toBeLessThanOrEqual(2);
+  }
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("scoring-policy");
   await expect(page.getByText("export function releaseReadiness", { exact: false })).toBeVisible();
