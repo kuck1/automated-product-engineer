@@ -53,6 +53,7 @@ Load only the skills whose boundary is active:
 - `expo-native-app` for Expo or React Native navigation, auth, lifecycle, offline behavior, device capabilities, development builds, updates, native QA, and store delivery.
 - `ios-native-app` for native Swift, SwiftUI, UIKit, Xcode, Observation, concurrency, Apple authentication, Keychain, persistence, capabilities, privacy, signing, TestFlight, and App Store delivery.
 - `android-native-app` for native Kotlin, Jetpack Compose or Views, Android Studio and Gradle, ViewModel and Flow, coroutines, Credential Manager, Room, DataStore, WorkManager, capabilities, signing, and Play delivery.
+- `kotlin-multiplatform-app` for KMP monorepos, shared product kernels, common source sets, generated cross-platform contracts, Swift interoperability, slim native Android/iOS shells, and parallel mobile CI.
 - `responsive-design` and `design-polish` for fluid geometry and final visual refinement.
 - `manual-ui-qa` for the final real-browser exploratory pass.
 - `code-review` and `security-review` before packaging risky or cross-layer changes.
@@ -68,7 +69,7 @@ For an unfamiliar or inherited repository with no accepted local engineering con
 - Do not add speculative abstractions. Extract an extension point only when observed variation or a required integration makes it useful.
 - Keep route handlers thin and put authorization, ownership, transactions, idempotency, and durable invariants in server-owned services and storage.
 - Make loading, empty, partial, success, failure, retry, permission, and responsive states deliberate.
-- For native applications, establish the target runtime before implementation and verify on the relevant simulator or device. Native iOS changes require the owning Xcode target, scheme, capability, entitlement, privacy, signing, and release contract. Native Android changes require the owning Gradle module, SDK and variant, manifest and permission contract, signing identity, and Play boundary. A browser viewport does not prove iOS or Android behavior.
+- For native applications, establish the target runtime before implementation and verify on the relevant simulator or device. Native iOS changes require the owning Xcode target, scheme, capability, entitlement, privacy, signing, and release contract. Native Android changes require the owning Gradle module, SDK and variant, manifest and permission contract, signing identity, and Play boundary. KMP changes additionally require an explicit shared/native boundary, exported Swift API review, shared scenario proof, generated-contract drift checks, and both native projections. A browser viewport does not prove iOS or Android behavior.
 
 ## Prove readiness
 

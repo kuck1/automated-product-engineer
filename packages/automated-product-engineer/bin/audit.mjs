@@ -20,6 +20,7 @@ const sourceExtensions = new Set([
   ".graphql",
   ".js",
   ".jsx",
+  ".json",
   ".kt",
   ".kts",
   ".md",
@@ -30,6 +31,7 @@ const sourceExtensions = new Set([
   ".swift",
   ".ts",
   ".tsx",
+  ".toml",
   ".xml",
   ".yaml",
   ".yml",
@@ -240,6 +242,73 @@ export function auditProject(project, profile) {
       action: "Use DataStore for small settings, Room for relational or offline application data, and WorkManager for deferrable durable work. Give queued writes stable operation IDs and an explicit conflict policy.",
       skill: "android-native-app + frontend-api-db", reference: "skills/android-native-app/references/persistence-lifecycle-and-capabilities.md", example: "DurableOutbox", evidence: evidence(durableStorage),
       question: "Which data must remain correct after offline use, process death, retry, or account switching?",
+    }));
+  }
+
+  if (profile.kind === "kotlin-multiplatform") {
+    const commonSource = applicationSource.filter((entry) => /(?:^|\/)src\/commonMain\//.test(entry.path));
+    const commonTests = entries.filter((entry) => /(?:^|\/)src\/commonTest\//.test(entry.path));
+    const nativeSource = applicationSource.filter((entry) => /(?:^|\/)(?:androidApp|iosApp|src\/(?:androidMain|iosMain))\//.test(entry.path));
+    const platformLeakage = commonSource.filter((entry) => /\b(?:android\.|androidx\.|platform\.(?:UIKit|Foundation)|java\.(?:io|nio|net))/.test(entry.text));
+    const sharedPolicy = commonSource.filter((entry) => /\b\w*(?:Policy|Decision|StateMachine|Transition|Repository|UseCase|Controller)\b/.test(entry.text));
+    const nativePolicyDuplication = nativeSource.filter((entry) => /\b(?:expectedRevision|INVALID_TRANSITION|STALE_REVISION|authorize|allowedTransitions|transitionPolicy)\b/i.test(entry.text));
+    const swiftBridge = nativeSource.filter((entry) => entry.path.endsWith(".swift") && /@MainActor|ObservableObject|@Observable/.test(entry.text) && /subscribe|close|cancel/.test(entry.text));
+    const tokenSource = entries.filter((entry) => /(?:^|\/)contracts\/tokens\/.*\.json$/.test(entry.path));
+    const generatedKotlin = entries.filter((entry) => /GeneratedTokens\.kt$/.test(entry.path));
+    const generatedSwift = entries.filter((entry) => /DesignTokens\.swift$/.test(entry.path));
+    const scenarioVectors = entries.filter((entry) => /\.vectors\.json$/.test(entry.path));
+    const componentContracts = entries.filter((entry) => /\.component\.json$/.test(entry.path));
+
+    findings.push(finding({
+      id: "kmp-product-kernel", patternId: "shared-product-kernel", title: sharedPolicy.length ? "Shared product kernel is visible" : "Create a platform-free product kernel",
+      status: sharedPolicy.length ? "established" : "opportunity", confidence: sharedPolicy.length ? "high" : "medium", impact: "high",
+      summary: sharedPolicy.length ? "Common sources contain product policy, transitions, repositories, use cases, or feature controllers. Verify every shared rule is deterministic and independent of platform lifecycle." : "The shared source set exists, but product policy and application orchestration were not visible in the static scan.",
+      action: "Move only rules that must remain identical into pure common Kotlin. Keep platform composition, lifecycle, UI, capabilities, secure storage, and distribution in native shells.",
+      skill: "kotlin-multiplatform-app + architecture-building", reference: "skills/kotlin-multiplatform-app/references/architecture-and-module-boundaries.md", example: "Product-kernel monorepo blueprint", evidence: evidence(sharedPolicy),
+      question: "Which product rule creates the greatest cost when Android and iOS disagree?",
+    }));
+
+    if (platformLeakage.length) findings.push(finding({
+      id: "kmp-platform-leakage", patternId: "ports-at-platform-edge", title: "Remove platform APIs from commonMain", status: "risk", confidence: "high", impact: "high",
+      summary: "Common Kotlin imports Android, Apple, or JVM-only APIs. That couples product behavior to one target and weakens host-test coverage.",
+      action: "Define a narrow capability interface in common code and implement it at the platform composition root. Reserve expect/actual for small construction facts that cannot be injected cleanly.",
+      skill: "kotlin-multiplatform-app", reference: "skills/kotlin-multiplatform-app/references/architecture-and-module-boundaries.md", example: "Injected clock, identity, transport, repository, and telemetry ports", evidence: evidence(platformLeakage),
+      question: "May the first KMP slice replace these imports with explicit platform ports?",
+    }));
+
+    findings.push(finding({
+      id: "kmp-contract-projections", patternId: "generated-semantic-contracts", title: tokenSource.length && generatedKotlin.length && generatedSwift.length && componentContracts.length && scenarioVectors.length ? "Cross-platform contract projections are traceable" : "Generate platform projections from canonical contracts",
+      status: tokenSource.length && generatedKotlin.length && generatedSwift.length && componentContracts.length && scenarioVectors.length ? "established" : "opportunity", confidence: "high", impact: "high",
+      summary: tokenSource.length && generatedKotlin.length && generatedSwift.length ? "Canonical token sources and generated Kotlin and Swift projections are present. Component contracts and scenario vectors determine whether behavior is also traceable." : "The scan did not find one canonical token source projected into both native platforms.",
+      action: "Keep product language, semantic tokens, component behavior, analytics, protocol schemas, and scenario vectors canonical; generate native representations with a source digest and reject drift in CI.",
+      skill: "kotlin-multiplatform-app + design-system", reference: "skills/kotlin-multiplatform-app/references/tokens-components-and-shared-ui.md", example: "DTCG token compiler and component contracts", evidence: evidence([...tokenSource, ...generatedKotlin, ...generatedSwift, ...componentContracts, ...scenarioVectors]),
+      question: "Which contract currently drifts most often between native platforms?",
+    }));
+
+    if (nativePolicyDuplication.length) findings.push(finding({
+      id: "kmp-duplicate-policy", patternId: "shared-product-kernel", title: "Consolidate duplicated native product policy", status: "risk", confidence: "medium", impact: "high",
+      summary: "Native shell code appears to repeat revision, transition, or authorization rules that belong to one product authority.",
+      action: "Confirm each signal against behavior, move shared decisions into the kernel, and leave platform code responsible for presentation and capability adaptation.",
+      skill: "kotlin-multiplatform-app + code-review", reference: "skills/kotlin-multiplatform-app/references/adoption-and-migration.md", example: "Contract-first strangler migration", evidence: evidence(nativePolicyDuplication),
+      question: "Which duplicated policy can be characterized and moved without changing the native experience?",
+    }));
+
+    findings.push(finding({
+      id: "kmp-swift-boundary", patternId: "small-swift-facade", title: swiftBridge.length ? "Small Swift feature facade is visible" : "Create an intentional Swift boundary",
+      status: swiftBridge.length ? "established" : "opportunity", confidence: swiftBridge.length ? "high" : "medium", impact: "high",
+      summary: swiftBridge.length ? "Swift adapts shared state through a main-actor observable model with explicit subscription cleanup." : "The scan did not find a lifecycle-owned Swift adapter for shared feature state.",
+      action: "Export a small state, intent, subscription, and close facade. Keep most Kotlin declarations internal, expected failures as values, and add a Swift compile smoke test.",
+      skill: "kotlin-multiplatform-app + ios-native-app", reference: "skills/kotlin-multiplatform-app/references/swift-interop-and-native-shells.md", example: "WorkItemController and WorkItemModel", evidence: evidence(swiftBridge),
+      question: "Which feature should define the first stable Swift-facing facade?",
+    }));
+
+    findings.push(finding({
+      id: "kmp-common-tests", patternId: "evidence-follows-owner", title: commonTests.length ? "Shared policy has common tests" : "Prove shared policy in commonTest",
+      status: commonTests.length ? "established" : "opportunity", confidence: "high", impact: "high",
+      summary: commonTests.length ? "Common tests exist for the product kernel. Native tests must still prove platform projection, lifecycle, accessibility, and capabilities." : "No commonTest source was found for the behavior claimed as shared.",
+      action: "Run canonical scenario vectors against common policy and repositories, then test native adapters and critical journeys independently on Android and iOS.",
+      skill: "kotlin-multiplatform-app + manual-ui-qa", reference: "skills/kotlin-multiplatform-app/references/testing-ci-and-release.md", example: "Parallel contract, host, Android, and iOS CI fan-out", evidence: evidence(commonTests),
+      question: "Which shared race or failure scenario should become the first cross-platform vector?",
     }));
   }
 
@@ -502,7 +571,19 @@ export function auditProject(project, profile) {
 
   const verificationScripts = ["test", "typecheck", "lint", "build"].filter((name) => manifest.scripts?.[name]);
   const browserTests = testFiles.filter((entry) => /(?:playwright|cypress|maestro|detox|e2e)/i.test(entry.path + entry.text));
-  if (verificationScripts.length >= 3 && testFiles.length && browserTests.length) {
+  if (profile.kind === "kotlin-multiplatform") {
+    const workflow = entries.filter((entry) => /(?:^|\/)\.github\/workflows\/.*\.ya?ml$/.test(entry.path));
+    const gradleChecks = workflow.filter((entry) => /hostTest|assembleDebug|linkDebugFramework|xcodebuild/.test(entry.text));
+    const multiplatformTests = entries.filter((entry) => /(?:^|\/)src\/(?:commonTest|androidHostTest|androidDeviceTest|iosTest)\//.test(entry.path) || /(?:Tests?|androidTest)(?:\/|\.)/.test(entry.path));
+    findings.push(finding({
+      id: "verification-evidence", title: gradleChecks.length && multiplatformTests.length ? "Parallel multiplatform verification" : "Build the multiplatform verification fan-out",
+      status: gradleChecks.length && multiplatformTests.length ? "established" : "opportunity", confidence: "high", impact: "high", patternId: "evidence-follows-owner",
+      summary: gradleChecks.length && multiplatformTests.length ? "CI and test sources cover shared or native compilation paths. Keep one gate per owner and publish evidence against the same commit." : "The static scan did not find both test sources and CI commands for shared, Android, and iOS paths.",
+      action: "Gate contract drift, host tests, Android lint/tests/build, iOS framework and Swift compilation, API compatibility, performance budgets, and scenario parity independently.",
+      skill: "kotlin-multiplatform-app + code-review", reference: "skills/kotlin-multiplatform-app/references/testing-ci-and-release.md", example: "Multiplatform product-kernel workflow", evidence: evidence([...workflow, ...multiplatformTests]),
+      question: "Which platform gate currently gives the slowest or least trustworthy feedback?",
+    }));
+  } else if (verificationScripts.length >= 3 && testFiles.length && browserTests.length) {
     findings.push(finding({
       id: "verification-evidence", title: "Layered verification", status: "established", confidence: "high",
       patternId: "evidence-follows-owner",

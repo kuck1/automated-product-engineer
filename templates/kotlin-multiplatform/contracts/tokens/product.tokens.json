@@ -1,0 +1,38 @@
+{
+  "$description": "Canonical semantic tokens compiled into native projections.",
+  "color": {
+    "$type": "color",
+    "primitive": {
+      "violet600": { "$value": "#7357D9" },
+      "mint500": { "$value": "#55CBA9" },
+      "ink950": { "$value": "#111318" },
+      "paper50": { "$value": "#F8F8F5" },
+      "danger600": { "$value": "#B3261E" }
+    },
+    "action": {
+      "primary": { "$value": "{color.primitive.violet600}" },
+      "success": { "$value": "{color.primitive.mint500}" },
+      "danger": { "$value": "{color.primitive.danger600}" }
+    },
+    "content": {
+      "primary": { "$value": "{color.primitive.ink950}" },
+      "onDark": { "$value": "{color.primitive.paper50}" }
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "control": { "$value": { "value": 12, "unit": "dp" } },
+    "section": { "$value": { "value": 24, "unit": "dp" } },
+    "page": { "$value": { "value": 24, "unit": "dp" } }
+  },
+  "radius": {
+    "$type": "dimension",
+    "control": { "$value": { "value": 12, "unit": "dp" } },
+    "surface": { "$value": { "value": 20, "unit": "dp" } }
+  },
+  "motion": {
+    "$type": "duration",
+    "quick": { "$value": { "value": 140, "unit": "ms" } },
+    "settle": { "$value": { "value": 260, "unit": "ms" } }
+  }
+}

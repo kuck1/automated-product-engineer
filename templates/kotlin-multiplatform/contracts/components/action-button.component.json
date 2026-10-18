@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "action-button",
+  "purpose": "Commit one named user intent.",
+  "variants": ["primary", "secondary", "danger"],
+  "states": ["enabled", "pressed", "focused", "disabled", "submitting"],
+  "tokens": ["color.action.primary", "color.action.danger", "space.control", "radius.control"],
+  "accessibility": {
+    "role": "button",
+    "requiresAccessibleName": true,
+    "submittingAnnouncement": "polite",
+    "minimumTargetDp": 44
+  },
+  "content": {
+    "labelRequired": true,
+    "iconWithoutLabelRequiresName": true,
+    "localizationPressure": "Allow label growth before truncation."
+  },
+  "platformDifferences": {
+    "android": "Use Material interaction and semantic roles.",
+    "ios": "Use native Button behavior, focus, and accessibility traits."
+  },
+  "scenarios": ["action-button-primary", "action-button-disabled", "action-button-submitting"]
+}

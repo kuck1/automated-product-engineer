@@ -1,0 +1,21 @@
+/* Generated from contracts/tokens/product.tokens.json. Do not edit. */
+:root {
+  --source-sha256: "2bfe002d71237a712d92717d02bb0049d7a11b6f39d2655df0be397d653d69cf";
+  --color-action-danger: #B3261E;
+  --color-action-primary: #7357D9;
+  --color-action-success: #55CBA9;
+  --color-content-onDark: #F8F8F5;
+  --color-content-primary: #111318;
+  --color-primitive-danger600: #B3261E;
+  --color-primitive-ink950: #111318;
+  --color-primitive-mint500: #55CBA9;
+  --color-primitive-paper50: #F8F8F5;
+  --color-primitive-violet600: #7357D9;
+  --motion-quick: 140ms;
+  --motion-settle: 260ms;
+  --radius-control: 12px;
+  --radius-surface: 20px;
+  --space-control: 12px;
+  --space-page: 24px;
+  --space-section: 24px;
+}

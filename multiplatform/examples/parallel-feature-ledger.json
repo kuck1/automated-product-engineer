@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "feature": "work-item-transition",
+  "contractVersion": "1.0.0",
+  "sharedCommit": "replace-at-build-time",
+  "ownership": {
+    "productDocs": "docs/product/work-item.md",
+    "domainPolicy": "shared/product-kernel",
+    "wireProtocol": "contracts/scenarios/work-item.vectors.json",
+    "semanticTokens": "contracts/tokens/product.tokens.json",
+    "androidProjection": "androidApp",
+    "iosProjection": "iosApp",
+    "serverAuthority": "external-service-contract"
+  },
+  "nativeEscapeHatches": [
+    "navigation",
+    "lifecycle",
+    "secure-storage",
+    "system-authentication-ui",
+    "accessibility",
+    "background-scheduling",
+    "distribution"
+  ],
+  "requiredEvidence": [
+    "contract-drift",
+    "common-policy-tests",
+    "android-build-and-journey",
+    "ios-framework-and-journey",
+    "swift-api-smoke-test",
+    "server-compatibility",
+    "cross-version-scenario-parity"
+  ]
+}

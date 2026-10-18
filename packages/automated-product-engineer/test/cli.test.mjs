@@ -102,7 +102,7 @@ test("launch rejects non-Expo projects before invoking a package manager", () =>
   try {
     const result = run(["launch"], root);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Launch requires an Expo, React Native, native iOS, Swift package, or native Android project/);
+    assert.match(result.stderr, /Launch requires an Expo, React Native, native iOS, Swift package, native Android, or Kotlin Multiplatform project/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -440,5 +440,87 @@ test("web example installation includes the typed pattern atlas and executable r
     assert.equal(result.status, 0, result.stderr);
     assert.equal(existsSync(path.join(root, ".automated-product-engineer", "src", "patterns", "catalog.ts")), true);
     assert.equal(existsSync(path.join(root, ".automated-product-engineer", "src", "patterns", "patterns.test.ts")), true);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+function kotlinMultiplatformFixture() {
+  const root = fixture({ name: "product-kernel" });
+  writeFixtureFile(root, "settings.gradle.kts", 'rootProject.name = "ProductKernel"\ninclude(":shared:product-kernel", ":androidApp")\n');
+  writeFixtureFile(root, "gradlew", "#!/bin/sh\n");
+  writeFixtureFile(root, "shared/product-kernel/build.gradle.kts", `plugins {
+  id("org.jetbrains.kotlin.multiplatform")
+  id("com.android.kotlin.multiplatform.library")
+}
+kotlin { androidLibrary { namespace = "dev.example.kernel"; compileSdk = 36; minSdk = 26 }; iosArm64(); iosSimulatorArm64(); jvm("host") }
+`);
+  writeFixtureFile(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/Policy.kt", "interface Repository\nobject Policy\nclass Controller\n");
+  writeFixtureFile(root, "shared/product-kernel/src/commonTest/kotlin/dev/example/PolicyTest.kt", "class PolicyTest\n");
+  writeFixtureFile(root, "androidApp/build.gradle.kts", 'plugins { id("com.android.application") }\nandroid { namespace = "dev.example.app"; compileSdk = 36; defaultConfig { applicationId = "dev.example.app"; minSdk = 26; targetSdk = 36 } }\n');
+  writeFixtureFile(root, "androidApp/src/main/AndroidManifest.xml", "<manifest><application /></manifest>\n");
+  writeFixtureFile(root, "androidApp/src/main/kotlin/dev/example/MainActivity.kt", "class MainActivity\n");
+  writeFixtureFile(root, "ProductApp.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER = dev.example.app;\n");
+  writeFixtureFile(root, "iosApp/Sources/WorkItemModel.swift", "@MainActor final class WorkItemModel: ObservableObject { func subscribe() {}; func close() {} }\n");
+  writeFixtureFile(root, "contracts/tokens/product.tokens.json", '{}\n');
+  writeFixtureFile(root, "contracts/components/button.component.json", '{}\n');
+  writeFixtureFile(root, "contracts/scenarios/work-item.vectors.json", '{}\n');
+  writeFixtureFile(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/GeneratedTokens.kt", "object GeneratedTokens\n");
+  writeFixtureFile(root, "iosApp/Generated/DesignTokens.swift", "enum DesignTokens {}\n");
+  writeFixtureFile(root, ".github/workflows/mobile.yml", "jobs:\n  test:\n    steps:\n      - run: gradle hostTest assembleDebug linkDebugFramework\n      - run: xcodebuild test\n");
+  return root;
+}
+
+test("doctor detects Kotlin Multiplatform modules, contracts, targets, and native shells", () => {
+  const root = kotlinMultiplatformFixture();
+  try {
+    const result = run(["doctor", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const profile = JSON.parse(result.stdout);
+    assert.equal(profile.kind, "kotlin-multiplatform");
+    assert.equal(profile.packageManager, "gradle");
+    assert.equal(profile.router, "native-projections");
+    assert.deepEqual(profile.multiplatform.modules, ["shared/product-kernel"]);
+    assert.deepEqual(profile.multiplatform.sourceSets, ["commonMain", "commonTest"]);
+    assert.deepEqual(profile.multiplatform.targets, ["android", "ios-arm64", "ios-simulator-arm64", "jvm"]);
+    assert.equal(profile.multiplatform.hasAndroidShell, true);
+    assert.equal(profile.multiplatform.hasIosShell, true);
+    assert.equal(profile.multiplatform.usesModernAndroidPlugin, true);
+    assert.deepEqual(profile.multiplatform.tokenSources, ["contracts/tokens/product.tokens.json"]);
+    assert.deepEqual(profile.findings, []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("Kotlin Multiplatform install selects shared examples and launcher chooses each native shell", () => {
+  const root = kotlinMultiplatformFixture();
+  try {
+    const installResult = run(["install", "--only", "examples"], root);
+    assert.equal(installResult.status, 0, installResult.stderr);
+    const toolkit = path.join(root, ".automated-product-engineer");
+    assert.equal(existsSync(path.join(toolkit, "multiplatform", "examples", "parallel-feature-ledger.json")), true);
+    assert.equal(existsSync(path.join(toolkit, "multiplatform", "case-studies", "field-relay-shared-kernel", "README.md")), true);
+    assert.equal(existsSync(path.join(toolkit, "android", "examples")), false);
+    assert.equal(existsSync(path.join(toolkit, "ios", "examples")), false);
+    assert.match(readFileSync(path.join(toolkit, "INSTALLATION.md"), "utf8"), /Kotlin Multiplatform project path/);
+
+    const android = run(["launch", "--dry-run"], root);
+    assert.equal(android.status, 0, android.stderr);
+    assert.match(android.stdout, /Android shell in Android Studio/);
+    const ios = run(["launch", "--ios", "--dry-run"], root);
+    assert.equal(ios.status, 0, ios.stderr);
+    assert.match(ios.stdout, /iOS shell in Xcode.*ProductApp\.xcodeproj/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("Kotlin Multiplatform audit reports product-kernel, contract, Swift, and verification evidence", () => {
+  const root = kotlinMultiplatformFixture();
+  try {
+    const result = run(["audit", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    const byId = Object.fromEntries(report.findings.map((finding) => [finding.id, finding]));
+    assert.equal(byId["kmp-product-kernel"].status, "established");
+    assert.equal(byId["kmp-contract-projections"].status, "established");
+    assert.equal(byId["kmp-swift-boundary"].status, "established");
+    assert.equal(byId["kmp-common-tests"].status, "established");
+    assert.equal(byId["verification-evidence"].status, "established");
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

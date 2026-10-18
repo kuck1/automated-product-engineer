@@ -18,24 +18,24 @@ const components = ["skills", "docs", "templates", "examples"];
 
 const adapters = {
   cursorRule: `---
-description: Apply the automated product engineering workflow for substantial product work across web, React Native, Expo, Swift, native iOS, Kotlin, and native Android.
+description: Apply the automated product engineering workflow for substantial product work across web, React Native, Expo, native iOS, native Android, and Kotlin Multiplatform.
 globs:
 alwaysApply: false
 ---
 
-Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. Use expo-native-app for Expo or React Native, ios-native-app for Swift and Apple platforms, and android-native-app for Kotlin, Jetpack Compose, Android Studio, Gradle, Android capabilities, signing, or Play delivery.
+Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. Use expo-native-app for Expo or React Native, ios-native-app for Swift and Apple platforms, android-native-app for native Kotlin/Android, and kotlin-multiplatform-app for shared Kotlin product kernels with native Android and iOS shells.
 `,
-  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android. Verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
+  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, \`android-native-app\` for native Kotlin/Android, and \`kotlin-multiplatform-app\` for shared Kotlin product kernels. Verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
 `,
   windsurfRule: `# Automated Product Engineer
 
-For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android before changing navigation, auth, capabilities, builds, or distribution. Preserve repository instructions and verify on the actual target platform.
+For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, \`android-native-app\` for native Kotlin/Android, and \`kotlin-multiplatform-app\` for shared Kotlin product kernels before changing navigation, auth, capabilities, builds, or distribution. Preserve repository instructions and verify on the actual target platform.
 `,
-  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android. Verify lifecycle and platform behavior and include simulator or device evidence.
+  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, \`android-native-app\` for native Kotlin/Android, and \`kotlin-multiplatform-app\` for shared Kotlin product kernels. Verify lifecycle and platform behavior and include simulator or device evidence.
 `,
   genericWorkflow: `# Automated Product Engineer
 
-Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\`; Swift and native iOS work must use \`ios-native-app\`; Kotlin and native Android work must use \`android-native-app\`. Verify native behavior in a simulator or device rather than inferring it from a browser viewport.
+Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\`; Swift and native iOS work must use \`ios-native-app\`; native Kotlin/Android work must use \`android-native-app\`; shared Kotlin product kernels must use \`kotlin-multiplatform-app\`. Verify native behavior in a simulator or device rather than inferring it from a browser viewport.
 `,
 };
 
@@ -47,6 +47,7 @@ const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/pag
 const nativeExamples = ["native/examples", "native/case-studies"];
 const iosExamples = ["ios/examples", "ios/case-studies"];
 const androidExamples = ["android/examples", "android/case-studies"];
+const multiplatformExamples = ["multiplatform/examples", "multiplatform/case-studies"];
 const onboardingDomains = [
   ["product-requirements", "Product requirements and journeys", "automated-product-engineer"],
   ["architecture", "Architecture and ownership boundaries", "architecture-building"],
@@ -55,7 +56,7 @@ const onboardingDomains = [
   ["database", "Database design, migrations, tenancy, and retention", "frontend-api-db"],
   ["auth-security", "Authentication, sessions, authorization, and secrets", "security-review"],
   ["design-system", "Design system, semantic tokens, and component adoption", "design-system"],
-  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app + ios-native-app + android-native-app"],
+  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app + ios-native-app + android-native-app + kotlin-multiplatform-app"],
   ["testing-ci", "Testing, visual evidence, E2E, and CI", "manual-ui-qa + code-review"],
   ["delivery-observability", "Delivery, flags, observability, and rollback", "pr-workflow"],
   ["documentation", "Documentation, decisions, and developer experience", "codebase-onboarding"],
@@ -71,7 +72,7 @@ function usage() {
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch [--ios|--android|--web] [--tunnel] [--clear]",
     "  pnpm dlx automated-product-engineer install [--target <target>] [--project <path>] [--only <parts>] [--force]", "",
-    "The installer detects Next.js, Expo, bare React Native, native iOS, Swift packages, or native Android automatically.",
+    "The installer detects Next.js, Expo, bare React Native, native iOS, Swift packages, native Android, or Kotlin Multiplatform automatically.",
     "The onboarding command creates a project-owned engineering contract and upgrade program.",
     "The audit command reads the codebase without executing application source.",
     `Targets: ${targets.join(", ")}`,
@@ -171,7 +172,7 @@ function detectXcodeProject(project, containers) {
   const privacyManifests = [];
   const swiftFiles = [];
   const visit = (directory, depth = 0) => {
-    if (depth > 6 || !existsSync(directory)) return;
+    if (depth > 12 || !existsSync(directory)) return;
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (entry.name.startsWith(".") || ["node_modules", "Pods", "build", "DerivedData", ".build"].includes(entry.name)) continue;
       const absolute = path.join(directory, entry.name);
@@ -291,6 +292,67 @@ function detectAndroidProject(project) {
   };
 }
 
+function detectKotlinMultiplatform(project, android, xcode) {
+  const buildFiles = android.buildFiles.map((file) => ({ file, text: readFileSync(path.join(project, file), "utf8") }));
+  const modules = buildFiles
+    .filter(({ text }) => {
+      const declaresPlugin = /org\.jetbrains\.kotlin\.multiplatform|kotlin\s*\(\s*["']multiplatform["']\s*\)|libs\.plugins\.kotlin\.multiplatform/.test(text);
+      const declarationOnly = /(?:org\.jetbrains\.kotlin\.multiplatform["')\s]*|kotlin\s*\(\s*["']multiplatform["']\s*\)|libs\.plugins\.kotlin\.multiplatform\))\s+apply\s+false/.test(text) && !/\bkotlin\s*\{/.test(text);
+      return declaresPlugin && !declarationOnly;
+    })
+    .map(({ file }) => path.dirname(file) || ".");
+  const kotlinFiles = [];
+  const contractFiles = [];
+  const visit = (directory, depth = 0) => {
+    if (depth > 14 || !existsSync(directory)) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      if (entry.name.startsWith(".") || ["node_modules", "build", ".gradle", ".idea", "DerivedData"].includes(entry.name)) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(absolute, depth + 1);
+      else if (entry.isFile()) {
+        const relative = path.relative(project, absolute);
+        if (entry.name.endsWith(".kt")) kotlinFiles.push(relative);
+        if (/\.(?:tokens|component|vectors)\.json$/.test(entry.name) || /(?:^|\/)contracts\//.test(relative)) contractFiles.push(relative);
+      }
+    }
+  };
+  visit(project);
+  const sourceSets = ["commonMain", "commonTest", "androidMain", "androidHostTest", "androidDeviceTest", "iosMain", "iosTest"]
+    .filter((sourceSet) => kotlinFiles.some((file) => file.includes(`/src/${sourceSet}/`) || file.startsWith(`src/${sourceSet}/`)));
+  const buildText = buildFiles.filter(({ file }) => modules.includes(path.dirname(file) || ".")).map(({ text }) => text).join("\n");
+  const targets = [
+    ["android", /(?:^|\W)android(?:Library)?\s*\{|androidTarget\s*\(|com\.android\.kotlin\.multiplatform\.library/],
+    ["ios-arm64", /iosArm64\s*\(/],
+    ["ios-simulator-arm64", /iosSimulatorArm64\s*\(/],
+    ["ios-x64", /iosX64\s*\(/],
+    ["jvm", /\bjvm\s*\(/],
+    ["wasm-js", /wasmJs\s*\(/],
+  ].filter(([, pattern]) => pattern.test(buildText)).map(([name]) => name);
+  const hasIosSources = kotlinFiles.some((file) => /(?:^|\/)iosApp\//.test(file)) || xcode.swiftFileCount > 0;
+  const hasAndroidShell = Boolean(android.applicationModule);
+  const tokenSources = contractFiles.filter((file) => /tokens?.*\.json$|\.tokens\.json$/i.test(file));
+  const componentContracts = contractFiles.filter((file) => /\.component\.json$/i.test(file));
+  const scenarioVectors = contractFiles.filter((file) => /\.vectors\.json$/i.test(file));
+  return {
+    detected: Boolean(android.settingsFile && modules.length && sourceSets.includes("commonMain")),
+    projectName: android.projectName,
+    modules: [...new Set(modules)].sort(),
+    sourceSets,
+    targets,
+    commonKotlinFileCount: kotlinFiles.filter((file) => file.includes("/src/commonMain/") || file.startsWith("src/commonMain/")).length,
+    commonTestFileCount: kotlinFiles.filter((file) => file.includes("/src/commonTest/") || file.startsWith("src/commonTest/")).length,
+    hasAndroidShell,
+    hasIosShell: hasIosSources,
+    xcodeWorkspace: xcode.workspace,
+    xcodeProject: xcode.project,
+    tokenSources,
+    componentContracts,
+    scenarioVectors,
+    usesModernAndroidPlugin: /com\.android\.kotlin\.multiplatform\.library|libs\.plugins\.android\.kmp\.library/.test(buildText),
+    usesComposeMultiplatform: /org\.jetbrains\.compose|libs\.plugins\.compose\.multiplatform/.test(buildText),
+  };
+}
+
 function detectProject(project) {
   const manifest = readJson(path.join(project, "package.json")) ?? {};
   const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
@@ -301,17 +363,18 @@ function detectProject(project) {
   const xcodeContainers = findXcodeContainers(project);
   const hasSwiftPackage = existsSync(path.join(project, "Package.swift"));
   const hasNativeIOS = xcodeContainers.some((item) => item.endsWith(".xcodeproj") || item.endsWith(".xcworkspace"));
-  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : android.detected ? "android" : hasNativeIOS ? "ios" : hasSwiftPackage ? "swift-package" : "unknown";
+  const xcode = detectXcodeProject(project, xcodeContainers);
+  const multiplatform = detectKotlinMultiplatform(project, android, xcode);
+  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : multiplatform.detected ? "kotlin-multiplatform" : android.detected ? "android" : hasNativeIOS ? "ios" : hasSwiftPackage ? "swift-package" : "unknown";
   const appJson = readJson(path.join(project, "app.json"));
   const expoConfig = appJson?.expo ?? appJson ?? {};
   const dynamicConfigFile = ["app.config.ts", "app.config.js", "app.config.mjs", "app.config.cjs"]
     .find((name) => existsSync(path.join(project, name))) ?? null;
-  const configSource = appJson ? "app.json" : dynamicConfigFile ?? (["ios", "swift-package"].includes(kind) ? (xcodeContainers.find((item) => item.endsWith(".xcworkspace")) ?? xcodeContainers.find((item) => item.endsWith(".xcodeproj")) ?? "Package.swift") : kind === "android" ? android.settingsFile ?? android.buildFiles[0] ?? null : null);
-  const packageManager = kind === "ios" ? "xcode" : kind === "swift-package" ? "swiftpm" : kind === "android" ? "gradle" : detectPackageManager(project, manifest);
+  const configSource = appJson ? "app.json" : dynamicConfigFile ?? (["ios", "swift-package"].includes(kind) ? (xcodeContainers.find((item) => item.endsWith(".xcworkspace")) ?? xcodeContainers.find((item) => item.endsWith(".xcodeproj")) ?? "Package.swift") : ["android", "kotlin-multiplatform"].includes(kind) ? android.settingsFile ?? android.buildFiles[0] ?? null : null);
+  const packageManager = kind === "ios" ? "xcode" : kind === "swift-package" ? "swiftpm" : ["android", "kotlin-multiplatform"].includes(kind) ? "gradle" : detectPackageManager(project, manifest);
   const androidText = android.buildFiles.map((file) => readFileSync(path.join(project, file), "utf8")).join("\n");
-  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : kind === "ios" ? "swiftui-or-uikit" : kind === "android" ? (/androidx\.navigation(?::navigation-compose|\.compose)/.test(androidText) ? "navigation-compose" : /androidx\.navigation/.test(androidText) ? "navigation-fragments" : "android-navigation") : "unknown";
-  const xcode = detectXcodeProject(project, xcodeContainers);
-  const nativeDirectories = ["ios", "android"].filter((name) => existsSync(path.join(project, name)));
+  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : kind === "ios" ? "swiftui-or-uikit" : kind === "android" ? (/androidx\.navigation(?::navigation-compose|\.compose)/.test(androidText) ? "navigation-compose" : /androidx\.navigation/.test(androidText) ? "navigation-fragments" : "android-navigation") : kind === "kotlin-multiplatform" ? "native-projections" : "unknown";
+  const nativeDirectories = ["ios", "android", "iosApp", "androidApp"].filter((name) => existsSync(path.join(project, name)));
   const capabilities = [
     ["auth", ["expo-auth-session", "@react-native-google-signin/google-signin", "@supabase/supabase-js"]],
     ["notifications", ["expo-notifications", "@react-native-firebase/messaging"]],
@@ -323,7 +386,7 @@ function detectProject(project) {
     ["background-tasks", ["expo-background-task", "expo-task-manager"]],
   ].filter(([, packages]) => packages.some((name) => dependencies[name])).map(([name]) => name);
   const findings = [];
-  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, React Native, Xcode project, Swift package, or native Android project was detected." });
+  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, React Native, Xcode project, Swift package, native Android, or Kotlin Multiplatform project was detected." });
   if (["expo", "react-native"].includes(kind) && !expoConfig.scheme && !dynamicConfigFile) findings.push({ level: "warning", code: "scheme-missing", message: "No app scheme was found. OAuth redirects and production deep links need a stable scheme." });
   if (kind === "expo" && dynamicConfigFile && !appJson) findings.push({ level: "note", code: "dynamic-config", message: `Detected ${dynamicConfigFile}. Run Expo config to verify resolved schemes, identifiers, plugins, and permissions.` });
   if (kind === "expo" && !existsSync(path.join(project, "eas.json"))) findings.push({ level: "note", code: "eas-unconfigured", message: "No eas.json was found. Local development still works; EAS builds and updates are not configured yet." });
@@ -336,11 +399,17 @@ function detectProject(project) {
   if (kind === "android" && !android.applicationId) findings.push({ level: "warning", code: "android-application-id-missing", message: "The applicationId was not resolved from the application module. Verify the selected module and release identity." });
   if (kind === "android" && !android.targetSdk) findings.push({ level: "note", code: "android-target-sdk-unresolved", message: "targetSdk was not resolved from the application module. Verify the version catalog or convention plugin before release planning." });
   if (kind === "android" && !android.hasUnitTests && !android.hasInstrumentedTests) findings.push({ level: "note", code: "android-tests-missing", message: "No Kotlin source was detected in src/test or src/androidTest. Add focused state and repository tests plus one critical device journey." });
+  if (kind === "kotlin-multiplatform" && !android.wrapper) findings.push({ level: "warning", code: "gradle-wrapper-missing", message: "No Gradle wrapper was found. Commit it so every platform and CI runner uses the same Gradle version." });
+  if (kind === "kotlin-multiplatform" && !multiplatform.hasAndroidShell) findings.push({ level: "warning", code: "kmp-android-shell-missing", message: "No native Android application module was resolved. Keep the shared module a library and connect a separate app shell." });
+  if (kind === "kotlin-multiplatform" && !multiplatform.hasIosShell) findings.push({ level: "warning", code: "kmp-ios-shell-missing", message: "No Swift iOS shell was detected. Add or connect the native iOS application before claiming platform parity." });
+  if (kind === "kotlin-multiplatform" && !multiplatform.sourceSets.includes("commonTest")) findings.push({ level: "warning", code: "kmp-common-tests-missing", message: "No commonTest Kotlin source was found. Prove shared policy and state transitions before wiring native UI." });
+  if (kind === "kotlin-multiplatform" && !multiplatform.usesModernAndroidPlugin) findings.push({ level: "note", code: "kmp-legacy-android-plugin", message: "The shared module does not appear to use com.android.kotlin.multiplatform.library. Review the supported migration path before AGP 10." });
+  if (kind === "kotlin-multiplatform" && !multiplatform.tokenSources.length) findings.push({ level: "note", code: "kmp-token-source-missing", message: "No canonical design-token JSON source was detected. Record semantic roles once and generate native projections to prevent drift." });
   return {
     schemaVersion: 1, kind, packageManager, router,
     configSource,
-    app: { name: expoConfig.name ?? manifest.name ?? (kind === "android" ? android.projectName : null) ?? xcode.schemes[0] ?? xcode.project?.replace(/\.xcodeproj$/, "") ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? (kind === "ios" ? xcode.schemes[0] ?? null : null), iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? xcode.bundleIdentifier, androidPackage: expoConfig.android?.package ?? android.applicationId },
-    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities: kind === "ios" ? xcode.capabilities : kind === "android" ? android.capabilities : capabilities, xcode, android, findings,
+    app: { name: expoConfig.name ?? manifest.name ?? (["android", "kotlin-multiplatform"].includes(kind) ? android.projectName : null) ?? xcode.schemes[0] ?? xcode.project?.replace(/\.xcodeproj$/, "") ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? (kind === "ios" ? xcode.schemes[0] ?? null : null), iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? xcode.bundleIdentifier, androidPackage: expoConfig.android?.package ?? android.applicationId },
+    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities: kind === "ios" ? xcode.capabilities : kind === "android" ? android.capabilities : kind === "kotlin-multiplatform" ? [...new Set([...android.capabilities, ...xcode.capabilities])].sort() : capabilities, xcode, android, multiplatform, findings,
   };
 }
 
@@ -421,6 +490,15 @@ function installationGuide(target, selected, profile) {
 - Run \`pnpm dlx automated-product-engineer doctor\` after changing modules, manifests, SDK targets, credentials, permissions, signing, or release variants.
 - Run \`pnpm dlx automated-product-engineer launch\` to open the detected Gradle project in Android Studio.
 ` : "";
+  const multiplatformStart = profile.kind === "kotlin-multiplatform" ? `
+## Kotlin Multiplatform project path
+
+- Start with \`skills/kotlin-multiplatform-app/SKILL.md\` to define the product kernel, portable runtime, generated contracts, Swift boundary, and native Android/iOS projections.
+- Read \`docs/kotlin-multiplatform-delivery.md\`, \`docs/research/kotlin-multiplatform-product-kernel.md\`, and \`checklists/kotlin-multiplatform-release.md\` before moving platform code into common sources.
+- Use \`multiplatform/examples/\`, \`multiplatform/case-studies/\`, and \`templates/kotlin-multiplatform/\` as reference implementations. Replace sample adapters at each native composition root.
+- Run \`pnpm dlx automated-product-engineer doctor\` after changing modules, targets, source sets, generated contracts, framework exports, or platform shells.
+- Run \`pnpm dlx automated-product-engineer launch\` for Android Studio or add \`--ios\` for Xcode.
+` : "";
   return `# Automated Product Engineer — Local Toolkit
 
 This is an installed reference kit. Adapt its patterns to the host repository; do not import this directory as application runtime code.
@@ -435,7 +513,7 @@ This is an installed reference kit. Adapt its patterns to the host repository; d
 ## Installed parts
 
 ${included}
-${nativeStart}${iosStart}${androidStart}
+${nativeStart}${iosStart}${androidStart}${multiplatformStart}
 ## Shared starting points
 
 - \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
@@ -565,7 +643,7 @@ async function install(options) {
   if (options.only.includes("skills")) copySkills(project, options.target, options.force, installedFiles);
   for (const component of ["docs", "templates"]) if (options.only.includes(component)) for (const entry of sharedEntries[component]) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   if (options.only.includes("examples")) {
-    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : ["ios", "swift-package"].includes(profile.kind) ? iosExamples : profile.kind === "android" ? androidExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples, ...iosExamples, ...androidExamples];
+    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : ["ios", "swift-package"].includes(profile.kind) ? iosExamples : profile.kind === "android" ? androidExamples : profile.kind === "kotlin-multiplatform" ? multiplatformExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples, ...iosExamples, ...androidExamples, ...multiplatformExamples];
     for (const entry of entries) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   }
   writeManagedFile(path.join(toolkitRoot, "INSTALLATION.md"), installationGuide(options.target, options.only, profile), options.force);
@@ -576,7 +654,7 @@ async function install(options) {
   console.log(`Parts: ${options.only.join(", ")}`);
   console.log(`Toolkit: ${toolkitRoot}`);
   if (profile.findings.length) console.log(`Doctor: ${profile.findings.length} item${profile.findings.length === 1 ? "" : "s"} to review. Run: pnpm dlx automated-product-engineer doctor`);
-  console.log(["expo", "ios", "swift-package", "android"].includes(profile.kind) ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
+  console.log(["expo", "ios", "swift-package", "android", "kotlin-multiplatform"].includes(profile.kind) ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
   if (isInteractive() && options.only.includes("skills")) {
     const answer = await ask("Analyze this codebase and prepare its onboarding workspace now? [Y/n] ");
     if (!/^n(?:o)?$/i.test(answer)) await onboard(options, true);
@@ -593,8 +671,8 @@ function doctor(options) {
   console.log(`Package manager: ${profile.packageManager}`);
   console.log(`App: ${profile.app.name}`);
   console.log(`App config: ${profile.configSource ?? "not found"}`);
-  console.log(`Scheme: ${profile.app.scheme ?? "missing"}`);
-  console.log(`Native projects: ${profile.nativeDirectories.join(", ") || (profile.kind === "android" ? "Gradle modules" : "managed/CNG")}`);
+  if (["expo", "react-native", "ios"].includes(profile.kind)) console.log(`Scheme: ${profile.app.scheme ?? "missing"}`);
+  console.log(`Native projects: ${profile.nativeDirectories.join(", ") || (profile.kind === "android" ? "Gradle modules" : profile.kind === "kotlin-multiplatform" ? "Gradle and Xcode shells not resolved" : "managed/CNG")}`);
   console.log(`Capabilities: ${profile.capabilities.join(", ") || "none detected"}`);
   if (["ios", "swift-package"].includes(profile.kind)) {
     console.log(`Xcode workspace: ${profile.xcode.workspace ?? "not found"}`);
@@ -605,7 +683,7 @@ function doctor(options) {
     console.log(`Swift language version: ${profile.xcode.swiftVersion ?? "not resolved"}`);
     console.log(`Privacy manifests: ${profile.xcode.privacyManifests.join(", ") || "none"}`);
   }
-  if (profile.kind === "android") {
+  if (["android", "kotlin-multiplatform"].includes(profile.kind)) {
     console.log(`Gradle settings: ${profile.android.settingsFile ?? "not found"}`);
     console.log(`Gradle wrapper: ${profile.android.wrapper ?? "not found"}`);
     console.log(`Application module: ${profile.android.applicationModule ?? "not resolved"}`);
@@ -613,6 +691,14 @@ function doctor(options) {
     console.log(`SDK levels: min ${profile.android.minSdk ?? "?"} · target ${profile.android.targetSdk ?? "?"} · compile ${profile.android.compileSdk ?? "?"}`);
     console.log(`UI: ${profile.android.compose ? "Jetpack Compose detected" : "Views or undetermined"}`);
     console.log(`Tests: unit ${profile.android.hasUnitTests ? "yes" : "no"} · instrumented ${profile.android.hasInstrumentedTests ? "yes" : "no"}`);
+  }
+  if (profile.kind === "kotlin-multiplatform") {
+    console.log(`Shared modules: ${profile.multiplatform.modules.join(", ") || "none"}`);
+    console.log(`Source sets: ${profile.multiplatform.sourceSets.join(", ") || "none"}`);
+    console.log(`Targets: ${profile.multiplatform.targets.join(", ") || "none"}`);
+    console.log(`Native shells: Android ${profile.multiplatform.hasAndroidShell ? "yes" : "no"} · iOS ${profile.multiplatform.hasIosShell ? "yes" : "no"}`);
+    console.log(`Contracts: tokens ${profile.multiplatform.tokenSources.length} · components ${profile.multiplatform.componentContracts.length} · scenarios ${profile.multiplatform.scenarioVectors.length}`);
+    console.log(`Shared UI: ${profile.multiplatform.usesComposeMultiplatform ? "Compose Multiplatform detected" : "native projections"}`);
   }
   if (!profile.findings.length) console.log("Doctor: ready — no configuration warnings detected.");
   for (const finding of profile.findings) console.log(`${finding.level.toUpperCase()} ${finding.code}: ${finding.message}`);
@@ -628,6 +714,30 @@ function audit(options) {
 function launch(options) {
   const project = resolveProject(options.project);
   const profile = detectProject(project);
+  if (profile.kind === "kotlin-multiplatform") {
+    if (options.tunnel || options.clear) throw new Error("--tunnel and --clear are Expo options and are unavailable for Kotlin Multiplatform projects.");
+    if (options.platform === "web") throw new Error("Kotlin Multiplatform launch supports the native Android or iOS shell. Use the repository's explicit web target when it has one.");
+    if (options.platform === "ios") {
+      const target = profile.xcode.workspace ?? profile.xcode.project;
+      if (!target) throw new Error("No native iOS workspace or Xcode project was found. Connect the iOS shell before launching it.");
+      const command = "open";
+      const args = ["-a", "Xcode", path.join(project, target)];
+      console.log(`Opening ${profile.app.name} iOS shell in Xcode with ${command} ${args.join(" ")}`);
+      if (options.dryRun) return;
+      const result = spawnSync(command, args, { cwd: project, stdio: "inherit", env: process.env });
+      if (result.error) throw result.error;
+      process.exitCode = result.status ?? 0;
+      return;
+    }
+    const command = process.platform === "darwin" ? "open" : process.platform === "win32" ? "cmd" : "studio";
+    const args = process.platform === "darwin" ? ["-a", "Android Studio", project] : process.platform === "win32" ? ["/c", "start", "", "studio64.exe", project] : [project];
+    console.log(`Opening ${profile.app.name} Android shell in Android Studio with ${command} ${args.join(" ")}`);
+    if (options.dryRun) return;
+    const result = spawnSync(command, args, { cwd: project, stdio: "inherit", env: process.env });
+    if (result.error) throw result.error;
+    process.exitCode = result.status ?? 0;
+    return;
+  }
   if (["ios", "swift-package"].includes(profile.kind)) {
     if (options.platform && options.platform !== "ios") throw new Error("Native iOS launch supports the iOS platform only.");
     if (options.tunnel || options.clear) throw new Error("--tunnel and --clear are Expo options and are unavailable for native iOS projects.");
@@ -654,7 +764,7 @@ function launch(options) {
     process.exitCode = result.status ?? 0;
     return;
   }
-  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo, React Native, native iOS, Swift package, or native Android project.");
+  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo, React Native, native iOS, Swift package, native Android, or Kotlin Multiplatform project.");
   const runners = { pnpm: ["pnpm", ["exec"]], npm: ["npx", []], yarn: ["yarn", []], bun: ["bunx", []] };
   const [command, prefix] = runners[profile.packageManager] ?? runners.npm;
   const args = [...prefix];

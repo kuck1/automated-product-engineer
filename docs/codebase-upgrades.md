@@ -1,6 +1,6 @@
 # Codebase Audit and Upgrades
 
-The toolkit can inspect an existing web, Expo, or React Native repository before recommending new architecture:
+The toolkit can inspect an existing web, Expo, React Native, native iOS, native Android, or Kotlin Multiplatform repository before recommending new architecture:
 
 ```bash
 pnpm dlx automated-product-engineer audit
@@ -20,5 +20,6 @@ Typical review paths include:
 - repeated UI without semantic tokens, typed variants, onboarding, or real-state previews;
 - responsive rails, boards, tabs, and overlays whose geometry fails under content pressure;
 - tests that do not match the layer that owns the rule.
+- cross-platform rules duplicated in native shells, platform APIs leaking into `commonMain`, generated token or scenario drift, and unstable Swift-facing KMP surfaces.
 
 After an upgrade, rerun the audit and the workflow's focused proof. The useful output is the changed contract and evidence, not a higher abstract score.
