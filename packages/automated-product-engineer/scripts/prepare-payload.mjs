@@ -16,6 +16,8 @@ const entries = [
   "templates",
   "native/examples",
   "native/case-studies",
+  "ios/examples",
+  "ios/case-studies",
   "app/api/examples",
   "app/examples/page.tsx",
   "app/guide/page.tsx",

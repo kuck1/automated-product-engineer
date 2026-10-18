@@ -42,6 +42,7 @@ If the user already authorized a specific upgrade, proceed without asking again.
 - `frontend-api-db`: query cache, mutations, concurrency, idempotency, persistence, and Supabase.
 - `security-review`: identity, authorization, secrets, RLS, cookies, and sensitive data.
 - `expo-native-app`: lifecycle, deep links, permissions, offline work, builds, and updates.
+- `ios-native-app`: SwiftUI or UIKit ownership, Swift concurrency, AuthenticationServices, Keychain, persistence, Apple capabilities, Xcode testing, signing, privacy, and distribution.
 - `design-system`: semantic tokens, governed components, variants, previews, and migration.
 - `responsive-design` and `design-polish`: adaptive geometry and final interaction quality.
 - `manual-ui-qa`, `code-review`, and `pr-workflow`: evidence, regression review, and delivery.

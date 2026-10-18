@@ -51,6 +51,8 @@ Use these instructions when implementing a Figma or Claude Design handoff in a N
 
 For Expo or React Native work, establish the native runtime before implementation. Use a development build for OAuth redirects, push notifications, or custom native modules. Verify lifecycle, deep links, permissions, offline/reconnect behavior, safe areas, keyboard, text scaling, and platform navigation on the relevant simulator or device. Treat native dependency or configuration changes as a new-binary boundary; an over-the-air JavaScript update does not add native code.
 
+For Swift or native iOS work, inspect the Xcode workspace or project, shared scheme, targets, packages, deployment target, Swift language and concurrency settings, entitlements, privacy manifest, and signing boundary before implementation. Keep SwiftUI views declarative, observable UI models on the main actor, mutable shared resources actor-isolated, secrets in Keychain, and durable cross-user policy on the server. Verify focused Swift tests, critical XCUI journeys, lifecycle and deep links in a simulator, accessibility, and relevant hardware behavior on a physical device. Do not change signing identities, publish to TestFlight, or submit to the App Store without the user's authority.
+
 ## Delivery and fix-back
 
 - Run a short retrospective after implementation and initial QA. Record surprises, defects, architecture friction, and missing safeguards.

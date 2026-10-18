@@ -102,7 +102,7 @@ test("launch rejects non-Expo projects before invoking a package manager", () =>
   try {
     const result = run(["launch"], root);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Launch requires an Expo or React Native project/);
+    assert.match(result.stderr, /Launch requires an Expo, React Native, native iOS, or Swift package project/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -120,6 +120,86 @@ test("launch selects Expo development client and bare React Native commands", ()
     rmSync(expo, { recursive: true, force: true });
     rmSync(bare, { recursive: true, force: true });
   }
+});
+
+test("doctor detects a native iOS project, shared scheme, capabilities, privacy, and tests", () => {
+  const root = fixture({ name: "native-ios-app" });
+  try {
+    writeFixtureFile(root, "NativeApp.xcodeproj/project.pbxproj", `PRODUCT_BUNDLE_IDENTIFIER = com.example.native;\nIPHONEOS_DEPLOYMENT_TARGET = 17.0;\nSWIFT_VERSION = 6.0;\n`);
+    writeFixtureFile(root, "NativeApp.xcodeproj/xcshareddata/xcschemes/NativeApp.xcscheme", "<Scheme></Scheme>\n");
+    writeFixtureFile(root, "NativeApp/NativeApp.entitlements", `<?xml version="1.0"?><plist><dict><key>com.apple.developer.associated-domains</key><array/></dict></plist>\n`);
+    writeFixtureFile(root, "NativeApp/PrivacyInfo.xcprivacy", `<?xml version="1.0"?><plist><dict/></plist>\n`);
+    writeFixtureFile(root, "NativeApp/App.swift", "import SwiftUI\n@main struct NativeApp: App { var body: some Scene { WindowGroup { Text(\"Hi\") } } }\n");
+    writeFixtureFile(root, "NativeAppTests/AppTests.swift", "import Testing\n@Test func loads() {}\n");
+
+    const result = run(["doctor", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const profile = JSON.parse(result.stdout);
+    assert.equal(profile.kind, "ios");
+    assert.equal(profile.packageManager, "xcode");
+    assert.equal(profile.router, "swiftui-or-uikit");
+    assert.equal(profile.xcode.project, "NativeApp.xcodeproj");
+    assert.deepEqual(profile.xcode.schemes, ["NativeApp"]);
+    assert.equal(profile.xcode.bundleIdentifier, "com.example.native");
+    assert.equal(profile.xcode.deploymentTarget, "17.0");
+    assert.equal(profile.xcode.swiftVersion, "6.0");
+    assert.deepEqual(profile.capabilities, ["associated-domains"]);
+    assert.deepEqual(profile.findings, []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("native iOS install selects Swift examples and launch opens the Xcode workspace", () => {
+  const root = fixture({ name: "native-ios-app" });
+  try {
+    writeFixtureFile(root, "NativeApp.xcworkspace/contents.xcworkspacedata", "<Workspace></Workspace>\n");
+    writeFixtureFile(root, "NativeApp.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER = com.example.native;\n");
+    writeFixtureFile(root, "NativeApp/App.swift", "import SwiftUI\n");
+    const installResult = run(["install", "--only", "examples"], root);
+    assert.equal(installResult.status, 0, installResult.stderr);
+    const toolkit = path.join(root, ".automated-product-engineer");
+    assert.equal(existsSync(path.join(toolkit, "ios", "examples", "Package.swift")), true);
+    assert.equal(existsSync(path.join(toolkit, "native", "examples")), false);
+    assert.equal(existsSync(path.join(toolkit, "app", "examples", "page.tsx")), false);
+    assert.match(readFileSync(path.join(toolkit, "INSTALLATION.md"), "utf8"), /Native iOS project path/);
+
+    const launchResult = run(["launch", "--dry-run"], root);
+    assert.equal(launchResult.status, 0, launchResult.stderr);
+    assert.match(launchResult.stdout, /Opening native-ios-app in Xcode with open -a Xcode .*NativeApp\.xcworkspace/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("doctor and launch support a standalone Swift package", () => {
+  const root = fixture({ name: "swift-library" });
+  try {
+    writeFixtureFile(root, "Package.swift", "// swift-tools-version: 6.0\nimport PackageDescription\n");
+    writeFixtureFile(root, "Sources/Library/Library.swift", "public actor Store {}\n");
+    const doctorResult = run(["doctor", "--json"], root);
+    assert.equal(doctorResult.status, 0, doctorResult.stderr);
+    const profile = JSON.parse(doctorResult.stdout);
+    assert.equal(profile.kind, "swift-package");
+    assert.equal(profile.packageManager, "swiftpm");
+    assert.equal(profile.xcode.swiftFileCount, 1);
+
+    const launchResult = run(["launch", "--dry-run"], root);
+    assert.equal(launchResult.status, 0, launchResult.stderr);
+    assert.match(launchResult.stdout, /open -a Xcode .*Package\.swift/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("native iOS audit reports direct view networking, insecure credential storage, and missing privacy", () => {
+  const root = fixture({ name: "unsafe-ios-app" });
+  try {
+    writeFixtureFile(root, "Unsafe.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER = com.example.unsafe;\n");
+    writeFixtureFile(root, "Unsafe/Screen.swift", `import SwiftUI\nstruct Screen: View {\n let token = UserDefaults.standard.string(forKey: \"authToken\")\n var body: some View { Text(\"Load\").task { _ = try? await URLSession.shared.data(from: URL(string: \"https://example.com\")!) } }\n}\n`);
+    const result = run(["audit", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    const byId = Object.fromEntries(report.findings.map((finding) => [finding.id, finding]));
+    assert.equal(byId["ios-network-boundary"].status, "risk");
+    assert.equal(byId["ios-secret-storage"].status, "risk");
+    assert.equal(byId["ios-privacy-manifest"].status, "opportunity");
+    assert.equal(byId["ios-state-ownership"].status, "opportunity");
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test("audit reports concrete state, concurrency, and credential risks without modifying the project", () => {

@@ -1,6 +1,6 @@
 # Automated Product Engineer for Web and Native
 
-An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js, Expo, and React Native features.
+An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js, Expo, React Native, SwiftUI, and UIKit features.
 
 [Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [Install from npm](https://www.npmjs.com/package/automated-product-engineer)
 
@@ -15,6 +15,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - A frame manifest for reproducible desktop and mobile references.
 - Architecture principles for Next.js, React, hooks, APIs, services, and databases.
 - Native product architecture for Expo Router or React Navigation, OAuth and deep links, app lifecycle, offline work, device capabilities, EAS builds and updates, and store delivery.
+- First-class native iOS architecture for SwiftUI or UIKit, Observation, Swift 6 concurrency, AuthenticationServices, Keychain, local persistence, Apple capabilities, Xcode testing, privacy manifests, signing, TestFlight, and App Store delivery.
 - Encapsulation and extension-over-modification rules for stable, composable feature boundaries.
 - A complete design-system blueprint with token layers, component hierarchy, enum-driven variants, slots, metadata, and change policy.
 - Decoupled view/controller examples and typed state-machine patterns.
@@ -57,7 +58,7 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command detects Next.js, Expo, or bare React Native and installs 16 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, bare React Native, native iOS, or Swift Package projects and installs 17 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
 
 In an interactive terminal, the installer then offers to analyze the repository. It lets you choose review domains and creates a project-owned onboarding workspace plus a local skill overlay. Run the workflow directly or refresh its static evidence at any time:
 
@@ -96,6 +97,18 @@ pnpm dlx automated-product-engineer launch
 
 The launcher automatically uses the repository's package manager and adds Expo's development-client mode when detected. Optional `--ios`, `--android`, `--web`, `--tunnel`, and `--clear` flags remain available for deliberate platform or debugging choices.
 
+### Swift and native iOS
+
+In a native Apple project, the same install detects the workspace or project, shared schemes, bundle identifier, deployment target, Swift version, entitlements, privacy manifests, test sources, and Apple capability signals. The doctor explains missing shared schemes, privacy manifests, or test coverage, while launch opens the preferred workspace in Xcode:
+
+```bash
+pnpm dlx automated-product-engineer doctor
+pnpm dlx automated-product-engineer launch
+swift test --package-path .automated-product-engineer/ios/examples
+```
+
+The `ios-native-app` specialist routes native work through SwiftUI or UIKit ownership, strict concurrency, AuthenticationServices and Keychain, offline persistence, device capabilities, real simulator and device proof, signing, TestFlight, and App Store readiness.
+
 ## Recommended export
 
 ```text
@@ -130,6 +143,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/codebase-onboarding.md`](docs/codebase-onboarding.md): full repository baseline, local skill overlay, selectable modernization program, and retrospective feedback loop.
 - [`docs/pattern-atlas.md`](docs/pattern-atlas.md): the high-level content architecture, stable IDs, product situations, proofs, and agent routing contract.
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
+- [`docs/native-ios-delivery.md`](docs/native-ios-delivery.md): native Swift and Xcode detection, architecture, capabilities, privacy, simulator and device proof, signing, TestFlight, and App Store delivery.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
 - [`docs/state-and-data-architecture.md`](docs/state-and-data-architecture.md): local, URL, cache, database, controller, API, and service ownership.
@@ -142,7 +156,10 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`checklists/`](checklists): implementation and review gates.
 - [`native/examples/`](native/examples): framework-light offline outbox, lifecycle reconciliation, notification routing, and permission patterns.
 - [`native/case-studies/`](native/case-studies): portable native source for the Field Relay offline mission workflow.
+- [`ios/examples/`](ios/examples): executable Swift concurrency, versioned-write, outbox, and identity-scope invariants.
+- [`ios/case-studies/`](ios/case-studies): native Swift application notes for the Field Relay workflow.
 - [`templates/native/`](templates/native): Expo Router auth shell, EAS profiles, and Maestro workflow templates.
+- [`templates/ios/`](templates/ios): SwiftUI composition, Observation, semantic component, and privacy-manifest starting points.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.
 - [`templates/state/`](templates/state): controller-hook example.
