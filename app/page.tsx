@@ -82,7 +82,7 @@ export default function HomePage() {
           <h2>Stay focused on what the product should do.</h2>
           <p>Stable contracts keep state, security, persistence, and failure recovery out of the daily product conversation while leaving every decision open to inspection.</p>
           <div className="system-actions">
-            <a className="button button-secondary" href="/system"><Layers3 size={17} /> Tour the design system</a>
+            <a className="button button-secondary" href="/guide#guide-design-system"><Layers3 size={17} /> Tour the design system</a>
             <Link className="text-link" href="/guide"><BookOpen size={15} /> Go behind the scenes</Link>
           </div>
         </div>

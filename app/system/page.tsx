@@ -1,5 +1,5 @@
-import { DesignSystemExplorer } from "@/src/system/design-system-explorer";
+import { redirect } from "next/navigation";
 
 export default function DesignSystemPage() {
-  return <DesignSystemExplorer />;
+  redirect("/guide#guide-design-system");
 }

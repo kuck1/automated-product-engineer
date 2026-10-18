@@ -343,10 +343,10 @@ test("example reference links open the relevant skill", async ({ page }, testInf
   await expect(page.locator(".skill-preview").getByRole("heading", { name: "Intake and pushback" })).toBeVisible();
 });
 
-test("design system tour explains hierarchy and swaps semantic tokens", async ({ page }, testInfo) => {
+test("behind the scenes includes the design system and swaps semantic tokens", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
-  await page.goto("/system");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Quick Start" })).toBeVisible();
+  await page.goto("/guide#guide-design-system");
+  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
   const heading = page.getByRole("heading", { name: "Design tokens. Components and patterns." });
   await expect(heading).toBeVisible();
   expect((await heading.boundingBox())?.y).toBeLessThan(340);
@@ -370,12 +370,13 @@ test("quick start connects installation, workflows, and behind the scenes", asyn
   await expect(page.getByRole("link", { name: /Open behind the scenes/ })).toHaveAttribute("href", "/guide");
 });
 
-test("mobile design system tour stays within the viewport", async ({ page }, testInfo) => {
+test("mobile embedded design system stays within the viewport", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
-  await page.goto("/system");
+  await page.goto("/guide#guide-design-system");
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   await expect(page.getByRole("link", { name: /Token playground/ })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Behind the scenes sections" }).getByRole("link", { name: "Design system" })).toBeVisible();
 });
 
 test("desktop landing visual", async ({ page }, testInfo) => {
@@ -447,7 +448,7 @@ test("component library onboarding explains ownership and renders interactive st
   await workbench.getByRole("button", { name: /Review panel/ }).click();
   await workbench.getByRole("button", { name: "Blocked" }).click();
   await expect(workbench.getByText("Resolve the security review before approval.")).toBeVisible();
-  await expect(page.getByRole("link", { name: /Open component catalog/ }).last()).toHaveAttribute("href", "/system#primitives");
+  await expect(page.getByRole("link", { name: /Open component catalog/ }).last()).toHaveAttribute("href", "/guide#primitives");
 });
 
 test("mobile component library onboarding stays inside the page", async ({ page }, testInfo) => {

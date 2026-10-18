@@ -696,6 +696,12 @@ footer > a:hover { color: white; }
 
 /* Human-readable design system explorer */
 .design-system-shell { min-height: 100vh; background: var(--bg); }
+.design-system-embedded { min-height: 0; border-bottom: 1px solid var(--line); scroll-margin-top: 64px; }
+.design-system-embedded .system-tour-hero { padding-left: 0; padding-right: 0; }
+.design-system-embedded .system-tour-hero h1 { font-size: clamp(44px,5vw,72px); }
+.design-system-embedded .system-tour-map { padding-left: 0; padding-right: 0; }
+.design-system-embedded .system-tour-layout { max-width: none; padding-left: 0; padding-right: 0; }
+.design-system-embedded .system-tour-nav { top: 64px; }
 .system-tour-hero { padding: clamp(52px,5vw,72px) 5.5% 64px; display: grid; grid-template-columns: minmax(0,1.35fr) minmax(320px,.65fr); gap: 7vw; align-items: start; border-bottom: 1px solid var(--line); background: radial-gradient(circle at 12% 68%,rgba(169,145,255,.09),transparent 30%); }
 .system-tour-hero h1 { max-width: 900px; margin: 25px 0 0; font-size: clamp(56px,6.4vw,104px); line-height: 1.02; font-weight: 510; letter-spacing: -.056em; }
 .system-tour-hero h1 span { color: var(--accent); }

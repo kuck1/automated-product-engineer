@@ -159,7 +159,7 @@ export function ComponentLibraryPlaybook() {
   };
 
   return <section className="guide-section cl-playbook" id="guide-components">
-    <div className="guide-heading"><span>03 / COMPONENT LIBRARY</span><div><h3>Understand the system before you assemble the screen.</h3><p>A component library is the shared interface contract between design and product code. It turns recurring visual, interaction, responsive, and accessibility decisions into named parts that teams can inspect, reuse, and improve once.</p></div></div>
+    <div className="guide-heading"><span>04 / COMPONENT LIBRARY</span><div><h3>Understand the system before you assemble the screen.</h3><p>A component library is the shared interface contract between design and product code. It turns recurring visual, interaction, responsive, and accessibility decisions into named parts that teams can inspect, reuse, and improve once.</p></div></div>
 
     <div className="cl-value-grid">
       <article><Palette size={18} /><strong>Change decisions once</strong><p>Semantic tokens update every participating component without rewriting each feature.</p></article>
@@ -175,7 +175,7 @@ export function ComponentLibraryPlaybook() {
     <div className="cl-workbench">
       <nav aria-label="Component library examples">{libraryItems.map((item, index) => <button type="button" className={active.id === item.id ? "active" : ""} aria-pressed={active.id === item.id} onClick={() => selectItem(item)} key={item.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{item.level}</small><strong>{item.name}</strong><p>{item.summary}</p></div><ArrowRight size={15} /></button>)}</nav>
       <article className="cl-inspector" aria-live="polite">
-        <header><div><span>{active.level}</span><h4>{active.name}</h4><p>{active.summary}</p></div><Link href="/system#primitives">Open full catalog <ArrowUpRight size={13} /></Link></header>
+        <header><div><span>{active.level}</span><h4>{active.name}</h4><p>{active.summary}</p></div><Link href="/guide#primitives">Open full catalog <ArrowUpRight size={13} /></Link></header>
         <div className="cl-state-controls"><fieldset><legend>Meaningful state</legend>{active.states.map((state) => <button type="button" key={state} aria-pressed={activeState === state} onClick={() => setActiveState(state)}>{state}</button>)}</fieldset><fieldset><legend>Density</legend>{(["comfortable", "compact"] as const).map((option) => <button type="button" key={option} aria-pressed={density === option} onClick={() => setDensity(option)}>{option}</button>)}</fieldset></div>
         <div className="cl-stage"><div><span>LIVE PRODUCTION SPECIMEN</span><small>{activeState} · {density}</small></div><LiveSpecimen key={`${active.id}-${activeState}`} item={active} state={activeState} density={density} /></div>
         <dl className="cl-contract"><div><dt>PUBLIC API</dt><dd><code>{active.props}</code></dd></div><div><dt>SEMANTIC TOKENS</dt><dd>{active.tokens}</dd></div><div><dt>COMPONENT OWNS</dt><dd>{active.owns}</dd></div><div><dt>PRODUCT OWNS</dt><dd>{active.callerOwns}</dd></div><div><dt>USE WHEN</dt><dd>{active.useWhen}</dd></div><div><dt>AVOID WHEN</dt><dd>{active.avoid}</dd></div></dl>
@@ -192,6 +192,6 @@ export function ComponentLibraryPlaybook() {
     </ol>
 
     <div className="cl-gamechanger"><div><span>WHY THIS CHANGES DELIVERY</span><h4>Every new screen starts from tested decisions.</h4><p>The team spends review time on the product problem instead of rediscovering button hierarchy, focus behavior, error placement, spacing, and responsive rules. Improvements flow back to every consumer through a small, typed API.</p></div><div><strong>Before the library</strong><ul><li>Visual rules are copied into features</li><li>States appear late during QA</li><li>Design and code use different names</li><li>Fixes stop at one screen</li></ul></div><div><strong>With the library</strong><ul><li>Intent selects a known component</li><li>States are part of the contract</li><li>Tokens connect design and code</li><li>Fixes improve every consumer</li></ul></div></div>
-    <div className="cl-next"><Box size={18} /><div><strong>Tour every token, component, and product pattern.</strong><p>The full catalog lets you swap semantic tokens and inspect the hierarchy. The installable Design System skill explains how to extend it safely.</p></div><Link href="/system#primitives">Open component catalog <ArrowRight size={14} /></Link><Link href="/library?skill=design-system#skills">Open Design System skill <ArrowRight size={14} /></Link></div>
+    <div className="cl-next"><Box size={18} /><div><strong>Tour every token, component, and product pattern.</strong><p>The full catalog lets you swap semantic tokens and inspect the hierarchy. The installable Design System skill explains how to extend it safely.</p></div><Link href="/guide#primitives">Open component catalog <ArrowRight size={14} /></Link><Link href="/library?skill=design-system#skills">Open Design System skill <ArrowRight size={14} /></Link></div>
   </section>;
 }
