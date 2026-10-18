@@ -333,7 +333,7 @@ test("mobile workflow library provides a complete responsive browser", async ({ 
   expect(mobileLayout.markdownOverflow).toBeLessThanOrEqual(1);
   await page.getByPlaceholder("Search skills").fill("security");
   await expect(page.locator(".skill-list-track > button")).toHaveCount(1);
-  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Security Review", exact: true })).toBeVisible();
+  await expect(page.locator(".skill-preview > header").getByRole("heading", { name: "Security Review", exact: true })).toBeVisible();
 });
 
 test("example reference links open the relevant skill", async ({ page }, testInfo) => {
