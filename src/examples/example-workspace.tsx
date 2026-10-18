@@ -1,17 +1,26 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, ArrowRight, Check, Clock3, Database, RefreshCw, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { AlertTriangle, ArrowRight, Camera, Check, Clock3, CloudOff, Database, MapPin, Navigation, PackageCheck, RefreshCw, ShieldCheck, Sparkles, Users, Wifi, WifiOff } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import type { ExampleSnapshot, Onboarding, OnboardingStage, Release, ReleaseStage } from "./contracts";
+import type { ExampleSnapshot, FieldMission, FieldStop, FieldStopStatus, Onboarding, OnboardingStage, Release, ReleaseStage } from "./contracts";
 import { onboardingHealth, releaseReadiness } from "./service";
 import { Badge, Button, SiteHeader } from "@/src/ui/components";
 import { ExampleReferenceKit } from "./example-reference-kit";
 import { exampleReferenceKits } from "./reference-kits";
 import { clientSystems, clientTokenStyle } from "./client-systems";
 
-type View = "releases" | "onboarding";
+type View = "releases" | "onboarding" | "field";
+
+type FieldMutationInput = {
+  mission: FieldMission;
+  stopId: string;
+  status: FieldStopStatus;
+  deliveredUnits?: number;
+  proofCaptured?: boolean;
+  operationId: string;
+};
 
 const releaseActions: Partial<Record<ReleaseStage, { label: string; stage: ReleaseStage }[]>> = {
   building: [{ label: "Start validation", stage: "validating" }],
@@ -45,8 +54,10 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
   const search = useSearchParams();
   const queryClient = useQueryClient();
   const requested = search.get("view");
-  const view: View = requested === "onboarding" ? requested : "releases";
+  const view: View = requested === "onboarding" || requested === "field" ? requested : "releases";
   const [notice, setNotice] = useState<{ tone: "success" | "danger"; text: string } | null>(null);
+  const [fieldOnline, setFieldOnline] = useState(true);
+  const [fieldQueue, setFieldQueue] = useState<FieldMutationInput[]>([]);
   const snapshotQuery = useQuery({ queryKey: ["example-snapshot"], queryFn: fetchSnapshot, initialData: initialSnapshot });
 
   const releaseMutation = useMutation({
@@ -87,6 +98,54 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
     },
   });
 
+  const fieldMutation = useMutation({
+    mutationFn: ({ mission, ...input }: FieldMutationInput) => patchEntity<FieldMission>(`/api/examples/field-missions/${mission.id}`, { ...input, expectedRevision: mission.revision }),
+    onMutate: async ({ mission, stopId, status, deliveredUnits, proofCaptured }) => {
+      await queryClient.cancelQueries({ queryKey: ["example-snapshot"] });
+      const previous = queryClient.getQueryData<ExampleSnapshot>(["example-snapshot"]);
+      queryClient.setQueryData<ExampleSnapshot>(["example-snapshot"], (current) => current ? {
+        ...current,
+        fieldMissions: current.fieldMissions.map((item) => item.id === mission.id ? {
+          ...item,
+          revision: item.revision + 1,
+          stops: item.stops.map((stop) => stop.id === stopId ? { ...stop, status, deliveredUnits: deliveredUnits ?? stop.deliveredUnits, proofCaptured: proofCaptured ?? stop.proofCaptured } : stop),
+        } : item),
+      } : current);
+      setNotice(null);
+      return { previous };
+    },
+    onError: (error, _variables, context) => {
+      if (context?.previous) queryClient.setQueryData(["example-snapshot"], context.previous);
+      setNotice({ tone: "danger", text: error.message });
+    },
+    onSuccess: (saved) => {
+      queryClient.setQueryData<ExampleSnapshot>(["example-snapshot"], (current) => current ? { ...current, fieldMissions: current.fieldMissions.map((item) => item.id === saved.id ? saved : item) } : current);
+      setNotice({ tone: "success", text: "Stop confirmed by the mission service." });
+    },
+  });
+
+  function moveFieldStop(input: Omit<FieldMutationInput, "operationId">) {
+    const operation = { ...input, operationId: crypto.randomUUID() };
+    if (fieldOnline) { fieldMutation.mutate(operation); return; }
+    queryClient.setQueryData<ExampleSnapshot>(["example-snapshot"], (current) => current ? {
+      ...current,
+      fieldMissions: current.fieldMissions.map((mission) => mission.id === input.mission.id ? {
+        ...mission,
+        stops: mission.stops.map((stop) => stop.id === input.stopId ? { ...stop, status: input.status, deliveredUnits: input.deliveredUnits ?? stop.deliveredUnits, proofCaptured: input.proofCaptured ?? stop.proofCaptured } : stop),
+      } : mission),
+    } : current);
+    setFieldQueue((current) => [...current, operation]);
+    setNotice({ tone: "success", text: "Saved on this device. Reconnect to confirm the delivery." });
+  }
+
+  async function syncFieldQueue() {
+    setFieldOnline(true);
+    try {
+      for (const operation of fieldQueue) await fieldMutation.mutateAsync(operation);
+      setFieldQueue([]);
+    } catch { /* mutation state renders the recoverable conflict */ }
+  }
+
   const summary = useMemo(() => ({
     blocked: snapshotQuery.data.releases.filter((release) => release.stage === "blocked").length,
     ready: snapshotQuery.data.releases.filter((release) => release.stage === "ready").length,
@@ -99,15 +158,53 @@ export function ExampleWorkspace({ initialSnapshot }: { initialSnapshot: Example
       <SiteHeader />
       <div className="workspace-layout">
         <section className="workspace-main">
-          <div className="workspace-title"><div><Badge tone="info">Sample client app · Interactive demo</Badge><h2>{view === "releases" ? "Release readiness" : "Customer onboarding operations"}</h2><p>{view === "releases" ? "A policy control tower for deciding what can ship." : "A customer journey board for moving accounts toward value."}</p></div><Button tone="secondary" onClick={() => snapshotQuery.refetch()} disabled={snapshotQuery.isFetching}><RefreshCw size={15} /> Refresh</Button></div>
+          <div className="workspace-title"><div><Badge tone="info">{view === "field" ? "Native product · Interactive field demo" : "Sample client app · Interactive demo"}</Badge><h2>{view === "releases" ? "Release readiness" : view === "onboarding" ? "Customer onboarding operations" : "Field Relay"}</h2><p>{view === "releases" ? "A policy control tower for deciding what can ship." : view === "onboarding" ? "A customer journey board for moving accounts toward value." : "An offline-first route for getting essential supplies to their destination."}</p></div><Button tone="secondary" onClick={() => snapshotQuery.refetch()} disabled={snapshotQuery.isFetching}><RefreshCw size={15} /> Refresh</Button></div>
           {notice && <div role="status" className={`notice notice-${notice.tone}`}>{notice.tone === "success" ? <Check size={17} /> : <AlertTriangle size={17} />}{notice.text}</div>}
           <ExampleReferenceKit key={view} kit={exampleReferenceKits[view]} />
           {view === "releases" && <ReleaseView releases={snapshotQuery.data.releases} summary={summary} pending={releaseMutation.isPending} onMove={(release, stage) => releaseMutation.mutate({ release, stage })} />}
           {view === "onboarding" && <OnboardingView onboardings={snapshotQuery.data.onboardings} summary={summary} pending={onboardingMutation.isPending} onMove={(onboarding, stage) => onboardingMutation.mutate({ onboarding, stage })} />}
+          {view === "field" && <FieldRelayView mission={snapshotQuery.data.fieldMissions[0]} online={fieldOnline} queued={fieldQueue.length} pending={fieldMutation.isPending} onConnection={() => setFieldOnline((value) => !value)} onSync={syncFieldQueue} onMove={moveFieldStop} />}
         </section>
       </div>
     </main>
   );
+}
+
+function FieldRelayView({ mission, online, queued, pending, onConnection, onSync, onMove }: { mission: FieldMission; online: boolean; queued: number; pending: boolean; onConnection: () => void; onSync: () => void; onMove: (input: Omit<FieldMutationInput, "operationId">) => void }) {
+  const completed = mission.stops.filter((stop) => stop.status === "complete").length;
+  return <section className="field-relay" style={clientTokenStyle(clientSystems.field.tokens)} aria-label="Field Relay native app preview">
+    <div className="field-context">
+      <div><span>NATIVE CASE STUDY · EXPO</span><h3>Complete the next relief stop. The app protects the handoff.</h3><p>One field action crosses device state, an offline outbox, authenticated workspace policy, a revision guard, and atomic persistence.</p></div>
+      <dl><div><dt>Mission progress</dt><dd>{completed}/{mission.stops.length} stops</dd></div><div><dt>Local queue</dt><dd>{queued} waiting</dd></div><div><dt>Revision</dt><dd>{mission.revision}</dd></div></dl>
+    </div>
+    <div className="field-stage">
+      <div className="field-map" aria-hidden="true"><i className="route route-a" /><i className="route route-b" /><span className="map-point point-a">01</span><span className="map-point point-b">02</span><span className="map-point point-c">03</span><div className="map-label"><small>RIVERBEND RESPONSE</small><strong>North corridor</strong></div></div>
+      <div className="field-device">
+        <header><div><small>{mission.incident}</small><strong>{mission.name}</strong></div><button type="button" className={online ? "online" : "offline"} onClick={onConnection} aria-label={`Switch ${online ? "offline" : "online"}`}>{online ? <Wifi size={14} /> : <WifiOff size={14} />}{online ? "Online" : "Offline"}</button></header>
+        <div className="field-mission-meta"><span><Navigation size={13} /> {mission.operationalPeriod}</span><span><Users size={13} /> {mission.coordinator}</span></div>
+        {queued > 0 && <button type="button" className="field-sync" onClick={onSync} disabled={pending}><CloudOff size={14} /><span><strong>{queued} update saved on device</strong><small>{online ? "Ready to confirm" : "Reconnect to confirm"}</small></span><ArrowRight size={14} /></button>}
+        <div className="field-stops">{mission.stops.map((stop, index) => <FieldStopCard key={stop.id} index={index} mission={mission} stop={stop} pending={pending} queued={queued > 0} onMove={onMove} />)}</div>
+        <nav aria-label="Native app navigation"><button className="active" type="button"><Navigation size={15} /> Route</button><button type="button"><PackageCheck size={15} /> Loads</button><button type="button"><Users size={15} /> Team</button></nav>
+      </div>
+    </div>
+  </section>;
+}
+
+function FieldStopCard({ index, mission, stop, pending, queued, onMove }: { index: number; mission: FieldMission; stop: FieldStop; pending: boolean; queued: boolean; onMove: (input: Omit<FieldMutationInput, "operationId">) => void }) {
+  const next: Partial<Record<FieldStopStatus, { label: string; status: FieldStopStatus }>> = {
+    queued: { label: "Start route", status: "en_route" },
+    en_route: { label: "Arrived", status: "arrived" },
+    arrived: { label: "Capture proof & complete", status: "complete" },
+    blocked: { label: "Resume route", status: "en_route" },
+  };
+  const action = next[stop.status];
+  return <article className={`field-stop field-stop-${stop.status}`}>
+    <div className="field-stop-index"><span>{String(index + 1).padStart(2, "0")}</span><i /></div>
+    <div className="field-stop-body"><div className="field-stop-title"><div><small>{stop.priority} priority · {stop.eta}</small><h4>{stop.name}</h4><p><MapPin size={11} />{stop.address}</p></div><span>{stop.status.replace("_", " ")}</span></div>
+      <div className="field-load"><div><small>{stop.supplyLabel}</small><strong>{stop.deliveredUnits || stop.plannedUnits} <i>{stop.deliveredUnits ? "delivered" : "assigned"}</i></strong></div><div className={stop.proofCaptured ? "captured" : ""}><Camera size={14} /><span>{stop.proofCaptured ? "Proof captured" : "Proof required"}</span></div></div>
+      {action && <button type="button" disabled={pending || queued} onClick={() => onMove({ mission, stopId: stop.id, status: action.status, deliveredUnits: action.status === "complete" ? stop.plannedUnits : undefined, proofCaptured: action.status === "complete" ? true : undefined })}>{action.label}<ArrowRight size={14} /></button>}
+    </div>
+  </article>;
 }
 
 function ReleaseView({ releases, summary, pending, onMove }: { releases: Release[]; summary: { blocked: number; ready: number }; pending: boolean; onMove: (release: Release, stage: ReleaseStage) => void }) {

@@ -49,6 +49,7 @@ test("default install selects native examples and records the detected profile",
     assert.equal(result.status, 0, result.stderr);
     const toolkit = path.join(root, ".automated-product-engineer");
     assert.equal(existsSync(path.join(toolkit, "native", "examples", "versioned-outbox.ts")), true);
+    assert.equal(existsSync(path.join(toolkit, "native", "case-studies", "field-relay", "field-mission.ts")), true);
     assert.equal(existsSync(path.join(toolkit, "app", "examples", "page.tsx")), false);
     const profile = JSON.parse(readFileSync(path.join(toolkit, "project-profile.json"), "utf8"));
     assert.equal(profile.kind, "expo");

@@ -1,4 +1,4 @@
-import type { Onboarding, Release } from "./contracts";
+import type { FieldMission, Onboarding, Release } from "./contracts";
 
 export const demoReleases: Release[] = [
   {
@@ -106,6 +106,25 @@ export const demoOnboardings: Onboarding[] = [
       { id: "sso", label: "SSO configured", completed: true, dueDate: "2026-10-04" },
       { id: "sandbox", label: "Sandbox accepted", completed: true, dueDate: "2026-10-11" },
       { id: "training", label: "Team training", completed: false, dueDate: "2026-10-19" },
+    ],
+  },
+];
+
+export const demoFieldMissions: FieldMission[] = [
+  {
+    id: "mission_riverbend",
+    workspaceId: "workspace_demo",
+    name: "North corridor supply run",
+    incident: "Riverbend flood response",
+    lifeline: "food_water_shelter",
+    coordinator: "Jordan Lee",
+    operationalPeriod: "08:00–18:00",
+    revision: 12,
+    lastOperationId: null,
+    stops: [
+      { id: "stop_cedar", position: 1, name: "Cedar Ridge Shelter", address: "144 Cedar Ave", priority: "critical", status: "en_route", assignedTo: "Maya + Luis", eta: "10:35", supplyLabel: "Water cases", plannedUnits: 48, deliveredUnits: 0, proofRequired: true, proofCaptured: false },
+      { id: "stop_east", position: 2, name: "East Library Hub", address: "290 Market St", priority: "high", status: "queued", assignedTo: "Maya + Luis", eta: "11:20", supplyLabel: "Hygiene kits", plannedUnits: 32, deliveredUnits: 0, proofRequired: true, proofCaptured: false },
+      { id: "stop_pine", position: 3, name: "Pine Street Kitchen", address: "81 Pine St", priority: "routine", status: "complete", assignedTo: "Team Cedar", eta: "09:45", supplyLabel: "Meal boxes", plannedUnits: 60, deliveredUnits: 60, proofRequired: true, proofCaptured: true },
     ],
   },
 ];

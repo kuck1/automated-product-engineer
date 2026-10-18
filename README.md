@@ -36,7 +36,7 @@ pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3100` for the landing page, `http://localhost:3100/system` for the interactive token and component tour, and `http://localhost:3100/examples` for two business-logic case studies.
+Open `http://localhost:3100` for the landing page, `http://localhost:3100/system` for the interactive token and component tour, and `http://localhost:3100/examples` for three business-logic case studies, including the offline-first Field Relay native example.
 
 Then use the workflow in your own codebase:
 
@@ -104,7 +104,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`app/system/`](app/system): interactive design-system tour, live token playground, and hierarchy-based component catalog.
 - [`supabase/migrations/`](supabase/migrations): normalized example schema, constraints, indexes, and row-level security.
 - [`docs/reference-app-architecture.md`](docs/reference-app-architecture.md): the implementation's ownership and state contracts.
-- [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for both examples.
+- [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for all three examples.
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
@@ -119,6 +119,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/declassification-audit.md`](docs/declassification-audit.md): what reusable skill material was included or deliberately excluded.
 - [`checklists/`](checklists): implementation and review gates.
 - [`native/examples/`](native/examples): framework-light offline outbox, lifecycle reconciliation, notification routing, and permission patterns.
+- [`native/case-studies/`](native/case-studies): portable native source for the Field Relay offline mission workflow.
 - [`templates/native/`](templates/native): Expo Router auth shell, EAS profiles, and Maestro workflow templates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.

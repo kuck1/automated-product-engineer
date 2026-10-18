@@ -42,7 +42,7 @@ const sharedEntries = {
   templates: ["templates"],
 };
 const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
-const nativeExamples = ["native/examples"];
+const nativeExamples = ["native/examples", "native/case-studies"];
 
 function usage() {
   return [

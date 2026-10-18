@@ -81,4 +81,37 @@ export const exampleReferenceKits = {
       { slug: "manual-ui-qa", name: "Manual UI QA", use: "Cover empty stages, long customer names, risk states, and mobile overflow." },
     ],
   },
-} as const satisfies Record<"releases" | "onboarding", ExampleReferenceKit>;
+  field: {
+    name: "Field Relay",
+    label: "Native app 03",
+    systemName: "Relay Field System",
+    systemSummary: "An outdoor-readable mobile workspace for relief deliveries: warm map surfaces, decisive signals, large targets, and honest sync state.",
+    summary: "A native field product for community relief teams moving essential supplies from an assigned mission to verified delivery. The app keeps working through weak connectivity and reconciles every action with the authorized workspace.",
+    brief: [
+      ["Primary user", "Field team member or logistics coordinator"],
+      ["Decision", "What is the next safe stop, and has the delivery been verified?"],
+      ["Business rules", "Assigned workspace, valid stop transitions, proof before completion, idempotent sync, and stale-revision protection"],
+      ["Native contract", "Expo development build, protected routes, device camera/location, offline outbox, foreground reconciliation"],
+    ],
+    principles: [
+      ["Status before decoration", "Connection, assignment, route state, and critical need remain visible outdoors and under pressure."],
+      ["Offline is a real state", "A device-saved action says queued until the server confirms it; the interface never calls it synced early."],
+      ["Proof follows purpose", "Capture only the delivery evidence the operation requires, with an explicit permission recovery path."],
+    ],
+    components: ["Mission shell", "Connection status", "Route stop", "Delivery proof sheet", "Sync conflict notice", "Team presence"],
+    tokens: clientSystems.field.tokens,
+    architecture: [
+      ["Native shell", "Expo Router protects the mission group and restores the intended stop after Google OAuth returns.", { label: "Expo protected routes", path: "templates/native/expo-router/src/app/_layout.tsx" }],
+      ["Device state", "The current stop, draft quantity, permission result, and queued operation live on device until confirmed.", { label: "versioned-outbox.ts", path: "native/examples/versioned-outbox.ts" }],
+      ["Server cache", "The mission query owns the canonical snapshot; foreground and reconnect events trigger scoped reconciliation.", { label: "lifecycle-reconcile.ts", path: "native/examples/lifecycle-reconcile.ts" }],
+      ["Policy", "The service validates workspace, revision, transition, quantity, and required proof before completion.", { label: "ExampleService.updateFieldStop", path: "src/examples/service.ts" }],
+      ["Persistence", "A version-checked Postgres function updates the mission revision and stop atomically behind RLS.", { label: "save_example_field_stop", path: "supabase/migrations/202610160001_reference_examples.sql" }],
+    ],
+    skills: [
+      { slug: "expo-native-app", name: "Expo Native App", use: "Launch the development build and cover auth callbacks, lifecycle, permissions, offline work, and release boundaries." },
+      { slug: "frontend-api-db", name: "Frontend / API / Database", use: "Trace an offline completion through the outbox, idempotency key, revision guard, policy, and atomic persistence." },
+      { slug: "security-review", name: "Security Review", use: "Verify Google OAuth, workspace membership, RLS, proof storage, and account-switch cache cleanup." },
+      { slug: "manual-ui-qa", name: "Manual UI QA", use: "Exercise sunlight contrast, large text, interrupted capture, backgrounding, weak networks, and one-handed use." },
+    ],
+  },
+} as const satisfies Record<"releases" | "onboarding" | "field", ExampleReferenceKit>;

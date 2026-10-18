@@ -30,7 +30,19 @@ export const clientSystems = {
       { name: "Progress track", variable: "--journey-track", value: "#E4E4E9", purpose: "Health rings and incomplete progress" },
     ],
   },
-} as const satisfies Record<"releases" | "onboarding", { readonly tokens: readonly ClientToken[] }>;
+  field: {
+    tokens: [
+      { name: "Field canvas", variable: "--field-canvas", value: "#F2EBDD", purpose: "Warm map and route workspace" },
+      { name: "Route ink", variable: "--field-ink", value: "#17251F", purpose: "Primary operational text and controls" },
+      { name: "Signal orange", variable: "--field-action", value: "#F26B38", purpose: "Current stop and primary field action" },
+      { name: "Confirmed", variable: "--field-success", value: "#187C5B", purpose: "Synced deliveries and available connection" },
+      { name: "Offline queue", variable: "--field-warning", value: "#E5A62B", purpose: "Device-saved work waiting to sync" },
+      { name: "Critical", variable: "--field-danger", value: "#B63B32", purpose: "Critical need and blocked work" },
+      { name: "Device surface", variable: "--field-surface", value: "#FFFDF8", purpose: "Native cards, sheets, and inputs" },
+      { name: "Route line", variable: "--field-line", value: "#C9C0AE", purpose: "Map paths and component boundaries" },
+    ],
+  },
+} as const satisfies Record<"releases" | "onboarding" | "field", { readonly tokens: readonly ClientToken[] }>;
 
 export function clientTokenStyle(tokens: readonly ClientToken[]) {
   return Object.fromEntries(tokens.map(({ variable, value }) => [variable, value])) as CSSProperties;
