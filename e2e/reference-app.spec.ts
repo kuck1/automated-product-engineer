@@ -90,6 +90,7 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   await page.goto("/examples?view=releases");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #1" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByLabel("Release readiness reference kit")).toHaveClass("example-reference-kit");
+  await expect(page.getByRole("link", { name: "Open our shared system" })).toHaveCount(0);
   await page.getByRole("tab", { name: "Tokens" }).click();
   await expect(page.getByText("Decision focus", { exact: true })).toBeVisible();
   await expect(page.getByText("--release-action", { exact: true })).toBeVisible();
@@ -119,6 +120,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Case Study #2" }).click();
   await expect(page).toHaveURL(/view=onboarding/);
   await expect(page.getByLabel("Onboarding operations reference kit")).toHaveClass("example-reference-kit");
+  await expect(page.getByRole("link", { name: "Open our shared system" })).toHaveCount(0);
   await expect(page.getByLabel("Customer onboarding journey")).toBeVisible();
   const tokenTab = page.getByRole("tab", { name: "Tokens" });
   await expect(async () => {

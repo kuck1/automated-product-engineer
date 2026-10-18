@@ -149,8 +149,9 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .section-heading > p, .system-copy > p { color: #aeb4ba; line-height: 1.7; max-width: 480px; margin: 0; }
 .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .case-card { display: block; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--panel); overflow: hidden; transition: transform .18s ease, border-color .18s ease, background .18s ease; }
-.case-card:hover, .case-card:focus-visible { transform: translateY(-3px); border-color: color-mix(in srgb,var(--accent) 48%,var(--line)); background: #1c2229; outline: none; }
+.case-card:hover, .case-card:focus-visible { transform: translateY(-3px); outline: none; }
 .case-top { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 11px; }
+.case-system-name { text-align: right; }
 .badge { min-height: 24px; padding: 0 9px; display: inline-flex; align-items: center; width: fit-content; border-radius: 999px; font-size: 10px; font-weight: 750; text-transform: uppercase; letter-spacing: .06em; }
 .badge-neutral { color: #c7cbd0; background: rgba(255,255,255,.07); }
 .badge-info { color: #c8bcff; background: rgba(169,145,255,.12); }
@@ -159,6 +160,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .badge-danger { color: #ffaaa4; background: rgba(255,136,127,.12); }
 .case-visual { min-height: 224px; margin: 28px -29px 30px; padding: 36px; border-block: 1px solid var(--line); background: #12161b; }
 .release-visual { display: flex; flex-direction: column; justify-content: center; }
+.case-visual-label, .journey-kicker { display: block; font: 800 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: 1.15px; text-transform: uppercase; }
+.case-visual-label { margin-bottom: 24px; color: #9b9aaf; }
 .mini-release-row { display: flex; align-items: center; gap: 10px; font-size: 14px; }
 .mini-release-row strong { margin-left: auto; color: var(--accent); font-size: 22px; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -169,6 +172,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .mini-gates span { display: inline-flex; align-items: center; gap: 5px; padding: 7px 9px; border-radius: 7px; font-size: 10px; color: var(--mint); background: rgba(114,226,192,.08); }
 .mini-gates .is-pending { color: var(--warning); background: rgba(242,191,104,.08); }
 .onboarding-visual { display: flex; align-items: center; justify-content: center; gap: 32px; }
+.journey-kicker { margin-bottom: 12px; color: #0066cc; }
 .health-ring { width: 112px; height: 112px; display: grid; place-content: center; text-align: center; border: 8px solid #26302f; border-top-color: var(--mint); border-right-color: var(--mint); border-radius: 50%; }
 .health-ring span { font-size: 31px; font-weight: 700; }
 .health-ring small, .onboarding-visual > div > small { display: block; color: var(--muted); font-size: 10px; }
@@ -180,6 +184,33 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .case-card > p { color: #aeb3b9; line-height: 1.65; min-height: 54px; }
 .card-link { margin-top: 22px; display: inline-flex; align-items: center; gap: 9px; color: var(--accent); font-size: 13px; font-weight: 650; }
 .case-card:hover .card-link, .case-card:focus-visible .card-link { gap: 13px; }
+.case-release { border: 2px solid #494c70; border-radius: 4px; background-color: #0d0e1a; background-image: linear-gradient(rgba(255,212,59,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(255,212,59,.032) 1px,transparent 1px); background-size: 18px 18px; box-shadow: 7px 7px 0 #242640; color: #fff9df; }
+.case-release:hover, .case-release:focus-visible { border-color: #ffd43b; background-color: #111223; box-shadow: 9px 10px 0 #242640; }
+.case-release .case-top { color: #9b9aaf; font: 750 8px/1.35 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .7px; text-transform: uppercase; }
+.case-release .badge-info { border-radius: 2px; background: #ffd43b; color: #161623; box-shadow: 3px 3px 0 #ff4d8d; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+.case-release .case-visual { border-block: 2px solid #494c70; background-color: #10111f; background-image: linear-gradient(rgba(255,212,59,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,212,59,.045) 1px,transparent 1px); background-size: 18px 18px; }
+.case-release .mini-release-row { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-weight: 750; text-transform: uppercase; }
+.case-release .mini-release-row strong { color: #ffd43b; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; }
+.case-release .status-violet { border-radius: 1px; background: #ff4d8d; box-shadow: 0 0 12px rgba(255,77,141,.6); }
+.case-release .mini-progress { height: 8px; border: 1px solid #494c70; border-radius: 1px; background: #202139; }
+.case-release .mini-progress i { border-radius: 0; background: #ffd43b; }
+.case-release .mini-gates span { border: 1px solid #343653; border-radius: 2px; background: #1c1d32; color: #45e6a8; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
+.case-release .mini-gates .is-pending { color: #ff8a3d; background: #1c1d32; }
+.case-release h3 { font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-weight: 800; text-transform: uppercase; }
+.case-release > p { color: #aaa9ba; }
+.case-release .card-link { color: #ffd43b; font-family: ui-monospace,SFMono-Regular,Menlo,monospace; font-size: 10px; text-transform: uppercase; }
+.case-onboarding { border-color: #dedee2; border-radius: 24px; background: #f5f5f7; color: #1d1d1f; box-shadow: 0 18px 50px rgba(0,0,0,.16); }
+.case-onboarding:hover, .case-onboarding:focus-visible { border-color: #0066cc; background: #f5f5f7; box-shadow: 0 24px 64px rgba(0,102,204,.14); }
+.case-onboarding .case-top { color: #6e6e73; }
+.case-onboarding .badge-success { border: 1px solid #c7ddf4; background: #eaf4ff; color: #0066cc; }
+.case-onboarding .case-visual { border-block-color: #dedee2; background: #fff; color: #1d1d1f; }
+.case-onboarding .health-ring { border-color: #e4e4e9; border-top-color: #248a3d; border-right-color: #248a3d; }
+.case-onboarding .health-ring small, .case-onboarding .onboarding-visual > div > small { color: #6e6e73; }
+.case-onboarding .milestone-dots i { background: #248a3d; }
+.case-onboarding .milestone-dots i.pending { background: #e4e4e9; }
+.case-onboarding h3 { color: #1d1d1f; }
+.case-onboarding > p { color: #6e6e73; }
+.case-onboarding .card-link { color: #0066cc; }
 .system-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: 8vw; align-items: center; }
 .system-copy h2 { max-width: 650px; }
 .system-copy > p { margin-top: 28px; }
@@ -244,7 +275,6 @@ footer > a:hover { color: white; }
 .example-reference-kit > header { min-height: 102px; padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); background: linear-gradient(120deg,rgba(169,145,255,.08),transparent 55%); }
 .example-reference-kit > header h3 { margin: 10px 0 5px; font-size: 18px; }
 .example-reference-kit > header p { margin: 0; color: var(--muted); font-size: 10px; }
-.example-reference-kit > header > a { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px; color: var(--accent); font-size: 10px; font-weight: 700; }
 .reference-kit-badge { min-height: 24px; padding: 0 9px; display: inline-flex; align-items: center; border: 1px solid rgba(169,145,255,.2); border-radius: 999px; background: rgba(169,145,255,.1); color: #d8d0ff; font: 700 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .8px; text-transform: uppercase; }
 .reference-kit-tabs { padding: 8px; display: flex; gap: 5px; overflow-x: auto; border-bottom: 1px solid var(--line); }
 .reference-kit-tabs button { min-height: 38px; padding: 0 12px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: #8d969f; font-size: 9px; white-space: nowrap; cursor: pointer; }
@@ -1369,7 +1399,6 @@ footer > a:hover { color: white; }
   .workspace-title .button { display: none; }
   .example-reference-kit { margin-top: -5px; }
   .example-reference-kit > header { min-height: 0; padding: 17px; align-items: flex-start; flex-direction: column; gap: 14px; }
-  .example-reference-kit > header > a { min-height: 30px; }
   .reference-kit-tabs { padding: 7px; }
   .reference-kit-panel { min-height: 0; padding: 16px; }
   .reference-brief, .reference-design { grid-template-columns: 1fr; gap: 12px; }

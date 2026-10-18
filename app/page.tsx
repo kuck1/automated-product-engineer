@@ -52,8 +52,9 @@ export default function HomePage() {
         </div>
         <div className="case-grid">
           <Link className="case-card case-release" href="/examples?view=releases" aria-label="Open the Release Readiness case study">
-            <div className="case-top"><Badge tone="info">Case study 01</Badge><span>Release operations</span></div>
+            <div className="case-top"><Badge tone="info">Case study 01</Badge><span className="case-system-name">Checkpoint OS · release operations</span></div>
             <div className="case-visual release-visual">
+              <small className="case-visual-label">Release / mobile checkout</small>
               <div className="mini-release-row"><i className="status-dot status-violet" /><span>Mobile checkout</span><strong>82%</strong></div>
               <div className="mini-progress"><i /></div>
               <div className="mini-gates"><span><Check size={12} /> Design QA</span><span><Check size={12} /> E2E</span><span className="is-pending">• Security</span></div>
@@ -63,10 +64,10 @@ export default function HomePage() {
             <span className="card-link">Open Release Readiness <ArrowRight size={16} /></span>
           </Link>
           <Link className="case-card case-onboarding" href="/examples?view=onboarding" aria-label="Open the Onboarding Operations case study">
-            <div className="case-top"><Badge tone="success">Case study 02</Badge><span>Customer operations</span></div>
+            <div className="case-top"><Badge tone="success">Case study 02</Badge><span className="case-system-name">Clarity System · customer operations</span></div>
             <div className="case-visual onboarding-visual">
               <div className="health-ring"><span>74</span><small>health</small></div>
-              <div><strong>Northstar Health</strong><small>3 of 4 milestones</small><div className="milestone-dots"><i /><i /><i /><i className="pending" /></div></div>
+              <div><span className="journey-kicker">Customer journey</span><strong>Northstar Health</strong><small>3 of 4 milestones</small><div className="milestone-dots"><i /><i /><i /><i className="pending" /></div></div>
             </div>
             <h3>Onboarding Operations</h3>
             <p>SLA and adoption scoring, owner workload, milestone policy, tenant boundaries, and a validated launch transition.</p>
