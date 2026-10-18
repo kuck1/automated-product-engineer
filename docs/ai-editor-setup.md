@@ -12,7 +12,7 @@ pnpm dlx automated-product-engineer
 
 The default install is universal and includes the complete local reference kit:
 
-- 14 adaptive agent skills and discovery adapters for the supported agents.
+- 13 adaptive agent skills and discovery adapters for the supported agents.
 - Architecture, state, design-system, testing, delivery, and retrospective guides.
 - Integration checklists and copyable design, component, state, testing, CI, automation, and retrospective templates.
 - Two working business-logic case studies, thin API routes, domain services, repositories, a Supabase adapter and migration, an interactive semantic-token system, and browser test examples.

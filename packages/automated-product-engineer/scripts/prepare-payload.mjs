@@ -14,7 +14,6 @@ const entries = [
   "docs",
   "checklists",
   "templates",
-  "native/examples",
   "app/api/examples",
   "app/examples/page.tsx",
   "app/guide/page.tsx",
