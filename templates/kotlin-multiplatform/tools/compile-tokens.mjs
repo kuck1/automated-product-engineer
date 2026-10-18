@@ -10,6 +10,7 @@ const outputs = {
   kotlin: path.join(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/product/design/GeneratedTokens.kt"),
   swift: path.join(root, "iosApp/Generated/DesignTokens.swift"),
   css: path.join(root, "web/Generated/tokens.css"),
+  webAppCss: path.join(root, "webApp/src/generated/tokens.css"),
 };
 
 function flatten(node, inheritedType, parts = [], result = new Map()) {
@@ -78,7 +79,7 @@ export function compileTokenSource(raw) {
   const kotlin = [`// Generated from contracts/tokens/product.tokens.json. Do not edit.`, `package dev.example.product.design`, ``, `object GeneratedTokens {`, `    const val sourceSha256: String = "${digest}"`, ...rows.map(([name, token]) => `    const val ${camel(name)} = ${scalar(token).kotlin}`), `}`, ``].join("\n");
   const swift = [`// Generated from contracts/tokens/product.tokens.json. Do not edit.`, `import Foundation`, ``, `enum DesignTokens {`, `    static let sourceSha256 = "${digest}"`, ...rows.map(([name, token]) => `    static let ${camel(name)} = ${scalar(token).swift}`), `}`, ``].join("\n");
   const css = [`/* Generated from contracts/tokens/product.tokens.json. Do not edit. */`, `:root {`, `  ${cssName("source-sha256")}: "${digest}";`, ...rows.map(([name, token]) => `  ${cssName(name)}: ${scalar(token).css};`), `}`, ``].join("\n");
-  return { digest, kotlin, swift, css };
+  return { digest, kotlin, swift, css, webAppCss: css };
 }
 
 function run() {

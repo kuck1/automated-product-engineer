@@ -32,4 +32,13 @@ for (const file of readdirSync(path.join(root, "contracts/scenarios")).filter((n
     vectorIds.add(vector.id);
   }
 }
-console.log(`Validated ${componentIds.size} component contract, ${tokenNames.size} tokens, and ${vectorIds.size} scenario vectors.`);
+const featureIds = new Set();
+for (const file of readdirSync(path.join(root, "contracts/features")).filter((name) => name.endsWith(".json"))) {
+  const contract = JSON.parse(readFileSync(path.join(root, "contracts/features", file), "utf8"));
+  if (contract.schemaVersion !== 1 || !contract.id || !Array.isArray(contract.stages) || !Array.isArray(contract.transitions)) throw new Error(`${file} has an invalid feature envelope`);
+  if (featureIds.has(contract.id)) throw new Error(`Duplicate feature id: ${contract.id}`);
+  featureIds.add(contract.id);
+  const stages = new Set(contract.stages);
+  for (const transition of contract.transitions) if (!stages.has(transition.from) || !stages.has(transition.to)) throw new Error(`${file} references an unknown stage`);
+}
+console.log(`Validated ${featureIds.size} feature, ${componentIds.size} component contract, ${tokenNames.size} tokens, and ${vectorIds.size} scenario vectors.`);

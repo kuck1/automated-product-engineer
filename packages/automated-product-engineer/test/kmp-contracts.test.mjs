@@ -8,6 +8,7 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const template = path.join(repositoryRoot, "templates", "kotlin-multiplatform");
 const compiler = await import(path.join(template, "tools", "compile-tokens.mjs"));
 const scenarioCompiler = await import(path.join(template, "tools", "compile-scenarios.mjs"));
+const featureCompiler = await import(path.join(template, "tools", "compile-feature.mjs"));
 
 test("KMP token compiler resolves typed aliases and records one source digest", () => {
   const source = readFileSync(path.join(template, "contracts", "tokens", "product.tokens.json"), "utf8");
@@ -30,4 +31,14 @@ test("KMP scenario compiler emits one typed common-test oracle", () => {
   assert.match(output.kotlin, /draft-begins-validation/);
   assert.match(output.kotlin, /WorkStage\.READY/);
   assert.throws(() => scenarioCompiler.compileScenarioSource(JSON.stringify({ vectors: [] })), /must be non-empty/);
+});
+
+test("feature capsule compiler emits Kotlin and TypeScript policy with one digest", () => {
+  const source = readFileSync(path.join(template, "contracts", "features", "work-item.feature.json"), "utf8");
+  const output = featureCompiler.compileFeatureSource(source);
+  assert.match(output.kotlin, new RegExp(output.digest));
+  assert.match(output.typescript, new RegExp(output.digest));
+  assert.match(output.kotlin, /GeneratedWorkItemPolicy/);
+  assert.match(output.typescript, /transitionWorkItem/);
+  assert.throws(() => featureCompiler.compileFeatureSource(JSON.stringify({ schemaVersion: 1, id: "work-item", stages: [] })), /stages.*non-empty/i);
 });

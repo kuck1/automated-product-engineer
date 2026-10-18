@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "work-item",
+  "language": {
+    "entity": "Work item",
+    "primaryAction": "Mark ready"
+  },
+  "product": {
+    "actor": "Authenticated workspace member",
+    "trigger": "The member advances a work item after completing the current stage",
+    "outcome": "Every active platform shows the same accepted canonical stage and revision",
+    "authority": "The server authenticates the actor and atomically repeats authorization, revision, transition, and persistence policy"
+  },
+  "stages": ["DRAFT", "VALIDATING", "READY", "BLOCKED"],
+  "transitions": [
+    { "from": "DRAFT", "to": "VALIDATING" },
+    { "from": "VALIDATING", "to": "READY" },
+    { "from": "VALIDATING", "to": "BLOCKED" },
+    { "from": "BLOCKED", "to": "VALIDATING" }
+  ],
+  "guards": {
+    "aggregateIdentity": "WRONG_AGGREGATE",
+    "expectedRevision": "STALE_REVISION",
+    "transition": "INVALID_TRANSITION"
+  },
+  "telemetry": {
+    "finished": "work_item_transition_finished",
+    "failed": "work_item_transition_failed"
+  },
+  "recovery": {
+    "STALE_REVISION": "Replace the optimistic projection with the canonical item and explain that newer work won",
+    "INVALID_TRANSITION": "Preserve the item and show the allowed next actions",
+    "WRONG_AGGREGATE": "Discard the malformed command and record a contract failure"
+  },
+  "concurrency": {
+    "write": "expected revision plus stable operation ID",
+    "optimism": "project once, roll back exactly, then replace with the canonical response",
+    "offline": "queue intent as unconfirmed and replay against the expected revision"
+  },
+  "presentation": {
+    "component": "WorkItemAction",
+    "accessibilityIntent": "Expose stage and recovery as text; keep one keyboard and screen-reader operable primary action",
+    "nativeFreedom": "Each platform chooses controls, navigation, layout, lifecycle restoration, and capability adapters"
+  },
+  "rollout": {
+    "flag": "work_item_transition_v1",
+    "compatibility": "Server accepts the prior and current capsule epoch until active-client evidence permits retirement"
+  }
+}

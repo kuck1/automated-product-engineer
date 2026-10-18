@@ -22,6 +22,7 @@ The original reusable workflows are represented by these installed skills:
 | native Swift and iOS architecture, Xcode launch, Observation, concurrency, Apple auth, Keychain, persistence, capabilities, privacy, native QA, signing, TestFlight, and App Store delivery | `ios-native-app` |
 | native Kotlin and Android architecture, Gradle launch, Compose and Views, ViewModel and Flow, coroutines, Credential Manager, Room, DataStore, WorkManager, capabilities, native QA, signing, and Play delivery | `android-native-app` |
 | Kotlin Multiplatform product kernels, common source sets, generated contracts, Swift interop, native Android/iOS shells, incremental adoption, and parallel CI | `kotlin-multiplatform-app` |
+| true parallel Next.js, native Android, and native iOS delivery through feature capsules, generated Kotlin/TypeScript policy, sibling lanes, semantic receipts, and contract epochs | `parallel-platform-development` |
 | real-browser exploratory QA | `manual-ui-qa` |
 | remote pull-request review | `pr-review` |
 | branch, evidence, CI, and draft-PR workflow | `pr-workflow` |
@@ -47,6 +48,7 @@ The concise `SKILL.md` files route to references when a task needs more depth. T
 - The native iOS profile preserves Xcode project and Swift package detection, shared schemes, SwiftUI and UIKit boundaries, Observation state ownership, Swift concurrency migration, AuthenticationServices and Keychain contracts, lifecycle and offline recovery, capability and entitlement review, privacy manifests, Swift Testing and XCUI, signing, TestFlight, and App Store release evidence.
 - The native Android profile preserves Gradle project and module detection, Compose and Views boundaries, state-holder and coroutine ownership, Credential Manager and App Link contracts, Room/DataStore/WorkManager persistence, process-death recovery, capability and permission review, Kotlin and device testing, signing, internal tracks, and staged Play release evidence.
 - The Kotlin Multiplatform profile preserves shared-module, source-set, target, shell, token, component, scenario, Android plugin, and shared-UI detection; product-kernel and portable-runtime boundaries; small Swift facades; native projections; contract generation; incremental migration; compatibility windows; and independent shared, Android, iOS, server, performance, and release gates.
+- The parallel-platform profile preserves feature-capsule and Next.js-shell detection; generated Kotlin and TypeScript policy; semantic receipt comparison; sibling contract, web, kernel, Android, and iOS lanes; explicit contract epochs; platform-native evidence; incremental adoption; and independent rollout and rollback.
 
 ## Deliberate exclusions
 

@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "feature": "work-item",
+  "source": "contracts/features/work-item.feature.json",
+  "sha256": "e34b5a8e6c4e7393efc2058265d6f57a1e925d2b3440941142e5d922b735115f",
+  "projections": [
+    "kotlin",
+    "typescript"
+  ]
+}

@@ -22,6 +22,8 @@ const entries = [
   "android/case-studies",
   "multiplatform/examples",
   "multiplatform/case-studies",
+  "parallel/examples",
+  "parallel/case-studies",
   "app/api/examples",
   "app/examples/page.tsx",
   "app/guide/page.tsx",
@@ -41,7 +43,11 @@ mkdirSync(payloadRoot, { recursive: true });
 for (const entry of entries) {
   const source = path.join(repositoryRoot, entry);
   if (!existsSync(source)) throw new Error(`Cannot package missing toolkit content: ${entry}`);
-  cpSync(source, path.join(payloadRoot, entry), { recursive: true });
+  cpSync(source, path.join(payloadRoot, entry), {
+    recursive: true,
+    filter: (candidate) => !candidate.endsWith(".tsbuildinfo")
+      && !candidate.split(path.sep).some((part) => [".next", ".gradle", "build", "DerivedData", "node_modules"].includes(part)),
+  });
 }
 
 console.log(`Prepared ${entries.length} toolkit entries in ${payloadRoot}`);

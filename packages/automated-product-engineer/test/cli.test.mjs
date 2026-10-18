@@ -451,6 +451,7 @@ function kotlinMultiplatformFixture() {
   id("org.jetbrains.kotlin.multiplatform")
   id("com.android.kotlin.multiplatform.library")
 }
+
 kotlin { androidLibrary { namespace = "dev.example.kernel"; compileSdk = 36; minSdk = 26 }; iosArm64(); iosSimulatorArm64(); jvm("host") }
 `);
   writeFixtureFile(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/Policy.kt", "interface Repository\nobject Policy\nclass Controller\n");
@@ -466,6 +467,21 @@ kotlin { androidLibrary { namespace = "dev.example.kernel"; compileSdk = 36; min
   writeFixtureFile(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/GeneratedTokens.kt", "object GeneratedTokens\n");
   writeFixtureFile(root, "iosApp/Generated/DesignTokens.swift", "enum DesignTokens {}\n");
   writeFixtureFile(root, ".github/workflows/mobile.yml", "jobs:\n  test:\n    steps:\n      - run: gradle hostTest assembleDebug linkDebugFramework\n      - run: xcodebuild test\n");
+  return root;
+}
+
+function parallelPlatformFixture() {
+  const root = kotlinMultiplatformFixture();
+  writeFixtureFile(root, "webApp/package.json", JSON.stringify({ name: "web-projection", packageManager: "pnpm@10", dependencies: { next: "^16", react: "^19" }, scripts: { dev: "next dev" } }));
+  writeFixtureFile(root, "webApp/pnpm-lock.yaml", "lockfileVersion: '9.0'\n");
+  writeFixtureFile(root, "webApp/next.config.ts", "export default { output: 'standalone' };\n");
+  writeFixtureFile(root, "webApp/src/generated/work-item-policy.ts", "export const featureDigest = 'digest';\n");
+  writeFixtureFile(root, "shared/product-kernel/src/commonMain/kotlin/dev/example/GeneratedWorkItemPolicy.kt", "object GeneratedWorkItemPolicy\n");
+  writeFixtureFile(root, "contracts/features/work-item.feature.json", '{"id":"work-item"}\n');
+  writeFixtureFile(root, "contracts/generated/work-item.manifest.json", '{"digest":"digest"}\n');
+  writeFixtureFile(root, "tools/compare-receipts.mjs", "export const compare = () => true;\n");
+  writeFixtureFile(root, "tools/export-web-receipts.ts", "export const exportReceipts = () => [];\n");
+  writeFixtureFile(root, ".github/workflows/parallel.yml", "jobs:\n  web-projection: {}\n  shared-kernel: {}\n  android-projection: {}\n  ios-projection: {}\n  semantic-parity: {}\n");
   return root;
 }
 
@@ -522,5 +538,54 @@ test("Kotlin Multiplatform audit reports product-kernel, contract, Swift, and ve
     assert.equal(byId["kmp-swift-boundary"].status, "established");
     assert.equal(byId["kmp-common-tests"].status, "established");
     assert.equal(byId["verification-evidence"].status, "established");
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("parallel profile detects Next.js, feature capsules, parity, examples, and web launch", () => {
+  const root = parallelPlatformFixture();
+  try {
+    const doctor = run(["doctor", "--json"], root);
+    assert.equal(doctor.status, 0, doctor.stderr);
+    const profile = JSON.parse(doctor.stdout);
+    assert.equal(profile.kind, "kotlin-multiplatform");
+    assert.equal(profile.router, "next-and-native-projections");
+    assert.equal(profile.multiplatform.hasNextShell, true);
+    assert.equal(profile.multiplatform.webPackageManager, "pnpm");
+    assert.deepEqual(profile.multiplatform.featureContracts, ["contracts/features/work-item.feature.json"]);
+    assert.equal(profile.multiplatform.hasSemanticParity, true);
+    assert.deepEqual(profile.findings, []);
+
+    const launch = run(["launch", "--web", "--dry-run"], root);
+    assert.equal(launch.status, 0, launch.stderr);
+    assert.match(launch.stdout, /pnpm --dir webApp dev/);
+
+    const installResult = run(["install", "--only", "examples"], root);
+    assert.equal(installResult.status, 0, installResult.stderr);
+    assert.equal(existsSync(path.join(root, ".automated-product-engineer", "parallel", "examples", "projection-receipt.json")), true);
+
+    const auditResult = run(["audit", "--json"], root);
+    assert.equal(auditResult.status, 0, auditResult.stderr);
+    const byId = Object.fromEntries(JSON.parse(auditResult.stdout).findings.map((finding) => [finding.id, finding]));
+    assert.equal(byId["parallel-feature-capsule"].status, "established");
+    assert.equal(byId["parallel-semantic-parity"].status, "established");
+    assert.equal(byId["parallel-independent-lanes"].status, "established");
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("root Next.js workspace remains a parallel KMP profile", () => {
+  const root = kotlinMultiplatformFixture();
+  try {
+    writeFixtureFile(root, "package.json", JSON.stringify({ name: "parallel-root", packageManager: "pnpm@10", dependencies: { next: "^16", react: "^19" }, scripts: { dev: "next dev" } }));
+    writeFixtureFile(root, "pnpm-lock.yaml", "lockfileVersion: '9.0'\n");
+    writeFixtureFile(root, "contracts/features/work-item.feature.json", '{"id":"work-item"}\n');
+    writeFixtureFile(root, "tools/compare-receipts.mjs", "export const compare = () => true;\n");
+    writeFixtureFile(root, "tools/export-web-receipts.ts", "export const exportReceipts = () => [];\n");
+    const result = run(["doctor", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const profile = JSON.parse(result.stdout);
+    assert.equal(profile.kind, "kotlin-multiplatform");
+    assert.equal(profile.router, "next-and-native-projections");
+    assert.equal(profile.multiplatform.hasNextShell, true);
+    assert.equal(profile.multiplatform.webDirectory, ".");
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
