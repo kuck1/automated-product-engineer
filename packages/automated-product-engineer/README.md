@@ -6,7 +6,7 @@ Install a complete, local product-engineering reference system into an existing 
 pnpm dlx automated-product-engineer
 ```
 
-[Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [View the package on npm](https://www.npmjs.com/package/automated-product-engineer) · [Read the source](https://github.com/kuck1/automated-product-engineer-nextjs)
+[Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [View the package on npm](https://www.npmjs.com/package/automated-product-engineer) · [Read the source](https://github.com/kuck1/automated-product-engineer)
 
 The zero-flag install detects Next.js, Expo, or bare React Native and includes 15 adaptive agent skills, agent adapters, platform-specific architecture guides, checklists, implementation templates, working web or native examples, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material.
 
@@ -29,4 +29,4 @@ pnpm dlx automated-product-engineer launch
 
 `doctor` reports the detected router, scheme, native projects, development client, EAS setup, and capabilities. `launch` uses the project's package manager and selects development-client mode when present. Use `--ios`, `--android`, `--web`, `--tunnel`, or `--clear` only when needed.
 
-See the [live reference application](https://automated-product-engineer-nextjs.vercel.app) for the interactive system and the [project repository](https://github.com/kuck1/automated-product-engineer-nextjs) for complete documentation.
+See the [live reference application](https://automated-product-engineer-nextjs.vercel.app) for the interactive system and the [project repository](https://github.com/kuck1/automated-product-engineer) for complete documentation.

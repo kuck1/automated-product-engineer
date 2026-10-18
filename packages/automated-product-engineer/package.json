@@ -19,11 +19,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuck1/automated-product-engineer-nextjs.git",
+    "url": "git+https://github.com/kuck1/automated-product-engineer.git",
     "directory": "packages/automated-product-engineer"
   },
   "homepage": "https://automated-product-engineer-nextjs.vercel.app",
-  "bugs": "https://github.com/kuck1/automated-product-engineer-nextjs/issues",
+  "bugs": "https://github.com/kuck1/automated-product-engineer/issues",
   "keywords": [
     "ai-agent",
     "agent-skills",
