@@ -20,9 +20,9 @@ test("zero-flag install adds the universal skills and complete reference kit", (
   const result = run([], project);
 
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(countSkills(path.join(project, ".agents", "skills")), 13);
-  assert.equal(countSkills(path.join(project, ".claude", "skills")), 13);
-  assert.equal(countSkills(path.join(project, ".ai", "skills")), 13);
+  assert.equal(countSkills(path.join(project, ".agents", "skills")), 14);
+  assert.equal(countSkills(path.join(project, ".claude", "skills")), 14);
+  assert.equal(countSkills(path.join(project, ".ai", "skills")), 14);
   assert.ok(existsSync(path.join(project, ".automated-product-engineer", "docs", "architecture.md")));
   assert.ok(existsSync(path.join(project, ".automated-product-engineer", "templates", "ci", "github-actions.yml")));
   assert.ok(existsSync(path.join(project, ".automated-product-engineer", "src", "examples", "service.ts")));
@@ -39,12 +39,12 @@ test("advanced flags can install only skills for one agent", () => {
   const result = run(["--target", "codex", "--only", "skills"], project);
 
   assert.equal(result.status, 0, result.stderr);
-  assert.equal(countSkills(path.join(project, ".agents", "skills")), 13);
+  assert.equal(countSkills(path.join(project, ".agents", "skills")), 14);
   assert.equal(existsSync(path.join(project, ".claude")), false);
   assert.equal(existsSync(path.join(project, ".automated-product-engineer", "docs")), false);
   assert.deepEqual(
     JSON.parse(readFileSync(path.join(project, ".automated-product-engineer", "installation.json"), "utf8")),
-    { package: "automated-product-engineer", target: "codex", parts: ["skills"] },
+    { package: "automated-product-engineer", target: "codex", parts: ["skills"], platform: "unknown" },
   );
 });
 

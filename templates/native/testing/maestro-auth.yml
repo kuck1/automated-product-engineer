@@ -1,0 +1,6 @@
+appId: com.example.nativeproduct
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Continue your work"
+- assertVisible: "Continue with Google"

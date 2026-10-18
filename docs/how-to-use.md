@@ -1,8 +1,10 @@
-# How to Use the Automated Product Engineer for Next.js
+# How to Use the Automated Product Engineer
 
 This kit helps a product engineering team turn a product idea, Figma design, screenshot, or Claude Design concept into a production feature that fits the existing application. It provides two connected workflows: requesting a complete design handoff and implementing that handoff safely in the target application.
 
-The key rule is simple: **design tools define intent, states, and visual references; the application codebase defines production architecture.** HTML and React supplied by a design tool are reference material. Reuse the app's components, tokens, data access, authorization, analytics, and testing conventions instead of pasting a parallel implementation into the repository.
+The key rule is simple: **design tools define intent, states, and visual references; the application codebase and target runtime define production architecture.** HTML and React supplied by a design tool are reference material. Reuse the app's components, tokens, data access, authorization, analytics, navigation, lifecycle, and testing conventions instead of pasting a parallel implementation into the repository.
+
+For Expo or React Native, read `project-profile.json` and load `expo-native-app`. Establish whether the work runs in Expo Go, a development build, a preview build, or a store build before implementation. Verify iOS and Android behavior in their actual runtimes; a responsive browser view is useful additional coverage but is not native evidence.
 
 ## 1. Prepare the product brief
 

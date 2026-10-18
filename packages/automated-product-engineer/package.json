@@ -1,7 +1,7 @@
 {
   "name": "automated-product-engineer",
-  "version": "0.3.0",
-  "description": "Install product-engineering skills, reference apps, architecture guides, templates, testing, CI, and delivery automation for AI coding agents.",
+  "version": "0.4.0",
+  "description": "Install product-engineering skills, native and web architecture guides, launch tooling, templates, testing, CI, and delivery automation for AI coding agents.",
   "type": "module",
   "bin": {
     "automated-product-engineer": "bin/automated-product-engineer.mjs"
@@ -11,7 +11,8 @@
     "payload"
   ],
   "scripts": {
-    "prepack": "node scripts/prepare-payload.mjs"
+    "prepack": "node scripts/prepare-payload.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "engines": {
     "node": ">=20"
@@ -27,6 +28,8 @@
     "ai-agent",
     "agent-skills",
     "nextjs",
+    "expo",
+    "react-native",
     "design-system",
     "product-engineering"
   ],
