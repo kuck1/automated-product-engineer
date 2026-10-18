@@ -59,3 +59,5 @@ The browser may improve usability, but it does not enforce security. The server 
 ## Complex scenarios
 
 Use the installable [state-management scenario playbook](../skills/frontend-api-db/references/state-management-scenarios.md) for shared counters, out-of-order requests, multi-window saves, chat, collaborative documents, Realtime, and failure testing. Use the [Supabase auth and session guide](../skills/security-review/references/supabase-auth-sessions.md) for cookie-backed SSR, API-key boundaries, RLS, redirect loops, and random logout diagnosis.
+
+To evaluate an existing repository before choosing a migration, run the [codebase audit and upgrade workflow](codebase-upgrades.md). It maps observed state and persistence signals to these patterns, their anti-patterns, working examples, and a reviewable first slice.

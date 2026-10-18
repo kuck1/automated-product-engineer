@@ -12,7 +12,7 @@ pnpm dlx automated-product-engineer
 
 The default install is universal and includes the complete local reference kit:
 
-- 14 adaptive agent skills and discovery adapters for the supported agents.
+- 15 adaptive agent skills and discovery adapters for the supported agents.
 - Architecture, state, design-system, testing, delivery, and retrospective guides.
 - Integration checklists and copyable design, component, state, testing, CI, automation, and retrospective templates.
 - Three working business-logic case studies, including an offline-first native field workflow, thin API routes, domain services, repositories, Supabase adapters and migrations, an interactive semantic-token system, and browser test examples.
@@ -46,6 +46,16 @@ Supported targets:
 Review the installation diff and keep repository-specific commands, architecture, and permissions in the target project's own `AGENTS.md` or equivalent instructions.
 
 Every installed skill uses adaptive intake. It inspects the repository and available source material first, asks only for missing decisions that affect the work, and generates one contextual request when another design tool or teammate must supply an artifact or answer.
+
+### Audit before upgrading
+
+Run the read-only scanner when the request is to assess, modernize, or debug an existing application:
+
+```bash
+pnpm dlx automated-product-engineer audit --json
+```
+
+Give the report to the `codebase-upgrade` skill. It validates static signals against actual callers and data flow, maps confirmed evidence to a concrete pattern and anti-pattern, recommends no more than three reviewable upgrade slices, and asks the user which outcome to prioritize before it changes architecture.
 
 ## A good first request
 

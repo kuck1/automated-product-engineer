@@ -5,6 +5,7 @@ import { homedir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { auditProject, formatAudit } from "./audit.mjs";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(packageRoot, "..", "..");
@@ -49,14 +50,17 @@ function usage() {
     "Install and run the Automated Product Engineer toolkit.", "",
     "Usage:",
     "  pnpm dlx automated-product-engineer",
+    "  pnpm dlx automated-product-engineer audit [--json]",
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch [--ios|--android|--web] [--tunnel] [--clear]",
     "  pnpm dlx automated-product-engineer install [--target <target>] [--project <path>] [--only <parts>] [--force]", "",
     "The installer detects Next.js, Expo, or bare React Native automatically.",
+    "The audit command reads the codebase without executing application source.",
     `Targets: ${targets.join(", ")}`,
     `Parts:   ${components.join(", ")} (default: all)`, "",
     "Examples:",
     "  pnpm dlx automated-product-engineer",
+    "  pnpm dlx automated-product-engineer audit",
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch --ios",
     "  pnpm dlx automated-product-engineer install --target cursor --only skills,docs",
@@ -66,7 +70,7 @@ function usage() {
 function parseOptions(args) {
   const remaining = [...args];
   const command = remaining[0] && !remaining[0].startsWith("-") ? remaining.shift() : "install";
-  if (!["install", "doctor", "launch"].includes(command)) throw new Error(`Unknown command: ${command}\n\n${usage()}`);
+  if (!["install", "audit", "doctor", "launch"].includes(command)) throw new Error(`Unknown command: ${command}\n\n${usage()}`);
   const options = { command, target: "universal", project: ".", only: [...components], force: false, platform: null, tunnel: false, clear: false, json: false, dryRun: false };
   for (let index = 0; index < remaining.length; index += 1) {
     const argument = remaining[index];
@@ -226,6 +230,8 @@ ${included}
 ${nativeStart}
 ## Shared starting points
 
+- \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
+- \`docs/codebase-upgrades.md\`: audit interpretation, pattern mapping, and user decision workflow.
 - \`docs/how-to-use.md\`: end-to-end workflow.
 - \`docs/knowledge-coverage.md\`: maintained capability coverage.
 - \`docs/architecture.md\`: ownership and boundaries.
@@ -255,7 +261,7 @@ function install(options) {
   console.log(`Parts: ${options.only.join(", ")}`);
   console.log(`Toolkit: ${toolkitRoot}`);
   if (profile.findings.length) console.log(`Doctor: ${profile.findings.length} item${profile.findings.length === 1 ? "" : "s"} to review. Run: pnpm dlx automated-product-engineer doctor`);
-  console.log(profile.kind === "expo" ? "Next: run `pnpm dlx automated-product-engineer launch` or ask your agent to use expo-native-app." : "Next: ask your agent to use automated-product-engineer for your feature.");
+  console.log(profile.kind === "expo" ? "Next: run `pnpm dlx automated-product-engineer audit` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer audit` or ask your agent to use automated-product-engineer for your feature.");
 }
 
 function doctor(options) {
@@ -273,6 +279,13 @@ function doctor(options) {
   console.log(`Capabilities: ${profile.capabilities.join(", ") || "none detected"}`);
   if (!profile.findings.length) console.log("Doctor: ready — no configuration warnings detected.");
   for (const finding of profile.findings) console.log(`${finding.level.toUpperCase()} ${finding.code}: ${finding.message}`);
+}
+
+function audit(options) {
+  const project = resolveProject(options.project);
+  const profile = detectProject(project);
+  const report = auditProject(project, profile);
+  console.log(options.json ? JSON.stringify(report, null, 2) : formatAudit(report));
 }
 
 function launch(options) {
@@ -304,6 +317,7 @@ function launch(options) {
 try {
   const options = parseOptions(process.argv.slice(2));
   if (options.command === "install") install(options);
+  if (options.command === "audit") audit(options);
   if (options.command === "doctor") doctor(options);
   if (options.command === "launch") launch(options);
 } catch (error) {

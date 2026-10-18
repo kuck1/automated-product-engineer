@@ -1,0 +1,24 @@
+# Codebase Audit and Upgrades
+
+The toolkit can inspect an existing web, Expo, or React Native repository before recommending new architecture:
+
+```bash
+pnpm dlx automated-product-engineer audit
+```
+
+Use `--json` when an agent should consume the report. The audit reads bounded source and documentation files, package metadata, and native configuration without executing application modules. It reports high-confidence risks separately from upgrade opportunities and patterns worth preserving.
+
+The report is deliberately not an automatic refactor plan. A package name or keyword is only a signal. The `codebase-upgrade` skill validates each signal against callers, data flow, policy, tests, and real behavior; connects it to the relevant pattern, anti-pattern, case study, and specialist skill; prepares up to three reviewable options; and asks the user which product or risk outcome to prioritize.
+
+Typical review paths include:
+
+- remote state duplicated across components instead of one query-cache owner;
+- route handlers that mix transport, authorization, product policy, and persistence;
+- writes with no revision, ETag, idempotency key, or conflict recovery;
+- offline work that looks successful before server confirmation;
+- Supabase sessions, keys, RLS, and tenant boundaries;
+- repeated UI without semantic tokens, typed variants, onboarding, or real-state previews;
+- responsive rails, boards, tabs, and overlays whose geometry fails under content pressure;
+- tests that do not match the layer that owns the rule.
+
+After an upgrade, rerun the audit and the workflow's focused proof. The useful output is the changed contract and evidence, not a higher abstract score.

@@ -11,6 +11,8 @@ Read [references/threat-tracing.md](references/threat-tracing.md) for trust-boun
 
 Read [references/supabase-auth-sessions.md](references/supabase-auth-sessions.md) when the scoped change uses Supabase Auth, cookie sessions, SSR clients, API keys, RLS, Realtime authorization, or reports intermittent logout and redirect failures.
 
+Use `codebase-upgrade` for a broad repository assessment. Return here only after the audit identifies a concrete auth, secret, authorization, session, or data-isolation path that needs exploitability review.
+
 
 ## Intake and pushback
 

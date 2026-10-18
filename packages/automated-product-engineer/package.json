@@ -1,6 +1,6 @@
 {
   "name": "automated-product-engineer",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Install product-engineering skills, native and web architecture guides, launch tooling, templates, testing, CI, and delivery automation for AI coding agents.",
   "type": "module",
   "bin": {
@@ -19,11 +19,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuck1/automated-product-engineer-nextjs.git",
+    "url": "git+https://github.com/kuck1/automated-product-engineer.git",
     "directory": "packages/automated-product-engineer"
   },
   "homepage": "https://automated-product-engineer-nextjs.vercel.app",
-  "bugs": "https://github.com/kuck1/automated-product-engineer-nextjs/issues",
+  "bugs": "https://github.com/kuck1/automated-product-engineer/issues",
   "keywords": [
     "ai-agent",
     "agent-skills",
