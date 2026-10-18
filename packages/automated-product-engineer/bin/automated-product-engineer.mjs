@@ -4,6 +4,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSy
 import { homedir } from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 import { auditProject, formatAudit } from "./audit.mjs";
 
@@ -22,19 +23,19 @@ globs:
 alwaysApply: false
 ---
 
-Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. For Expo or React Native work, load the expo-native-app skill before changing routing, auth, native configuration, device capabilities, builds, updates, or store delivery.
+Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. For Expo or React Native work, load the expo-native-app skill before changing routing, auth, native configuration, device capabilities, builds, updates, or store delivery.
 `,
-  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. For Expo or React Native, use the \`expo-native-app\` specialist and verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
+  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. For Expo or React Native, use the \`expo-native-app\` specialist and verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
 `,
   windsurfRule: `# Automated Product Engineer
 
-For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. For Expo or React Native, load \`expo-native-app\` before changing navigation, auth, native configuration, device capabilities, builds, updates, or store delivery. Preserve repository instructions and verify on the actual target platform.
+For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. For Expo or React Native, load \`expo-native-app\` before changing navigation, auth, native configuration, device capabilities, builds, updates, or store delivery. Preserve repository instructions and verify on the actual target platform.
 `,
-  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If this is Expo or React Native, use \`expo-native-app\`, verify native lifecycle and platform behavior, and include simulator or device evidence.
+  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. If this is Expo or React Native, use \`expo-native-app\`, verify native lifecycle and platform behavior, and include simulator or device evidence.
 `,
   genericWorkflow: `# Automated Product Engineer
 
-Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\` and be verified in the relevant native runtime rather than inferred from a browser viewport.
+Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\` and be verified in the relevant native runtime rather than inferred from a browser viewport.
 `,
 };
 
@@ -44,22 +45,38 @@ const sharedEntries = {
 };
 const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/patterns", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
 const nativeExamples = ["native/examples", "native/case-studies"];
+const onboardingDomains = [
+  ["product-requirements", "Product requirements and journeys", "automated-product-engineer"],
+  ["architecture", "Architecture and ownership boundaries", "architecture-building"],
+  ["state-management", "State management, cache, concurrency, and realtime", "frontend-api-db"],
+  ["api-services", "API, services, errors, and idempotency", "frontend-api-db"],
+  ["database", "Database design, migrations, tenancy, and retention", "frontend-api-db"],
+  ["auth-security", "Authentication, sessions, authorization, and secrets", "security-review"],
+  ["design-system", "Design system, semantic tokens, and component adoption", "design-system"],
+  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app"],
+  ["testing-ci", "Testing, visual evidence, E2E, and CI", "manual-ui-qa + code-review"],
+  ["delivery-observability", "Delivery, flags, observability, and rollback", "pr-workflow"],
+  ["documentation", "Documentation, decisions, and developer experience", "codebase-onboarding"],
+];
 
 function usage() {
   return [
     "Install and run the Automated Product Engineer toolkit.", "",
     "Usage:",
     "  pnpm dlx automated-product-engineer",
+    "  pnpm dlx automated-product-engineer onboard",
     "  pnpm dlx automated-product-engineer audit [--json]",
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch [--ios|--android|--web] [--tunnel] [--clear]",
     "  pnpm dlx automated-product-engineer install [--target <target>] [--project <path>] [--only <parts>] [--force]", "",
     "The installer detects Next.js, Expo, or bare React Native automatically.",
+    "The onboarding command creates a project-owned engineering contract and upgrade program.",
     "The audit command reads the codebase without executing application source.",
     `Targets: ${targets.join(", ")}`,
     `Parts:   ${components.join(", ")} (default: all)`, "",
     "Examples:",
     "  pnpm dlx automated-product-engineer",
+    "  pnpm dlx automated-product-engineer onboard",
     "  pnpm dlx automated-product-engineer audit",
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch --ios",
@@ -70,8 +87,8 @@ function usage() {
 function parseOptions(args) {
   const remaining = [...args];
   const command = remaining[0] && !remaining[0].startsWith("-") ? remaining.shift() : "install";
-  if (!["install", "audit", "doctor", "launch"].includes(command)) throw new Error(`Unknown command: ${command}\n\n${usage()}`);
-  const options = { command, target: "universal", project: ".", only: [...components], force: false, platform: null, tunnel: false, clear: false, json: false, dryRun: false };
+  if (!["install", "onboard", "audit", "doctor", "launch"].includes(command)) throw new Error(`Unknown command: ${command}\n\n${usage()}`);
+  const options = { command, target: "universal", targetProvided: false, project: ".", only: [...components], force: false, platform: null, tunnel: false, clear: false, json: false, dryRun: false };
   for (let index = 0; index < remaining.length; index += 1) {
     const argument = remaining[index];
     if (argument === "--help" || argument === "-h") { console.log(usage()); process.exit(0); }
@@ -84,7 +101,7 @@ function parseOptions(args) {
     if (["--target", "--project", "--only"].includes(argument)) {
       const value = remaining[index + 1];
       if (!value || value.startsWith("--")) throw new Error(`Missing value for ${argument}.\n\n${usage()}`);
-      if (argument === "--target") options.target = value;
+      if (argument === "--target") { options.target = value; options.targetProvided = true; }
       if (argument === "--project") options.project = value;
       if (argument === "--only") options.only = value.split(",").map((part) => part.trim()).filter(Boolean);
       index += 1;
@@ -185,13 +202,17 @@ function copyPackageEntry(entry, toolkitRoot, force, installedFiles) {
   copyEntry(source, path.join(toolkitRoot, entry), force, installedFiles);
 }
 
-function copySkills(project, target, force, installedFiles) {
-  const skillsDirectory = path.join(sourceRoot, "skills");
-  const destinations = target === "universal" ? [path.join(project, ".agents", "skills"), path.join(project, ".claude", "skills"), path.join(project, ".ai", "skills")]
+function skillDestinations(project, target) {
+  return target === "universal" ? [path.join(project, ".agents", "skills"), path.join(project, ".claude", "skills"), path.join(project, ".ai", "skills")]
     : ["codex", "copilot"].includes(target) ? [path.join(project, ".agents", "skills")]
       : target === "claude" ? [path.join(project, ".claude", "skills")]
         : target === "orca" ? [path.join(project, ".agents", "skills"), path.join(project, ".claude", "skills")]
           : [path.join(project, ".ai", "skills")];
+}
+
+function copySkills(project, target, force, installedFiles) {
+  const skillsDirectory = path.join(sourceRoot, "skills");
+  const destinations = skillDestinations(project, target);
   for (const destination of destinations) copyEntry(skillsDirectory, destination, force, installedFiles);
   if (["universal", "cursor"].includes(target)) {
     writeManagedFile(path.join(project, ".cursor", "rules", "automated-product-engineer.mdc"), adapters.cursorRule, force);
@@ -231,6 +252,8 @@ ${nativeStart}
 ## Shared starting points
 
 - \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
+- \`pnpm dlx automated-product-engineer onboard\`: create the project-owned practices, inconsistencies, requirements, upgrade program, test strategy, decisions, retrospectives, and local skill overlay.
+- \`docs/codebase-onboarding.md\`: onboarding artifacts, domain review, selection, and feedback loop.
 - \`docs/codebase-upgrades.md\`: audit interpretation, pattern mapping, and user decision workflow.
 - \`docs/pattern-atlas.md\`: stable pattern IDs, executable references, proof, and specialist routing.
 - \`docs/how-to-use.md\`: end-to-end workflow.
@@ -243,7 +266,111 @@ The selected agent adapter is **${target}**. Re-run the installer to update iden
 `;
 }
 
-function install(options) {
+function isInteractive() {
+  return Boolean(process.stdin.isTTY && process.stdout.isTTY);
+}
+
+async function ask(question) {
+  const prompt = createInterface({ input: process.stdin, output: process.stdout });
+  try { return (await prompt.question(question)).trim(); }
+  finally { prompt.close(); }
+}
+
+function collectDocumentation(project) {
+  const documents = [];
+  const ignored = new Set([".git", ".next", ".automated-product-engineer", "build", "coverage", "dist", "node_modules", "playwright-report", "test-results"]);
+  const preferred = /^(?:readme|agents|contributing|security|architecture|decisions?|adr|runbook|product|requirements?|testing|release|deploy|design-system)(?:\.|-|_)/i;
+  const visit = (directory, depth = 0) => {
+    if (documents.length >= 80 || depth > 6) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      if (documents.length >= 80 || ignored.has(entry.name) || (entry.isDirectory() && entry.name.startsWith(".") && entry.name !== ".github")) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(absolute, depth + 1);
+      else if (entry.isFile() && /\.(?:md|mdx|txt)$/i.test(entry.name)) {
+        const relative = path.relative(project, absolute);
+        if (preferred.test(entry.name) || /(?:^|\/)(?:docs?|adr|decisions?|runbooks?)(?:\/|$)/i.test(relative)) documents.push(relative);
+      }
+    }
+  };
+  visit(project);
+  return [...new Set(documents)].sort();
+}
+
+function writeOwnedFile(destination, content) {
+  if (existsSync(destination)) return false;
+  mkdirSync(path.dirname(destination), { recursive: true });
+  writeFileSync(destination, content);
+  return true;
+}
+
+function markdownList(items, empty) {
+  return items.length ? items.map((item) => `- ${item}`).join("\n") : `- ${empty}`;
+}
+
+function onboardingArtifacts(project, profile, report, selectedDomains, target) {
+  const root = path.join(project, ".automated-product-engineer", "onboarding");
+  const manifest = readJson(path.join(project, "package.json")) ?? {};
+  const documents = collectDocumentation(project);
+  const risks = report.findings.filter((item) => item.status === "risk");
+  const opportunities = report.findings.filter((item) => item.status === "opportunity");
+  const established = report.findings.filter((item) => item.status === "established");
+  const selected = onboardingDomains.filter(([id]) => selectedDomains.includes(id));
+  const created = [];
+  const own = (name, content) => { if (writeOwnedFile(path.join(root, name), content)) created.push(path.join(root, name)); };
+
+  own("README.md", `# Codebase onboarding\n\nThis directory is the team-owned engineering contract for **${profile.app.name}**. Start with \`analysis.latest.json\`, validate its static signals against real code and behavior, then maintain the documents below as accepted decisions.\n\n## Read in this order\n\n1. \`PRODUCT_REQUIREMENTS.md\`\n2. \`CURRENT_PRACTICES.md\`\n3. \`INCONSISTENCIES.md\`\n4. \`DECISIONS.md\`\n5. \`UPGRADE_PROGRAM.md\`\n6. \`TEST_STRATEGY.md\`\n7. \`RETROSPECTIVES.md\`\n\nRun \`pnpm dlx automated-product-engineer onboard\` to refresh machine evidence. Reruns preserve these team-owned Markdown files. Use the \`codebase-onboarding\` skill to complete and maintain them.\n`);
+  own("CURRENT_PRACTICES.md", `# Current practices\n\nStatus: initial static baseline; validate every item before marking it accepted.\n\n## Detected platform\n\n- Application: ${profile.app.name}\n- Runtime: ${profile.kind}\n- Router: ${profile.router}\n- Package manager: ${profile.packageManager}\n- Detected capabilities: ${profile.capabilities.join(", ") || "none from package metadata"}\n- Available scripts: ${Object.keys(manifest.scripts ?? {}).sort().join(", ") || "none"}\n\n## Patterns to verify and preserve\n\n${markdownList(established.map((item) => `**${item.title}** — ${item.summary} Evidence: ${item.evidence.join(", ") || "static signal only"}.`), "No established pattern was confirmed by the initial scan.")}\n\n## Domain contracts\n\n${selected.map(([, title, skill]) => `### ${title}\n\n- Owner and current pattern: _verify_\n- Source-of-truth evidence: _add paths_\n- Exceptions: _none recorded_\n- Specialist: \`${skill}\`\n`).join("\n")}\n`);
+  own("INCONSISTENCIES.md", `# Inconsistencies and unknowns\n\nRecord conflicts between documentation, code, runtime behavior, tests, and team expectations. The entries below are static leads, not final judgments.\n\n## Risks to validate\n\n${markdownList(risks.map((item) => `**${item.title}** — ${item.summary} Evidence: ${item.evidence.join(", ") || "needs runtime validation"}.`), "No high-confidence risk was found by the static scan.")}\n\n## Opportunities to decide\n\n${markdownList(opportunities.map((item) => `**${item.title}** — ${item.summary} Evidence: ${item.evidence.join(", ") || "needs deeper inspection"}.`), "No upgrade opportunity was found by the static scan.")}\n\n## Documentation reconciliation\n\n${markdownList(documents.map((document) => `\`${document}\` — _mark current, partial, contradicted, or unverified_`), "No preferred documentation file was found. Confirm whether product and architecture knowledge lives elsewhere.")}\n`);
+  own("PRODUCT_REQUIREMENTS.md", `# Product requirements baseline\n\nDocument product behavior before standardizing implementation. Use real journeys and exact failure recovery.\n\n## Canonical journeys\n\nFor each journey record actor, trigger, desired outcome, permissions, business rules, durable effects, visible states, failure recovery, analytics, responsive or native behavior, and acceptance evidence.\n\n1. Primary read journey — _document_\n2. Primary write journey — _document_\n3. Permission failure — _document_\n4. Retry, concurrency, or offline recovery — _document_\n5. Responsive or native lifecycle journey — _document if applicable_\n\n## Material unknowns\n\n- Production traffic, operational constraints, external policy, and user priorities require owner or runtime evidence.\n`);
+  own("DECISIONS.md", `# Engineering decisions\n\nRecord accepted repository-specific choices. Each decision should include date, status, context, decision, alternatives, product effect, migration, rollback, evidence, and skill guidance affected.\n\n## Pending\n\n- Choose the first upgrade slice after validating the initial analysis.\n`);
+  own("UPGRADE_PROGRAM.md", `# Upgrade program\n\nThe selected review domains are listed below. Reorder them by user harm, security and data risk, dependency, learning value, and reversibility. Implement one reviewable vertical slice at a time.\n\n## Initial evidence-backed candidates\n\n${markdownList([...risks, ...opportunities].slice(0, 8).map((item) => `**${item.title}** (\`${item.patternId}\`, ${item.status}) — ${item.action} Specialist: \`${item.skill}\`. Evidence: ${item.evidence.join(", ") || "validate against a real journey"}.`), "The static scan found no upgrade candidate. Stress-test an established pattern or inspect a user-reported problem before proposing structural work.")}\n\n${selected.map(([id, title, skill], index) => `## ${index + 1}. ${title}\n\n- Domain ID: \`${id}\`\n- Specialist: \`${skill}\`\n- Product outcome: _define_\n- Current evidence and contract to preserve: _validate_\n- Inconsistency or risk: _link_\n- Target contract: _decide_\n- Characterization or UI proof: _add before structural change_\n- Focused implementation slice: _define_\n- E2E proof after contract stabilization: _define_\n- Migration and rollback: _define_\n- Completion evidence: _define_\n`).join("\n")}\n## Program gate\n\nDo not begin a broad migration until the product requirement, current owner, first proof, migration, rollback, and completion evidence for that slice are explicit.\n`);
+  own("TEST_STRATEGY.md", `# Test strategy\n\nProof follows ownership and is added in increasing scope.\n\n1. Characterize accepted current behavior. Add a focused component or UI contract test first when the user interaction is the contract.\n2. Test domain policy, authorization, concurrency, and persistence at their owning boundary.\n3. Test transport validation and normalized failures.\n4. Add integration proof for changed handoffs.\n5. Add E2E after product requirements and the cross-boundary contract are stable.\n6. Inspect real desktop and compact layouts or the relevant iOS and Android runtime.\n7. Run required typecheck, lint, build, migration, security, and CI gates once the design stabilizes.\n\n## Repository commands\n\n${markdownList(Object.entries(manifest.scripts ?? {}).map(([name, command]) => `\`${profile.packageManager} ${name}\` — \`${command}\``), "No package scripts were detected. Document the actual validation commands.")}\n`);
+  own("RETROSPECTIVES.md", `# Upgrade retrospectives\n\nAppend one entry after every completed slice. Record expected and observed outcome, passed and failed evidence, debugging path, preserved strengths, code and documentation fix-back, local skill changes, remaining risk, and next trigger.\n\n## Entries\n\n_None yet._\n`);
+
+  const analysis = { schemaVersion: 1, generatedAt: new Date().toISOString(), project, selectedDomains, documentation: documents, profile, audit: report };
+  mkdirSync(root, { recursive: true });
+  writeFileSync(path.join(root, "analysis.latest.json"), `${JSON.stringify(analysis, null, 2)}\n`);
+  writeFileSync(path.join(root, "onboarding.json"), `${JSON.stringify({ schemaVersion: 1, selectedDomains, target }, null, 2)}\n`);
+
+  const localSkill = `---\nname: project-engineering-context\ndescription: Apply the verified product and engineering contracts for ${profile.app.name}. Use before any substantial feature, refactor, migration, design-system, data, auth, testing, or delivery work in this repository.\n---\n\n# ${profile.app.name} engineering context\n\nRead \`.automated-product-engineer/onboarding/README.md\`, \`.automated-product-engineer/onboarding/PRODUCT_REQUIREMENTS.md\`, \`.automated-product-engineer/onboarding/CURRENT_PRACTICES.md\`, \`.automated-product-engineer/onboarding/INCONSISTENCIES.md\`, and \`.automated-product-engineer/onboarding/DECISIONS.md\` before selecting a shared specialist skill.\n\nTreat \`.automated-product-engineer/onboarding/analysis.latest.json\` and \`.automated-product-engineer/onboarding/onboarding.json\` as static evidence and current review scope to validate, not as accepted policy. Follow accepted local decisions where they specialize the shared skills. Preserve explicit exceptions and update the onboarding documents and retrospective when an accepted contract changes.\n\nDo not weaken security, invent evidence, perform destructive data work, release, or merge without the required authority.\n`;
+  for (const destination of skillDestinations(project, target)) {
+    const file = path.join(destination, "project-engineering-context", "SKILL.md");
+    if (writeOwnedFile(file, localSkill)) created.push(file);
+  }
+  return { root, created, documents };
+}
+
+async function chooseDomains(interactive, existing = []) {
+  const validExisting = existing.filter((id) => onboardingDomains.some(([candidate]) => candidate === id));
+  if (!interactive) return validExisting.length ? validExisting : onboardingDomains.map(([id]) => id);
+  console.log("\nChoose the areas to baseline and plan:");
+  onboardingDomains.forEach(([id, title], index) => console.log(`  ${index + 1}. ${title}${validExisting.includes(id) ? " (selected)" : ""}`));
+  const defaultLabel = validExisting.length ? "current selection" : "all";
+  const answer = await ask(`Select numbers separated by commas, type all, or press Enter for ${defaultLabel}: `);
+  if (!answer) return validExisting.length ? validExisting : onboardingDomains.map(([id]) => id);
+  if (/^all$/i.test(answer)) return onboardingDomains.map(([id]) => id);
+  const indexes = [...new Set(answer.split(",").map((value) => Number.parseInt(value.trim(), 10) - 1))];
+  if (!indexes.length || indexes.some((index) => !Number.isInteger(index) || !onboardingDomains[index])) throw new Error("Choose valid domain numbers separated by commas, or press Enter for all.");
+  return indexes.map((index) => onboardingDomains[index][0]);
+}
+
+async function onboard(options, interactive = isInteractive()) {
+  const project = resolveProject(options.project);
+  const installation = readJson(path.join(project, ".automated-product-engineer", "installation.json"));
+  const existingOnboarding = readJson(path.join(project, ".automated-product-engineer", "onboarding", "onboarding.json"));
+  const target = options.targetProvided ? options.target : targets.includes(installation?.target) ? installation.target : options.target;
+  const profile = detectProject(project);
+  const report = auditProject(project, profile);
+  const selectedDomains = await chooseDomains(interactive, existingOnboarding?.selectedDomains ?? []);
+  const result = onboardingArtifacts(project, profile, report, selectedDomains, target);
+  console.log(`Prepared codebase onboarding in ${result.root}`);
+  console.log(`Selected: ${selectedDomains.join(", ")}`);
+  console.log(`Documentation inventory: ${result.documents.length} file${result.documents.length === 1 ? "" : "s"}`);
+  console.log(`Created ${result.created.length} team-owned file${result.created.length === 1 ? "" : "s"}; refreshed analysis.latest.json.`);
+  console.log("Next: ask your agent to use `codebase-onboarding` to validate the baseline, surface contradictions, and recommend the first three upgrade slices.");
+}
+
+async function install(options) {
   const project = resolveProject(options.project);
   const profile = detectProject(project);
   const toolkitRoot = path.join(project, ".automated-product-engineer");
@@ -262,7 +389,11 @@ function install(options) {
   console.log(`Parts: ${options.only.join(", ")}`);
   console.log(`Toolkit: ${toolkitRoot}`);
   if (profile.findings.length) console.log(`Doctor: ${profile.findings.length} item${profile.findings.length === 1 ? "" : "s"} to review. Run: pnpm dlx automated-product-engineer doctor`);
-  console.log(profile.kind === "expo" ? "Next: run `pnpm dlx automated-product-engineer audit` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer audit` or ask your agent to use automated-product-engineer for your feature.");
+  console.log(profile.kind === "expo" ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
+  if (isInteractive() && options.only.includes("skills")) {
+    const answer = await ask("Analyze this codebase and prepare its onboarding workspace now? [Y/n] ");
+    if (!/^n(?:o)?$/i.test(answer)) await onboard(options, true);
+  }
 }
 
 function doctor(options) {
@@ -317,7 +448,8 @@ function launch(options) {
 
 try {
   const options = parseOptions(process.argv.slice(2));
-  if (options.command === "install") install(options);
+  if (options.command === "install") await install(options);
+  if (options.command === "onboard") await onboard(options);
   if (options.command === "audit") audit(options);
   if (options.command === "doctor") doctor(options);
   if (options.command === "launch") launch(options);

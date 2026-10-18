@@ -8,9 +8,17 @@ pnpm dlx automated-product-engineer
 
 [Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [View the package on npm](https://www.npmjs.com/package/automated-product-engineer) · [Read the source](https://github.com/kuck1/automated-product-engineer)
 
-The zero-flag install detects Next.js, Expo, or bare React Native and includes 15 adaptive agent skills, agent adapters, platform-specific architecture guides, checklists, implementation templates, working web or native examples, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material.
+The zero-flag install detects Next.js, Expo, or bare React Native and includes 16 adaptive agent skills, agent adapters, platform-specific architecture guides, checklists, implementation templates, working web or native examples, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material.
 
 The reference kit is installed under `.automated-product-engineer/`; agent skills are also placed in the supported discovery locations. The host application does not import the reference directory at runtime.
+
+In an interactive terminal, installation offers to analyze the codebase and lets you choose the domains to review. Run or refresh the repository onboarding later with:
+
+```bash
+pnpm dlx automated-product-engineer onboard
+```
+
+Onboarding creates team-owned current-practice, inconsistency, requirement, decision, upgrade, test, and retrospective documents plus a project-specific skill overlay. Reruns refresh static evidence without replacing accepted local decisions.
 
 Audit an existing application before choosing an upgrade:
 
