@@ -20,8 +20,6 @@ When the missing input belongs to Figma, Claude Design, a product owner, or anot
 
 When `.automated-product-engineer/INSTALLATION.md` exists in the repository, read its resource map before proposing new architecture or scaffolding. Use the installed guides, checklists, templates, working vertical slices, design-system implementation, Supabase examples, test patterns, CI workflow, screenshot automation, and retrospective format as concrete references. Adapt those examples to the host repository's established conventions and dependencies; never import the reference directory as runtime application code.
 
-When `.automated-product-engineer/onboarding/README.md` exists, load `project-engineering-context` and read the accepted current practices, inconsistencies, requirements, and decisions before any specialist. The local overlay specializes shared guidance for this repository; validate its evidence and update it only when an accepted contract changes.
-
 ## Establish the contract
 
 - Read repository instructions and inspect existing work before creating a parallel implementation.
