@@ -347,16 +347,17 @@ test("behind the scenes includes the design system and swaps semantic tokens", a
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/guide#guide-design-system");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
-  const heading = page.locator("#guide-design-system").getByRole("heading", { name: "Design tokens. Components and patterns." });
+  const designSystem = page.locator("#guide-design-system");
+  const heading = designSystem.getByRole("heading", { name: "Design tokens. Components and patterns." });
   await expect(heading).toBeVisible();
-  await expect(page.getByText("Interactive focus and brand expression")).toBeVisible();
-  await page.getByRole("button", { name: /Mint focus/ }).click();
-  await page.getByRole("button", { name: /Soft/ }).click();
-  await page.getByRole("button", { name: "Compact" }).click();
-  await expect(page.getByText("Mint focus + Soft + compact", { exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Recover without losing intent" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Open Design System skill/ })).toHaveAttribute("href", "/library?skill=design-system#skills");
+  await expect(designSystem.getByText("Interactive focus and brand expression")).toBeVisible();
+  await designSystem.getByRole("button", { name: /Mint focus/ }).click();
+  await designSystem.getByRole("button", { name: /Soft/ }).click();
+  await designSystem.getByRole("button", { name: "Compact", exact: true }).click();
+  await expect(designSystem.getByText("Mint focus + Soft + compact", { exact: true })).toBeVisible();
+  await expect(designSystem.getByRole("heading", { name: "Repeat product decisions, not just pixels." })).toBeVisible();
+  await expect(designSystem.getByRole("heading", { name: "Recover without losing intent" })).toBeVisible();
+  await expect(designSystem.getByRole("link", { name: /Open Design System skill/ })).toHaveAttribute("href", "/library?skill=design-system#skills");
 });
 
 test("quick start connects installation, workflows, and behind the scenes", async ({ page }, testInfo) => {
