@@ -1,5 +1,7 @@
 # Design-to-App Working Agreement
 
+If `.automated-product-engineer/onboarding/README.md` exists, read it and the `project-engineering-context` skill before selecting shared specialist skills. Treat `analysis.latest.json` as evidence to validate and the accepted Markdown decisions as the repository-specific contract.
+
 Use these instructions when implementing a Figma or Claude Design handoff in a Next.js repository.
 
 ## Before editing

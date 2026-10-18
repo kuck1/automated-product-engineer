@@ -213,7 +213,7 @@ test("audit does not label browser-system Effects as copied derived state", () =
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
-test("install ships the upgrade skill, catalog, audit guide, and local audit entry point", () => {
+test("install ships onboarding, upgrade analysis, and their local entry points", () => {
   const root = fixture({ name: "upgrade-app", dependencies: { next: "^16", react: "^19" } });
   try {
     const result = run(["install", "--target", "codex", "--only", "skills,docs"], root);
@@ -221,8 +221,49 @@ test("install ships the upgrade skill, catalog, audit guide, and local audit ent
     assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "SKILL.md")), true);
     assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "references", "pattern-and-antipattern-catalog.md")), true);
     assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "references", "pattern-atlas.md")), true);
+    assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-onboarding", "SKILL.md")), true);
     assert.equal(existsSync(path.join(root, ".automated-product-engineer", "docs", "codebase-upgrades.md")), true);
+    assert.equal(existsSync(path.join(root, ".automated-product-engineer", "docs", "codebase-onboarding.md")), true);
     assert.match(readFileSync(path.join(root, ".automated-product-engineer", "INSTALLATION.md"), "utf8"), /automated-product-engineer audit/);
+    assert.match(readFileSync(path.join(root, ".automated-product-engineer", "INSTALLATION.md"), "utf8"), /automated-product-engineer onboard/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("onboard creates a project-owned program and preserves accepted decisions on refresh", () => {
+  const root = fixture({
+    name: "onboarding-app",
+    dependencies: { next: "^16", react: "^19" },
+    scripts: { test: "node --test", build: "next build" },
+  });
+  try {
+    writeFixtureFile(root, "README.md", "# Product\n\nCurrent behavior.\n");
+    writeFixtureFile(root, "docs/architecture.md", "# Architecture\n\nRoutes own transport.\n");
+    writeFixtureFile(root, "src/app/points.tsx", 'useEffect(() => { fetch("/api/points"); }, []);\n');
+    writeFixtureFile(root, "src/components/feed.tsx", 'useEffect(() => { fetch("/api/feed"); }, []);\n');
+    const installResult = run(["install", "--target", "codex", "--only", "skills,docs"], root);
+    assert.equal(installResult.status, 0, installResult.stderr);
+
+    const first = run(["onboard", "--target", "codex"], root);
+    assert.equal(first.status, 0, first.stderr);
+    assert.match(first.stdout, /Prepared codebase onboarding/);
+    const onboarding = path.join(root, ".automated-product-engineer", "onboarding");
+    for (const name of ["README.md", "CURRENT_PRACTICES.md", "INCONSISTENCIES.md", "PRODUCT_REQUIREMENTS.md", "DECISIONS.md", "UPGRADE_PROGRAM.md", "TEST_STRATEGY.md", "RETROSPECTIVES.md", "analysis.latest.json", "onboarding.json"]) {
+      assert.equal(existsSync(path.join(onboarding, name)), true, name);
+    }
+    assert.equal(existsSync(path.join(root, ".agents", "skills", "project-engineering-context", "SKILL.md")), true);
+    const analysis = JSON.parse(readFileSync(path.join(onboarding, "analysis.latest.json"), "utf8"));
+    assert.deepEqual(analysis.documentation, ["README.md", "docs/architecture.md"]);
+    assert.equal(analysis.selectedDomains.includes("state-management"), true);
+    assert.equal(analysis.audit.summary.risks > 0, true);
+
+    const decisions = path.join(onboarding, "DECISIONS.md");
+    writeFileSync(decisions, "# Accepted local decision\n");
+    writeFileSync(path.join(onboarding, "onboarding.json"), `${JSON.stringify({ schemaVersion: 1, selectedDomains: ["state-management"], target: "codex" }, null, 2)}\n`);
+    const second = run(["onboard", "--target", "codex"], root);
+    assert.equal(second.status, 0, second.stderr);
+    assert.equal(readFileSync(decisions, "utf8"), "# Accepted local decision\n");
+    assert.deepEqual(JSON.parse(readFileSync(path.join(onboarding, "analysis.latest.json"), "utf8")).selectedDomains, ["state-management"]);
+    assert.match(second.stdout, /Created 0 team-owned files; refreshed analysis.latest.json/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

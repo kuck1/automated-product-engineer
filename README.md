@@ -26,6 +26,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - A portable Agent Skills library with adapters for Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic builders.
 - Progressive skill references with concrete architecture, race handling, review, persistence, responsive, security, QA, and PR-delivery examples.
 - A read-only codebase audit that connects observed evidence to concrete patterns, anti-patterns, working examples, specialist skills, and a user-selected upgrade slice.
+- Guided codebase onboarding that reconciles documentation and implementation, creates a project-owned engineering contract, adapts the skill system to local decisions, and generates a staged, testable modernization program.
 
 ## Quick start
 
@@ -56,7 +57,15 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command detects Next.js, Expo, or bare React Native and installs 15 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, or bare React Native and installs 16 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+
+In an interactive terminal, the installer then offers to analyze the repository. It lets you choose review domains and creates a project-owned onboarding workspace plus a local skill overlay. Run the workflow directly or refresh its static evidence at any time:
+
+```bash
+pnpm dlx automated-product-engineer onboard
+```
+
+The command preserves accepted Markdown decisions and local skill guidance on reruns while updating `analysis.latest.json`.
 
 Inspect an existing codebase before selecting a migration:
 
@@ -118,6 +127,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
 - [`docs/codebase-upgrades.md`](docs/codebase-upgrades.md): evidence-backed repository audit, pattern mapping, and reviewable upgrade selection.
+- [`docs/codebase-onboarding.md`](docs/codebase-onboarding.md): full repository baseline, local skill overlay, selectable modernization program, and retrospective feedback loop.
 - [`docs/pattern-atlas.md`](docs/pattern-atlas.md): the high-level content architecture, stable IDs, product situations, proofs, and agent routing contract.
 - [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.

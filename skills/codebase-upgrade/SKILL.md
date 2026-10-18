@@ -7,6 +7,8 @@ description: Inspect an existing web, Expo, or React Native codebase, preserve s
 
 Use this skill when the user asks what should improve, whether the current setup is sound, how to modernize an existing application, or which patterns from the reference system apply to their codebase.
 
+Use `codebase-onboarding` instead when first adopting the toolkit or when the repository needs a complete baseline, documentation reconciliation, project-specific skill overlay, and multi-stage upgrade program. Return here for a focused domain review or one selected modernization slice.
+
 Read [references/audit-and-upgrade-workflow.md](references/audit-and-upgrade-workflow.md) for the inspection, recommendation, decision, implementation, and re-audit sequence. Read [references/pattern-atlas.md](references/pattern-atlas.md) for the relevant product situation, target contract, proof, and owning skill. Use [references/pattern-and-antipattern-catalog.md](references/pattern-and-antipattern-catalog.md) for the original cross-cutting principles and case-study evidence.
 
 ## Start with local evidence

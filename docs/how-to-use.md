@@ -6,7 +6,7 @@ The key rule is simple: **design tools define intent, states, and visual referen
 
 For Expo or React Native, read `project-profile.json` and load `expo-native-app`. Establish whether the work runs in Expo Go, a development build, a preview build, or a store build before implementation. Verify iOS and Android behavior in their actual runtimes; a responsive browser view is useful additional coverage but is not native evidence.
 
-When the request is to improve an existing codebase rather than build a named feature, run `pnpm dlx automated-product-engineer audit --json` and load `codebase-upgrade`. Validate its static signals against the relevant code path, connect confirmed findings to the pattern catalog and working examples, and prepare up to three product-sized upgrade options. Ask the user which outcome matters most before changing a broad boundary.
+When first adopting the toolkit in an existing codebase, run `pnpm dlx automated-product-engineer onboard` and load `codebase-onboarding`. Reconcile the generated static evidence with repository documentation and representative user journeys, establish the project-owned engineering contract and local skill overlay, and let the user select the upgrade program. When the repository already has that baseline and the request is a focused modernization, run `audit --json` and use `codebase-upgrade` for the selected boundary.
 
 ## 1. Prepare the product brief
 

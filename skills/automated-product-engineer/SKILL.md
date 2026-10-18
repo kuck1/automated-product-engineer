@@ -47,6 +47,7 @@ Load only the skills whose boundary is active:
 - `figma-to-app-feature` for a Figma-led feature and the complete staged delivery lifecycle.
 - `design-system` for shared tokens, primitives, variants, metadata, and previews.
 - `architecture-building` for ownership, state, rendering, integration, encapsulation, and extension points.
+- `codebase-onboarding` when first adopting the toolkit in an existing repository or establishing its full product, architecture, data, design-system, testing, documentation, and delivery baseline.
 - `codebase-upgrade` when the user asks what to improve, how to modernize an existing application, or which reference patterns apply before selecting a feature slice.
 - `frontend-api-db` for durable state, authorization, endpoints, schema, and client-cache behavior.
 - `expo-native-app` for Expo or React Native navigation, auth, lifecycle, offline behavior, device capabilities, development builds, updates, native QA, and store delivery.
@@ -56,7 +57,7 @@ Load only the skills whose boundary is active:
 - `pr-workflow` to capture evidence and open or update a reviewable draft pull request.
 - `pr-review` only when reviewing a named remote pull request.
 
-For an unfamiliar or inherited repository, run the read-only codebase audit when available and validate its signals before proposing architecture. Preserve strong patterns and ask the user to choose among no more than three evidence-backed upgrades when the desired priority is not already clear.
+For an unfamiliar or inherited repository with no accepted local engineering context, use `codebase-onboarding`. Run the static analysis, reconcile documentation with real journeys, create the project-owned contract and skill overlay, and let the user select the modernization program. Use `codebase-upgrade` later for a focused assessment or selected slice.
 
 ## Build through stable boundaries
 
