@@ -58,7 +58,7 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(navigation.getByRole("link", { name: "Quick Start" })).toHaveAttribute("href", "/quick-start");
   await expect(navigation.getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("href", "/guide");
   await expect(navigation.getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("href", "/library");
-  await expect(page.getByRole("heading", { name: /Beautiful features/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Daily product work starts with business needs. Not technical wrangling." })).toBeVisible();
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
   await expect(page.getByRole("link", { name: "Open the Release Readiness case study" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open the Onboarding Operations case study" })).toBeVisible();
@@ -153,6 +153,7 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
   await page.goto("/guide");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day -- anymore." })).toBeVisible();
+  await expect(page.getByText("Daily product work starts with business needs - not technical wrangling.", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
   await expect(sourceChooser).toHaveValue("release-policy");
