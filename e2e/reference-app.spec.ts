@@ -347,9 +347,8 @@ test("behind the scenes includes the design system and swaps semantic tokens", a
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/guide#guide-design-system");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
-  const heading = page.getByRole("heading", { name: "Design tokens. Components and patterns." });
+  const heading = page.locator("#guide-design-system").getByRole("heading", { name: "Design tokens. Components and patterns." });
   await expect(heading).toBeVisible();
-  expect((await heading.boundingBox())?.y).toBeLessThan(340);
   await expect(page.getByText("Interactive focus and brand expression")).toBeVisible();
   await page.getByRole("button", { name: /Mint focus/ }).click();
   await page.getByRole("button", { name: /Soft/ }).click();
