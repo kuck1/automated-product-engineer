@@ -3,11 +3,14 @@ import {
   DomainError,
   type Actor,
   type ExampleSnapshot,
+  type FieldMission,
+  type FieldStopStatus,
   type Onboarding,
   type OnboardingStage,
   type Release,
   type ReleaseStage,
   type UpdateOnboarding,
+  type UpdateFieldStop,
   type UpdateRelease,
 } from "./contracts";
 
@@ -24,6 +27,14 @@ const onboardingTransitions: Record<OnboardingStage, readonly OnboardingStage[]>
   training: ["configuring", "live", "at_risk"],
   at_risk: ["configuring", "training"],
   live: ["at_risk"],
+};
+
+const fieldStopTransitions: Record<FieldStopStatus, readonly FieldStopStatus[]> = {
+  queued: ["en_route", "blocked"],
+  en_route: ["arrived", "blocked"],
+  arrived: ["complete", "blocked"],
+  blocked: ["queued", "en_route"],
+  complete: [],
 };
 
 function authorize(actor: Actor, workspaceId: string) {
@@ -56,11 +67,12 @@ export class ExampleService {
   constructor(private readonly repository: ExampleRepository) {}
 
   async snapshot(actor: Actor): Promise<ExampleSnapshot> {
-    const [releases, onboardings] = await Promise.all([
+    const [releases, onboardings, fieldMissions] = await Promise.all([
       this.repository.listReleases(actor.workspaceId),
       this.repository.listOnboardings(actor.workspaceId),
+      this.repository.listFieldMissions(actor.workspaceId),
     ]);
-    return { releases, onboardings, generatedAt: "2026-10-16T12:00:00.000Z" };
+    return { releases, onboardings, fieldMissions, generatedAt: "2026-10-16T12:00:00.000Z" };
   }
 
   async updateRelease(actor: Actor, id: string, input: UpdateRelease) {
@@ -100,5 +112,33 @@ export class ExampleService {
       }
     }
     return this.repository.saveOnboarding({ ...onboarding, stage: input.stage, revision: onboarding.revision + 1 });
+  }
+
+  async updateFieldStop(actor: Actor, id: string, input: UpdateFieldStop): Promise<FieldMission> {
+    const mission = await this.repository.getFieldMission(id);
+    if (!mission) throw new DomainError("NOT_FOUND", "Field mission not found.", 404);
+    authorize(actor, mission.workspaceId);
+    if (mission.lastOperationId === input.operationId) return mission;
+    if (mission.revision !== input.expectedRevision) {
+      throw new DomainError("CONFLICT", "This mission changed while the device was offline. Review the current stop before syncing again.", 409);
+    }
+    const stop = mission.stops.find((item) => item.id === input.stopId);
+    if (!stop) throw new DomainError("NOT_FOUND", "Mission stop not found.", 404);
+    if (!fieldStopTransitions[stop.status].includes(input.status)) {
+      throw new DomainError("INVALID_TRANSITION", `A ${stop.status.replace("_", " ")} stop cannot move directly to ${input.status.replace("_", " ")}.`, 422);
+    }
+    const nextStop = { ...stop, status: input.status, deliveredUnits: input.deliveredUnits ?? stop.deliveredUnits, proofCaptured: input.proofCaptured ?? stop.proofCaptured };
+    if (input.status === "complete" && nextStop.proofRequired && !nextStop.proofCaptured) {
+      throw new DomainError("GATES_INCOMPLETE", "Capture delivery proof before completing this stop.", 422);
+    }
+    if (input.status === "complete" && nextStop.deliveredUnits < 1) {
+      throw new DomainError("GATES_INCOMPLETE", "Record the delivered quantity before completing this stop.", 422);
+    }
+    return this.repository.saveFieldMission({
+      ...mission,
+      revision: mission.revision + 1,
+      lastOperationId: input.operationId,
+      stops: mission.stops.map((item) => item.id === stop.id ? nextStop : item),
+    }, stop.id);
   }
 }

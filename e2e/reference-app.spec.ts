@@ -10,6 +10,7 @@ test("every public page uses the shared top bar", async ({ page }, testInfo) => 
     "/",
     "/examples?view=releases",
     "/examples?view=onboarding",
+    "/examples?view=field",
     "/quick-start",
     "/guide",
     "/library",
@@ -61,6 +62,7 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(page.getByLabel(/Animated before and after comparison/)).toContainText("Before: one-off styles");
   await expect(page.getByRole("link", { name: "Open the Release Readiness case study" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open the Onboarding Operations case study" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open the Field Relay native case study" })).toBeVisible();
 });
 
 test("before and after cards stay aligned across viewports", async ({ page }) => {
@@ -145,6 +147,28 @@ test("onboarding transition uses URL state and reconciles the canonical response
   await expect(page.getByRole("article").filter({ hasText: "Northstar Health" }).getByRole("button", { name: "Launch customer" })).toBeVisible();
   await page.goBack();
   await expect(page).toHaveURL(/\/$/);
+});
+
+test("Field Relay keeps offline intent distinct until the server confirms it", async ({ page }) => {
+  await page.goto("/examples?view=field");
+  await expect(page.getByLabel("Field Relay reference kit")).toHaveClass("example-reference-kit");
+  await expect(page.getByLabel("Field Relay native app preview")).toBeVisible();
+  await expect(page.getByText("Native product · Interactive field demo")).toBeVisible();
+
+  await page.getByRole("button", { name: "Switch offline" }).click();
+  const cedar = page.getByRole("article").filter({ hasText: "Cedar Ridge Shelter" });
+  await cedar.getByRole("button", { name: "Arrived" }).click();
+  await expect(page.getByRole("status")).toContainText("Saved on this device");
+  await expect(page.getByRole("button", { name: /1 update saved on device/ })).toContainText("Reconnect to confirm");
+  await expect(cedar).toContainText("arrived");
+
+  await page.getByRole("button", { name: "Switch online" }).click();
+  await page.getByRole("button", { name: /1 update saved on device/ }).click();
+  await expect(page.getByRole("status")).toContainText("Stop confirmed by the mission service");
+  await expect(page.getByText("13", { exact: true })).toBeVisible();
+
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(1);
 });
 
 test("behind the scenes embeds the ownership chain and real source excerpts", async ({ page }, testInfo) => {

@@ -2,7 +2,7 @@
 
 ## Outcome
 
-The repository now demonstrates the delivery system as executable software: a product landing page, two business applications, a portable skills library, a layered API and persistence model, responsive visual evidence, and parallel CI gates.
+The repository now demonstrates the delivery system as executable software: a product landing page, three business applications across web and native concerns, a portable skills library, a layered API and persistence model, responsive visual evidence, and parallel CI gates.
 
 ## Findings fixed during delivery
 

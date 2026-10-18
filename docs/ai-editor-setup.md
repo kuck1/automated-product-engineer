@@ -15,7 +15,7 @@ The default install is universal and includes the complete local reference kit:
 - 14 adaptive agent skills and discovery adapters for the supported agents.
 - Architecture, state, design-system, testing, delivery, and retrospective guides.
 - Integration checklists and copyable design, component, state, testing, CI, automation, and retrospective templates.
-- Two working business-logic case studies, thin API routes, domain services, repositories, a Supabase adapter and migration, an interactive semantic-token system, and browser test examples.
+- Three working business-logic case studies, including an offline-first native field workflow, thin API routes, domain services, repositories, Supabase adapters and migrations, an interactive semantic-token system, and browser test examples.
 - Desktop and mobile evidence from the reference implementations.
 
 The skills are copied to the supported agent locations. All non-runtime reference material is kept under `.automated-product-engineer/`. Its `INSTALLATION.md` gives the agent a map of the installed material. The host application does not import this folder at runtime.

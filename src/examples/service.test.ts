@@ -66,3 +66,28 @@ test("a customer cannot go live before milestones and adoption policy pass", asy
     (error: unknown) => error instanceof DomainError && error.code === "GATES_INCOMPLETE",
   );
 });
+
+test("field delivery requires proof and a delivered quantity", async () => {
+  const service = new ExampleService(new MemoryExampleRepository());
+  const mission = (await service.snapshot(owner)).fieldMissions[0];
+  const enRoute = mission.stops.find((stop) => stop.status === "en_route")!;
+  const arrived = await service.updateFieldStop(owner, mission.id, { stopId: enRoute.id, status: "arrived", expectedRevision: mission.revision, operationId: "op-arrive-001" });
+  await assert.rejects(
+    service.updateFieldStop(owner, mission.id, { stopId: enRoute.id, status: "complete", expectedRevision: arrived.revision, operationId: "op-complete-001" }),
+    (error: unknown) => error instanceof DomainError && error.code === "GATES_INCOMPLETE",
+  );
+});
+
+test("field delivery sync is versioned and idempotent", async () => {
+  const service = new ExampleService(new MemoryExampleRepository());
+  const mission = (await service.snapshot(owner)).fieldMissions[0];
+  const enRoute = mission.stops.find((stop) => stop.status === "en_route")!;
+  const input = { stopId: enRoute.id, status: "arrived" as const, expectedRevision: mission.revision, operationId: "op-arrive-002" };
+  const saved = await service.updateFieldStop(owner, mission.id, input);
+  const replay = await service.updateFieldStop(owner, mission.id, input);
+  assert.equal(replay.revision, saved.revision);
+  await assert.rejects(
+    service.updateFieldStop(owner, mission.id, { ...input, status: "blocked", operationId: "op-stale-003" }),
+    (error: unknown) => error instanceof DomainError && error.code === "CONFLICT",
+  );
+});

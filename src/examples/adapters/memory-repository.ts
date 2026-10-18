@@ -1,5 +1,5 @@
-import { demoOnboardings, demoReleases } from "../fixtures";
-import type { Onboarding, Release } from "../contracts";
+import { demoFieldMissions, demoOnboardings, demoReleases } from "../fixtures";
+import type { FieldMission, Onboarding, Release } from "../contracts";
 import type { ExampleRepository } from "../repository";
 
 const clone = <T,>(value: T): T => structuredClone(value);
@@ -7,6 +7,7 @@ const clone = <T,>(value: T): T => structuredClone(value);
 export class MemoryExampleRepository implements ExampleRepository {
   private releases = new Map(demoReleases.map((item) => [item.id, clone(item)]));
   private onboardings = new Map(demoOnboardings.map((item) => [item.id, clone(item)]));
+  private fieldMissions = new Map(demoFieldMissions.map((item) => [item.id, clone(item)]));
 
   async listReleases(workspaceId: string) {
     return [...this.releases.values()].filter((item) => item.workspaceId === workspaceId).map(clone);
@@ -29,5 +30,17 @@ export class MemoryExampleRepository implements ExampleRepository {
   async saveOnboarding(onboarding: Onboarding) {
     this.onboardings.set(onboarding.id, clone(onboarding));
     return clone(onboarding);
+  }
+  async listFieldMissions(workspaceId: string) {
+    return [...this.fieldMissions.values()].filter((item) => item.workspaceId === workspaceId).map(clone);
+  }
+  async getFieldMission(id: string) {
+    const item = this.fieldMissions.get(id);
+    return item ? clone(item) : null;
+  }
+  async saveFieldMission(mission: FieldMission, changedStopId: string) {
+    void changedStopId;
+    this.fieldMissions.set(mission.id, clone(mission));
+    return clone(mission);
   }
 }

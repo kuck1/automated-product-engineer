@@ -15,6 +15,7 @@ const skills = [
   ["Manual UI QA", "manual-ui-qa"],
   ["PR review and CI", "pr-workflow"],
   ["Responsive and security review", "security-review"],
+  ["Expo native delivery", "expo-native-app"],
 ] as const;
 
 export default function HomePage() {
@@ -42,7 +43,7 @@ export default function HomePage() {
       </section>
 
       <section className="stack-strip" aria-label="Reference stack">
-        <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>React</strong><strong>Supabase</strong><strong>TanStack Query</strong><strong>Playwright</strong>
+        <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>Expo</strong><strong>React Native</strong><strong>Supabase</strong><strong>TanStack Query</strong>
       </section>
 
       <section className="section examples-section" id="examples">
@@ -72,6 +73,16 @@ export default function HomePage() {
             <h3>Onboarding Operations</h3>
             <p>See which customer needs attention and move each account toward value. Health scoring, tenant safety, persistence, and recovery stay behind the workflow.</p>
             <span className="card-link">Move customers toward value <ArrowRight size={16} /></span>
+          </Link>
+          <Link className="case-card case-field" href="/examples?view=field" aria-label="Open the Field Relay native case study">
+            <div className="case-top"><Badge tone="neutral">Case study 03</Badge><span className="case-system-name">Relay Field System · native operations</span></div>
+            <div className="case-visual field-visual">
+              <div className="field-mini-map"><i /><i /><span>01</span><span>02</span><span>03</span></div>
+              <div className="field-mini-stop"><small>CRITICAL · 10:35</small><strong>Cedar Ridge Shelter</strong><span>48 water cases · en route</span><b>Saved for offline use</b></div>
+            </div>
+            <h3>Field Relay</h3>
+            <p>Move essential supplies through weak connectivity. Assignment, proof, offline sync, authorization, and conflict recovery stay behind the route.</p>
+            <span className="card-link">Complete the next stop <ArrowRight size={16} /></span>
           </Link>
         </div>
       </section>
