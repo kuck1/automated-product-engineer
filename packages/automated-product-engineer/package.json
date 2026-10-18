@@ -1,6 +1,6 @@
 {
   "name": "automated-product-engineer",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Install product-engineering skills, native and web architecture guides, launch tooling, templates, testing, CI, and delivery automation for AI coding agents.",
   "type": "module",
   "bin": {

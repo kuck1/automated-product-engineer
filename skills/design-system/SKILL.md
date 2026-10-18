@@ -11,6 +11,8 @@ Read [references/system-extension.md](references/system-extension.md) for the to
 
 For a repository-wide assessment of repeated UI and adoption friction, start with `codebase-upgrade`. Use its component-infrastructure pattern to choose a real product slice before extracting tokens or components.
 
+Use `governed-component-contract` in [`../codebase-upgrade/references/pattern-atlas.md`](../codebase-upgrade/references/pattern-atlas.md) to connect component work to a repeated product behavior, deliberate variants, state coverage, compact pressure, accessibility, and adoption evidence.
+
 
 ## Intake and pushback
 

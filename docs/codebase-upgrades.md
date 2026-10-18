@@ -8,7 +8,7 @@ pnpm dlx automated-product-engineer audit
 
 Use `--json` when an agent should consume the report. The audit reads bounded source and documentation files, package metadata, and native configuration without executing application modules. It reports high-confidence risks separately from upgrade opportunities and patterns worth preserving.
 
-The report is deliberately not an automatic refactor plan. A package name or keyword is only a signal. The `codebase-upgrade` skill validates each signal against callers, data flow, policy, tests, and real behavior; connects it to the relevant pattern, anti-pattern, case study, and specialist skill; prepares up to three reviewable options; and asks the user which product or risk outcome to prioritize.
+The report is deliberately not an automatic refactor plan. A package name or keyword is only a signal. The `codebase-upgrade` skill validates each signal against callers, data flow, policy, tests, and real behavior; connects it to the relevant stable ID in the [product engineering pattern atlas](pattern-atlas.md), anti-pattern, executable example, and specialist skill; then prepares up to three reviewable options. It reports current-system feedback before implementation and asks the user only when a material product, authority, persistence, compatibility, or recovery decision remains unresolved.
 
 Typical review paths include:
 

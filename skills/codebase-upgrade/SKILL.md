@@ -7,7 +7,7 @@ description: Inspect an existing web, Expo, or React Native codebase, preserve s
 
 Use this skill when the user asks what should improve, whether the current setup is sound, how to modernize an existing application, or which patterns from the reference system apply to their codebase.
 
-Read [references/audit-and-upgrade-workflow.md](references/audit-and-upgrade-workflow.md) for the inspection, recommendation, decision, implementation, and re-audit sequence. Read [references/pattern-and-antipattern-catalog.md](references/pattern-and-antipattern-catalog.md) to connect observed code to concrete patterns, anti-patterns, case-study evidence, and the specialist skill that owns the upgrade.
+Read [references/audit-and-upgrade-workflow.md](references/audit-and-upgrade-workflow.md) for the inspection, recommendation, decision, implementation, and re-audit sequence. Read [references/pattern-atlas.md](references/pattern-atlas.md) for the relevant product situation, target contract, proof, and owning skill. Use [references/pattern-and-antipattern-catalog.md](references/pattern-and-antipattern-catalog.md) for the original cross-cutting principles and case-study evidence.
 
 ## Start with local evidence
 
@@ -25,6 +25,8 @@ Separate findings into:
 - **unknown:** a material fact the code cannot answer.
 
 For each proposed upgrade, name the user or operator pain, current evidence, owning boundary, target pattern, anti-pattern being removed, working reference, responsible skill, implementation size, risk, acceptance evidence, and rollback. Never turn directory names, file size, or dependency presence alone into a refactor mandate.
+
+Before changing code, return a compact **Current system feedback** block with: strong behavior to preserve; exact observed friction or risk; material unknowns; selected atlas ID and authority boundary; and the first focused proof. If the user already authorized the outcome and no decision changes product behavior, data lifetime, authorization, compatibility, or recovery, continue after the feedback without asking again.
 
 ## Ask for the decision that matters
 

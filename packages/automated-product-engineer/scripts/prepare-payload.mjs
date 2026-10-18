@@ -21,6 +21,7 @@ const entries = [
   "app/guide/page.tsx",
   "app/system/page.tsx",
   "src/examples",
+  "src/patterns",
   "src/guide",
   "src/system",
   "src/ui",

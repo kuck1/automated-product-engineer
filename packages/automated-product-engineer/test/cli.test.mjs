@@ -168,6 +168,48 @@ test("audit recognizes established server-cache, concurrency, authorization, and
     assert.equal(byId["concurrency-retry"].status, "established");
     assert.equal(byId["auth-data-boundary"].status, "established");
     assert.equal(byId["verification-evidence"].status, "established");
+    assert.equal(byId["concurrency-retry"].patternId, "versioned-idempotent-write");
+    assert.ok(Array.isArray(report.currentSystemFeedback.preserve));
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("audit routes newer product situations into the pattern atlas", () => {
+  const root = fixture({
+    name: "pattern-app",
+    dependencies: { next: "^16", react: "^19", "@tanstack/react-query": "^5" },
+    scripts: { build: "next build" },
+  });
+  try {
+    writeFixtureFile(root, "src/components/derived.tsx", "useEffect(() => { setTotal(items.length); }, [items]);\n");
+    writeFixtureFile(root, "src/auth/logout.ts", "export const logout = () => signOut();\n");
+    writeFixtureFile(root, "src/hooks/items.ts", "export const useItems = () => useQuery({ queryKey: ['items'] });\n");
+    writeFixtureFile(root, "src/app/api/webhook/route.ts", "export async function POST(request) { const webhook = await request.json(); return process(webhook); }\n");
+    writeFixtureFile(root, "src/workers/export.ts", "export async function runBackgroundJob() { return exportRows(); }\n");
+    writeFixtureFile(root, "src/app/upload.tsx", "export const send = (file) => { const body = new FormData(); body.append('file', file); };\n");
+    writeFixtureFile(root, "src/components/beta.tsx", "export const Beta = () => flags.newCheckout ? <button /> : null;\n");
+
+    const result = run(["audit", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    const byId = Object.fromEntries(report.findings.map((finding) => [finding.id, finding]));
+    assert.equal(byId["derived-state"].patternId, "minimal-derived-state");
+    assert.equal(byId["identity-cache"].status, "opportunity");
+    assert.equal(byId["webhook-delivery"].patternId, "webhook-inbox");
+    assert.equal(byId["background-jobs"].patternId, "durable-job-state-machine");
+    assert.equal(byId["large-uploads"].patternId, "resumable-upload");
+    assert.equal(byId["feature-flags"].patternId, "server-enforced-feature-flag");
+    assert.ok(report.currentSystemFeedback.selectedPattern);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("audit does not label browser-system Effects as copied derived state", () => {
+  const root = fixture({ name: "observer-app", dependencies: { next: "^16", react: "^19" }, scripts: { build: "next build" } });
+  try {
+    writeFixtureFile(root, "src/components/visible.tsx", "useEffect(() => { const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting)); observer.observe(node); return () => observer.disconnect(); }, [node]);\n");
+    const result = run(["audit", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    assert.equal(report.findings.some((finding) => finding.id === "derived-state"), false);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -178,7 +220,18 @@ test("install ships the upgrade skill, catalog, audit guide, and local audit ent
     assert.equal(result.status, 0, result.stderr);
     assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "SKILL.md")), true);
     assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "references", "pattern-and-antipattern-catalog.md")), true);
+    assert.equal(existsSync(path.join(root, ".agents", "skills", "codebase-upgrade", "references", "pattern-atlas.md")), true);
     assert.equal(existsSync(path.join(root, ".automated-product-engineer", "docs", "codebase-upgrades.md")), true);
     assert.match(readFileSync(path.join(root, ".automated-product-engineer", "INSTALLATION.md"), "utf8"), /automated-product-engineer audit/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("web example installation includes the typed pattern atlas and executable references", () => {
+  const root = fixture({ name: "pattern-install", dependencies: { next: "^16", react: "^19" } });
+  try {
+    const result = run(["install", "--only", "examples"], root);
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(existsSync(path.join(root, ".automated-product-engineer", "src", "patterns", "catalog.ts")), true);
+    assert.equal(existsSync(path.join(root, ".automated-product-engineer", "src", "patterns", "patterns.test.ts")), true);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

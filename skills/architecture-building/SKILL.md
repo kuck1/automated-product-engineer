@@ -13,6 +13,8 @@ Read [references/feature-boundaries.md](references/feature-boundaries.md) when d
 
 When the request is to assess or modernize an existing application rather than implement a named feature, use `codebase-upgrade` first. Its pattern catalog connects observed code to the real reference slices, anti-patterns, owning specialists, and the user decision needed before a broad architecture change.
 
+Read [`../codebase-upgrade/references/pattern-atlas.md`](../codebase-upgrade/references/pattern-atlas.md) when the boundary involves thin transport, background jobs, compensated multi-system work, server-enforced feature flags, or when a pre-build inspection needs a stable pattern ID and focused proof.
+
 
 ## Intake and pushback
 

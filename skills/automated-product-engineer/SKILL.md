@@ -27,6 +27,18 @@ When `.automated-product-engineer/INSTALLATION.md` exists in the repository, rea
 - Resolve only ambiguities that would materially change behavior, persistence, security, or release risk. Record the rest as explicit assumptions.
 - Treat a design export as product and interaction evidence, not production architecture to paste.
 
+## Analyze before building
+
+Before implementation, produce a compact **Current system feedback** block from repository evidence:
+
+- **Preserve:** working boundaries, conventions, and behavior that should remain.
+- **Observed friction or risk:** exact paths and the user-visible consequence.
+- **Unknowns:** only facts that cannot be learned from the repository or environment.
+- **Selected pattern:** the stable atlas ID, authority boundary, and anti-pattern it replaces.
+- **First proof:** the smallest behavioral test or reproduction that demonstrates the change.
+
+For unfamiliar or inherited systems, load `codebase-upgrade` and its pattern atlas. If the requested outcome is already authorized and no missing decision changes product behavior, data lifetime, security, compatibility, or recovery, continue after sharing the feedback. Ask one focused question only when one of those contracts is genuinely undecided.
+
 ## Select specialist skills
 
 Load only the skills whose boundary is active:
