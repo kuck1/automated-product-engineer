@@ -170,7 +170,7 @@ export function ComponentLibraryPlaybook() {
 
     <div className="cl-hierarchy" aria-label="Component library hierarchy">{hierarchy.map(([number, title, detail], index) => <div key={title}><span>{number}</span><strong>{title}</strong><small>{detail}</small>{index < hierarchy.length - 1 && <ArrowRight size={15} />}</div>)}</div>
 
-    <div className="playbook-heading cl-show-heading"><span>SHOW + TELL</span><div><h4>See the component. Then inspect the contract.</h4><p>Select a library item and a meaningful state. The stage renders shared primitives and representative compositions; the contract explains what belongs in the library, what remains with the product, and when the abstraction earns its place.</p></div></div>
+    <div className="playbook-heading cl-show-heading"><span>COMPONENT CONTRACT</span><div><h4>See the component. Then inspect the contract.</h4><p>Select a library item and a meaningful state. The stage renders shared primitives and representative compositions; the contract explains what belongs in the library, what remains with the product, and when the abstraction earns its place.</p></div></div>
 
     <div className="cl-workbench">
       <nav aria-label="Component library examples">{libraryItems.map((item, index) => <button type="button" className={active.id === item.id ? "active" : ""} aria-pressed={active.id === item.id} onClick={() => selectItem(item)} key={item.id}><span>{String(index + 1).padStart(2, "0")}</span><div><small>{item.level}</small><strong>{item.name}</strong><p>{item.summary}</p></div><ArrowRight size={15} /></button>)}</nav>
