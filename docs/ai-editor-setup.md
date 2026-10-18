@@ -12,11 +12,12 @@ pnpm dlx automated-product-engineer
 
 The default install is universal and includes the complete local reference kit:
 
-- 17 adaptive agent skills and discovery adapters for the supported agents.
+- 18 adaptive agent skills and discovery adapters for the supported agents.
 - Architecture, state, design-system, testing, delivery, and retrospective guides.
 - Integration checklists and copyable design, component, state, testing, CI, automation, and retrospective templates.
 - Three working business-logic case studies, including an offline-first native field workflow, thin API routes, domain services, repositories, Supabase adapters and migrations, an interactive semantic-token system, and browser test examples.
 - Executable Swift patterns plus native iOS guidance for Xcode, SwiftUI and UIKit, strict concurrency, AuthenticationServices and Keychain, persistence, capabilities, privacy, signing, TestFlight, and App Store delivery.
+- Executable Kotlin patterns plus native Android guidance for Gradle, Compose and Views, coroutines and Flow, Room, DataStore, WorkManager, Credential Manager, capabilities, signing, and Play delivery.
 - Desktop and mobile evidence from the reference implementations.
 
 The skills are copied to the supported agent locations. All non-runtime reference material is kept under `.automated-product-engineer/`. Its `INSTALLATION.md` gives the agent a map of the installed material. The host application does not import this folder at runtime.

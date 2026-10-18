@@ -102,7 +102,7 @@ test("launch rejects non-Expo projects before invoking a package manager", () =>
   try {
     const result = run(["launch"], root);
     assert.equal(result.status, 1);
-    assert.match(result.stderr, /Launch requires an Expo, React Native, native iOS, or Swift package project/);
+    assert.match(result.stderr, /Launch requires an Expo, React Native, native iOS, Swift package, or native Android project/);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -110,6 +110,9 @@ test("launch selects Expo development client and bare React Native commands", ()
   const expo = fixture({ name: "expo-app", dependencies: { expo: "^55", "react-native": "^0.83", "expo-dev-client": "^6" } }, { expo: { name: "Expo App", scheme: "expo-app" } });
   const bare = fixture({ name: "bare-app", dependencies: { "react-native": "^0.83", react: "^19" } });
   try {
+    writeFixtureFile(bare, "settings.gradle", "include ':app'\n");
+    writeFixtureFile(bare, "android/app/build.gradle", "plugins { id 'com.android.application' }\nandroid { defaultConfig { applicationId 'com.example.bare' } }\n");
+    writeFixtureFile(bare, "android/app/src/main/AndroidManifest.xml", "<manifest><application /></manifest>\n");
     const expoResult = run(["launch", "--ios", "--dry-run"], expo);
     assert.equal(expoResult.status, 0, expoResult.stderr);
     assert.match(expoResult.stdout, /pnpm exec expo start --dev-client --ios/);
@@ -199,6 +202,89 @@ test("native iOS audit reports direct view networking, insecure credential stora
     assert.equal(byId["ios-secret-storage"].status, "risk");
     assert.equal(byId["ios-privacy-manifest"].status, "opportunity");
     assert.equal(byId["ios-state-ownership"].status, "opportunity");
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("doctor detects a native Android Compose project, Gradle contract, capabilities, and tests", () => {
+  const root = fixture({ name: "native-android-app" });
+  try {
+    writeFixtureFile(root, "settings.gradle.kts", 'rootProject.name = "NativeAndroid"\ninclude(":app")\n');
+    writeFixtureFile(root, "gradlew", "#!/bin/sh\n");
+    writeFixtureFile(root, "build.gradle.kts", 'plugins { id("com.android.application") version "9.4.0" apply false; id("org.jetbrains.kotlin.android") version "2.4.10" apply false }\n');
+    writeFixtureFile(root, "app/build.gradle.kts", `plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
+android { namespace = "com.example.nativeandroid"; compileSdk = 36; defaultConfig { applicationId = "com.example.nativeandroid"; minSdk = 26; targetSdk = 36 } }
+dependencies { implementation("androidx.navigation:navigation-compose:2.9.0"); implementation("androidx.credentials:credentials:1.6.0"); implementation("androidx.room:room-runtime:2.8.0"); implementation("androidx.work:work-runtime-ktx:2.11.0") }
+`);
+    writeFixtureFile(root, "app/src/main/AndroidManifest.xml", '<manifest xmlns:android="http://schemas.android.com/apk/res/android"><uses-permission android:name="android.permission.INTERNET"/><application><activity android:autoVerify="true"/></application></manifest>\n');
+    writeFixtureFile(root, "app/src/main/kotlin/com/example/MainActivity.kt", "class MainActivity\n");
+    writeFixtureFile(root, "app/src/test/kotlin/com/example/StoreTest.kt", "class StoreTest\n");
+    writeFixtureFile(root, "app/src/androidTest/kotlin/com/example/AppTest.kt", "class AppTest\n");
+
+    const result = run(["doctor", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const profile = JSON.parse(result.stdout);
+    assert.equal(profile.kind, "android");
+    assert.equal(profile.packageManager, "gradle");
+    assert.equal(profile.router, "navigation-compose");
+    assert.equal(profile.android.settingsFile, "settings.gradle.kts");
+    assert.equal(profile.android.applicationModule, "app");
+    assert.equal(profile.android.applicationId, "com.example.nativeandroid");
+    assert.equal(profile.android.namespace, "com.example.nativeandroid");
+    assert.equal(profile.android.compileSdk, "36");
+    assert.equal(profile.android.minSdk, "26");
+    assert.equal(profile.android.targetSdk, "36");
+    assert.equal(profile.android.compose, true);
+    assert.equal(profile.android.hasUnitTests, true);
+    assert.equal(profile.android.hasInstrumentedTests, true);
+    assert.deepEqual(profile.capabilities, ["internet", "background-work", "app-links", "credential-manager", "room"]);
+    assert.deepEqual(profile.findings, []);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("native Android install selects Kotlin examples and launch opens Android Studio", () => {
+  const root = fixture({ name: "native-android-app" });
+  try {
+    writeFixtureFile(root, "settings.gradle.kts", 'rootProject.name = "NativeAndroid"\ninclude(":app")\n');
+    writeFixtureFile(root, "gradlew", "#!/bin/sh\n");
+    writeFixtureFile(root, "app/build.gradle.kts", 'plugins { id("com.android.application") }\nandroid { namespace = "com.example.nativeandroid"; compileSdk = 36; defaultConfig { applicationId = "com.example.nativeandroid"; minSdk = 26; targetSdk = 36 } }\n');
+    writeFixtureFile(root, "app/src/main/AndroidManifest.xml", "<manifest><application /></manifest>\n");
+    writeFixtureFile(root, "app/src/main/kotlin/com/example/MainActivity.kt", "class MainActivity\n");
+    writeFixtureFile(root, "app/src/test/kotlin/com/example/StoreTest.kt", "class StoreTest\n");
+    const installResult = run(["install", "--only", "examples"], root);
+    assert.equal(installResult.status, 0, installResult.stderr);
+    const toolkit = path.join(root, ".automated-product-engineer");
+    assert.equal(existsSync(path.join(toolkit, "android", "examples", "build.gradle.kts")), true);
+    assert.equal(existsSync(path.join(toolkit, "android", "case-studies", "field-relay", "README.md")), true);
+    assert.equal(existsSync(path.join(toolkit, "ios", "examples")), false);
+    assert.equal(existsSync(path.join(toolkit, "native", "examples")), false);
+    assert.equal(existsSync(path.join(toolkit, "app", "examples", "page.tsx")), false);
+    assert.match(readFileSync(path.join(toolkit, "INSTALLATION.md"), "utf8"), /Native Android project path/);
+
+    const launchResult = run(["launch", "--dry-run"], root);
+    assert.equal(launchResult.status, 0, launchResult.stderr);
+    assert.match(launchResult.stdout, /Opening native-android-app in Android Studio with/);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("native Android audit reports coroutine, composable networking, credential, and signing risks", () => {
+  const root = fixture({ name: "unsafe-android-app" });
+  try {
+    writeFixtureFile(root, "settings.gradle.kts", 'include(":app")\n');
+    writeFixtureFile(root, "gradlew", "#!/bin/sh\n");
+    writeFixtureFile(root, "app/build.gradle.kts", 'plugins { id("com.android.application") }\nandroid { namespace = "com.example.unsafe"; compileSdk = 36; defaultConfig { applicationId = "com.example.unsafe"; targetSdk = 36 }; signingConfigs { create("release") { storePassword = "exposed"; keyPassword = "exposed" } } }\n');
+    writeFixtureFile(root, "app/src/main/AndroidManifest.xml", "<manifest><application /></manifest>\n");
+    writeFixtureFile(root, "app/src/main/kotlin/com/example/UnsafeScreen.kt", `@Composable fun UnsafeScreen() { val client = OkHttpClient(); GlobalScope.launch { client.toString() }; val authToken = getSharedPreferences("auth", 0).getString("token", null) }
+`);
+    const result = run(["audit", "--json"], root);
+    assert.equal(result.status, 0, result.stderr);
+    const report = JSON.parse(result.stdout);
+    const byId = Object.fromEntries(report.findings.map((finding) => [finding.id, finding]));
+    assert.equal(byId["android-state-ownership"].status, "opportunity");
+    assert.equal(byId["android-concurrency"].status, "risk");
+    assert.equal(byId["android-network-boundary"].status, "risk");
+    assert.equal(byId["android-secret-storage"].status, "risk");
+    assert.equal(byId["android-signing-secrets"].status, "risk");
+    assert.equal(byId["android-durable-data"].status, "opportunity");
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

@@ -18,6 +18,8 @@ const entries = [
   "native/case-studies",
   "ios/examples",
   "ios/case-studies",
+  "android/examples",
+  "android/case-studies",
   "app/api/examples",
   "app/examples/page.tsx",
   "app/guide/page.tsx",

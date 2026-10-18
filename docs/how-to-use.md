@@ -8,6 +8,8 @@ For Expo or React Native, read `project-profile.json` and load `expo-native-app`
 
 For Swift or native iOS, read `project-profile.json` and load `ios-native-app`. Establish the owning Xcode target and shared scheme, minimum OS, Swift language mode, SwiftUI/UIKit boundary, capabilities, entitlements, privacy manifest, simulator and physical-device proof, signing, and distribution boundary before implementation.
 
+For Kotlin or native Android, read `project-profile.json` and load `android-native-app`. Establish the owning Gradle module, wrapper and plugin versions, SDK levels, application ID, Compose/Views boundary, state and coroutine ownership, capabilities, manifests, emulator and physical-device proof, upload signing, and Play delivery boundary before implementation.
+
 When first adopting the toolkit in an existing codebase, run `pnpm dlx automated-product-engineer onboard` and load `codebase-onboarding`. Reconcile the generated static evidence with repository documentation and representative user journeys, establish the project-owned engineering contract and local skill overlay, and let the user select the upgrade program. When the repository already has that baseline and the request is a focused modernization, run `audit --json` and use `codebase-upgrade` for the selected boundary.
 
 ## 1. Prepare the product brief

@@ -18,24 +18,24 @@ const components = ["skills", "docs", "templates", "examples"];
 
 const adapters = {
   cursorRule: `---
-description: Apply the automated product engineering workflow for substantial product work across web, React Native, Expo, Swift, and native iOS.
+description: Apply the automated product engineering workflow for substantial product work across web, React Native, Expo, Swift, native iOS, Kotlin, and native Android.
 globs:
 alwaysApply: false
 ---
 
-Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. Use expo-native-app for Expo or React Native and ios-native-app for Swift, SwiftUI, UIKit, Xcode, Apple capabilities, signing, TestFlight, or App Store work.
+Read @.ai/skills/automated-product-engineer/SKILL.md and load only the specialist skills it routes to. Read @.automated-product-engineer/INSTALLATION.md for the detected project profile and reference map. If @.automated-product-engineer/onboarding/README.md exists, load project-engineering-context before shared specialists. Use expo-native-app for Expo or React Native, ios-native-app for Swift and Apple platforms, and android-native-app for Kotlin, Jetpack Compose, Android Studio, Gradle, Android capabilities, signing, or Play delivery.
 `,
-  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS. Verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
+  cursorCommand: `Use the workflow in \`.ai/skills/automated-product-engineer/SKILL.md\` to complete the requested product work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android. Verify on the relevant simulator or device. Preserve repository instructions and stop at the user's authorized delivery boundary.
 `,
   windsurfRule: `# Automated Product Engineer
 
-For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS before changing navigation, auth, capabilities, builds, or distribution. Preserve repository instructions and verify on the actual target platform.
+For substantial product work, read \`.ai/skills/automated-product-engineer/SKILL.md\` and the detected project profile in \`.automated-product-engineer/INSTALLATION.md\`. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android before changing navigation, auth, capabilities, builds, or distribution. Preserve repository instructions and verify on the actual target platform.
 `,
-  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native and \`ios-native-app\` for Swift or native iOS. Verify lifecycle and platform behavior and include simulator or device evidence.
+  copilotPrompt: `Use the \`automated-product-engineer\` skill to complete this work. Read \`.automated-product-engineer/INSTALLATION.md\` and \`project-profile.json\` first. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Use \`expo-native-app\` for Expo or React Native, \`ios-native-app\` for Swift or native iOS, and \`android-native-app\` for Kotlin or native Android. Verify lifecycle and platform behavior and include simulator or device evidence.
 `,
   genericWorkflow: `# Automated Product Engineer
 
-Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\`; Swift and native iOS work must use \`ios-native-app\`. Verify native behavior in a simulator or device rather than inferring it from a browser viewport.
+Begin with \`.ai/skills/automated-product-engineer/SKILL.md\` and read \`.automated-product-engineer/INSTALLATION.md\` for the detected project profile. If the onboarding workspace exists, load \`project-engineering-context\` before shared specialists. Load only the needed specialists. Expo and React Native work must use \`expo-native-app\`; Swift and native iOS work must use \`ios-native-app\`; Kotlin and native Android work must use \`android-native-app\`. Verify native behavior in a simulator or device rather than inferring it from a browser viewport.
 `,
 };
 
@@ -46,6 +46,7 @@ const sharedEntries = {
 const webExamples = ["app/api/examples", "app/examples/page.tsx", "app/guide/page.tsx", "app/system/page.tsx", "src/examples", "src/patterns", "src/guide", "src/system", "src/ui", "supabase/migrations", "e2e/reference-app.spec.ts"];
 const nativeExamples = ["native/examples", "native/case-studies"];
 const iosExamples = ["ios/examples", "ios/case-studies"];
+const androidExamples = ["android/examples", "android/case-studies"];
 const onboardingDomains = [
   ["product-requirements", "Product requirements and journeys", "automated-product-engineer"],
   ["architecture", "Architecture and ownership boundaries", "architecture-building"],
@@ -54,7 +55,7 @@ const onboardingDomains = [
   ["database", "Database design, migrations, tenancy, and retention", "frontend-api-db"],
   ["auth-security", "Authentication, sessions, authorization, and secrets", "security-review"],
   ["design-system", "Design system, semantic tokens, and component adoption", "design-system"],
-  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app + ios-native-app"],
+  ["responsive-native", "Responsive behavior and native runtime", "responsive-design + expo-native-app + ios-native-app + android-native-app"],
   ["testing-ci", "Testing, visual evidence, E2E, and CI", "manual-ui-qa + code-review"],
   ["delivery-observability", "Delivery, flags, observability, and rollback", "pr-workflow"],
   ["documentation", "Documentation, decisions, and developer experience", "codebase-onboarding"],
@@ -70,7 +71,7 @@ function usage() {
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch [--ios|--android|--web] [--tunnel] [--clear]",
     "  pnpm dlx automated-product-engineer install [--target <target>] [--project <path>] [--only <parts>] [--force]", "",
-    "The installer detects Next.js, Expo, bare React Native, native iOS, or a Swift package automatically.",
+    "The installer detects Next.js, Expo, bare React Native, native iOS, Swift packages, or native Android automatically.",
     "The onboarding command creates a project-owned engineering contract and upgrade program.",
     "The audit command reads the codebase without executing application source.",
     `Targets: ${targets.join(", ")}`,
@@ -81,6 +82,7 @@ function usage() {
     "  pnpm dlx automated-product-engineer audit",
     "  pnpm dlx automated-product-engineer doctor",
     "  pnpm dlx automated-product-engineer launch --ios",
+    "  pnpm dlx automated-product-engineer launch --android",
     "  pnpm dlx automated-product-engineer install --target cursor --only skills,docs",
   ].join("\n");
 }
@@ -207,23 +209,107 @@ function detectXcodeProject(project, containers) {
   };
 }
 
+function firstGradleValue(text, key) {
+  const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = text.match(new RegExp(`\\b${escaped}\\s*(?:=\\s*)?[\"']?([A-Za-z0-9_.-]+)`));
+  return match?.[1] ?? null;
+}
+
+function firstGradleInteger(text, key) {
+  const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return text.match(new RegExp(`\\b${escaped}\\s*(?:=\\s*)?(\\d+)`))?.[1] ?? null;
+}
+
+function detectAndroidProject(project) {
+  const settingsFile = ["settings.gradle.kts", "settings.gradle"].find((name) => existsSync(path.join(project, name))) ?? null;
+  const buildFiles = [];
+  const manifests = [];
+  const kotlinFiles = [];
+  const visit = (directory, depth = 0) => {
+    if (depth > 6 || !existsSync(directory)) return;
+    for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      if (entry.name.startsWith(".") || ["node_modules", "build", ".gradle", ".idea", "captures"].includes(entry.name)) continue;
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(absolute, depth + 1);
+      else if (entry.isFile()) {
+        const relative = path.relative(project, absolute);
+        if (/^build\.gradle(?:\.kts)?$/.test(entry.name)) buildFiles.push(relative);
+        if (entry.name === "AndroidManifest.xml") manifests.push(relative);
+        if (entry.name.endsWith(".kt") && !entry.name.endsWith(".gradle.kts")) kotlinFiles.push(relative);
+      }
+    }
+  };
+  visit(project);
+  const describedBuilds = buildFiles.map((file) => ({ file, text: readFileSync(path.join(project, file), "utf8") }));
+  const applicationBuild = describedBuilds.find(({ file, text }) => file !== "build.gradle" && file !== "build.gradle.kts" && /com\.android\.application|libs\.plugins\.android\.application/.test(text) && !/com\.android\.application[\s\S]{0,100}apply\s+false/.test(text))
+    ?? describedBuilds.find(({ file, text }) => file !== "build.gradle" && file !== "build.gradle.kts" && /\bapplicationId\b/.test(text))
+    ?? describedBuilds.find(({ text }) => /com\.android\.application|libs\.plugins\.android\.application/.test(text) && !/apply\s+false/.test(text));
+  const libraryBuild = describedBuilds.find(({ file, text }) => file !== "build.gradle" && file !== "build.gradle.kts" && /com\.android\.library|libs\.plugins\.android\.library/.test(text));
+  const moduleBuild = applicationBuild ?? libraryBuild ?? null;
+  const allBuildText = describedBuilds.map(({ text }) => text).join("\n");
+  const moduleText = moduleBuild?.text ?? "";
+  const settingsText = settingsFile ? readFileSync(path.join(project, settingsFile), "utf8") : "";
+  const modules = [...settingsText.matchAll(/(?:include\s*\(|include\s+)([^\n]+)/g)]
+    .flatMap((match) => [...match[1].matchAll(/[\"'](:[^\"']+)[\"']/g)].map((item) => item[1]))
+    .map((item) => item.replace(/^:/, "").replace(/:/g, "/"));
+  const manifestText = manifests.map((file) => readFileSync(path.join(project, file), "utf8")).join("\n");
+  const dependencySignals = [allBuildText, manifestText].join("\n");
+  const capabilityKeys = [
+    ["internet", /android\.permission\.INTERNET/],
+    ["notifications", /POST_NOTIFICATIONS|firebase-messaging/],
+    ["camera", /android\.permission\.CAMERA|camera-camera2/],
+    ["location", /ACCESS_(?:FINE|COARSE|BACKGROUND)_LOCATION/],
+    ["background-work", /androidx\.work|work-runtime/],
+    ["app-links", /android:autoVerify\s*=\s*[\"']true[\"']/],
+    ["credential-manager", /androidx\.credentials|credentials-play-services-auth/],
+    ["room", /androidx\.room|room-runtime/],
+    ["datastore", /androidx\.datastore|datastore-preferences/],
+    ["play-integrity", /com\.google\.android\.play:integrity/],
+  ];
+  const moduleDirectory = moduleBuild ? path.dirname(moduleBuild.file) : null;
+  return {
+    detected: Boolean(settingsFile && applicationBuild && manifests.length),
+    projectName: settingsText.match(/rootProject\.name\s*=\s*[\"']([^\"']+)[\"']/)?.[1] ?? null,
+    settingsFile,
+    wrapper: existsSync(path.join(project, "gradlew")) ? "gradlew" : existsSync(path.join(project, "gradlew.bat")) ? "gradlew.bat" : null,
+    modules: [...new Set(modules)].sort(),
+    applicationModule: applicationBuild ? path.dirname(applicationBuild.file) || "." : null,
+    libraryModule: libraryBuild ? path.dirname(libraryBuild.file) || "." : null,
+    buildFiles,
+    manifests,
+    namespace: firstGradleValue(moduleText, "namespace"),
+    applicationId: firstGradleValue(moduleText, "applicationId"),
+    compileSdk: firstGradleInteger(moduleText, "compileSdk"),
+    minSdk: firstGradleInteger(moduleText, "minSdk"),
+    targetSdk: firstGradleInteger(moduleText, "targetSdk"),
+    compose: /org\.jetbrains\.kotlin\.plugin\.compose|buildFeatures[\s\S]{0,240}compose\s*=\s*true|androidx\.compose/.test(allBuildText),
+    kotlinFileCount: kotlinFiles.length,
+    hasUnitTests: kotlinFiles.some((file) => /(?:^|\/)src\/test\//.test(file)),
+    hasInstrumentedTests: kotlinFiles.some((file) => /(?:^|\/)src\/androidTest\//.test(file)),
+    capabilities: capabilityKeys.filter(([, pattern]) => pattern.test(dependencySignals)).map(([name]) => name),
+    sourceModule: moduleDirectory,
+  };
+}
+
 function detectProject(project) {
   const manifest = readJson(path.join(project, "package.json")) ?? {};
   const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
   const hasExpo = Boolean(dependencies.expo);
   const hasReactNative = Boolean(dependencies["react-native"]);
   const hasNext = Boolean(dependencies.next);
+  const android = detectAndroidProject(project);
   const xcodeContainers = findXcodeContainers(project);
   const hasSwiftPackage = existsSync(path.join(project, "Package.swift"));
   const hasNativeIOS = xcodeContainers.some((item) => item.endsWith(".xcodeproj") || item.endsWith(".xcworkspace"));
-  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : hasNativeIOS ? "ios" : hasSwiftPackage ? "swift-package" : "unknown";
+  const kind = hasExpo ? "expo" : hasReactNative ? "react-native" : hasNext ? "nextjs" : android.detected ? "android" : hasNativeIOS ? "ios" : hasSwiftPackage ? "swift-package" : "unknown";
   const appJson = readJson(path.join(project, "app.json"));
   const expoConfig = appJson?.expo ?? appJson ?? {};
   const dynamicConfigFile = ["app.config.ts", "app.config.js", "app.config.mjs", "app.config.cjs"]
     .find((name) => existsSync(path.join(project, name))) ?? null;
-  const configSource = appJson ? "app.json" : dynamicConfigFile ?? (["ios", "swift-package"].includes(kind) ? (xcodeContainers.find((item) => item.endsWith(".xcworkspace")) ?? xcodeContainers.find((item) => item.endsWith(".xcodeproj")) ?? "Package.swift") : null);
-  const packageManager = kind === "ios" ? "xcode" : kind === "swift-package" ? "swiftpm" : detectPackageManager(project, manifest);
-  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : kind === "ios" ? "swiftui-or-uikit" : "unknown";
+  const configSource = appJson ? "app.json" : dynamicConfigFile ?? (["ios", "swift-package"].includes(kind) ? (xcodeContainers.find((item) => item.endsWith(".xcworkspace")) ?? xcodeContainers.find((item) => item.endsWith(".xcodeproj")) ?? "Package.swift") : kind === "android" ? android.settingsFile ?? android.buildFiles[0] ?? null : null);
+  const packageManager = kind === "ios" ? "xcode" : kind === "swift-package" ? "swiftpm" : kind === "android" ? "gradle" : detectPackageManager(project, manifest);
+  const androidText = android.buildFiles.map((file) => readFileSync(path.join(project, file), "utf8")).join("\n");
+  const router = dependencies["expo-router"] ? "expo-router" : dependencies["@react-navigation/native"] ? "react-navigation" : hasNext ? "next-router" : kind === "ios" ? "swiftui-or-uikit" : kind === "android" ? (/androidx\.navigation(?::navigation-compose|\.compose)/.test(androidText) ? "navigation-compose" : /androidx\.navigation/.test(androidText) ? "navigation-fragments" : "android-navigation") : "unknown";
   const xcode = detectXcodeProject(project, xcodeContainers);
   const nativeDirectories = ["ios", "android"].filter((name) => existsSync(path.join(project, name)));
   const capabilities = [
@@ -237,7 +323,7 @@ function detectProject(project) {
     ["background-tasks", ["expo-background-task", "expo-task-manager"]],
   ].filter(([, packages]) => packages.some((name) => dependencies[name])).map(([name]) => name);
   const findings = [];
-  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, React Native, Xcode project, or Swift package was detected." });
+  if (kind === "unknown") findings.push({ level: "warning", code: "platform-unknown", message: "No Next.js, Expo, React Native, Xcode project, Swift package, or native Android project was detected." });
   if (["expo", "react-native"].includes(kind) && !expoConfig.scheme && !dynamicConfigFile) findings.push({ level: "warning", code: "scheme-missing", message: "No app scheme was found. OAuth redirects and production deep links need a stable scheme." });
   if (kind === "expo" && dynamicConfigFile && !appJson) findings.push({ level: "note", code: "dynamic-config", message: `Detected ${dynamicConfigFile}. Run Expo config to verify resolved schemes, identifiers, plugins, and permissions.` });
   if (kind === "expo" && !existsSync(path.join(project, "eas.json"))) findings.push({ level: "note", code: "eas-unconfigured", message: "No eas.json was found. Local development still works; EAS builds and updates are not configured yet." });
@@ -246,11 +332,15 @@ function detectProject(project) {
   if (kind === "ios" && !xcode.schemes.length) findings.push({ level: "warning", code: "shared-scheme-missing", message: "No shared Xcode scheme was found. Share the application scheme so launch and CI do not depend on one developer's local state." });
   if (kind === "ios" && !xcode.privacyManifests.length) findings.push({ level: "note", code: "privacy-manifest-missing", message: "No PrivacyInfo.xcprivacy was found. Verify collected data, tracking domains, and required-reason APIs before distribution." });
   if (kind === "ios" && !xcode.hasTests) findings.push({ level: "note", code: "ios-tests-missing", message: "No Swift test source was detected. Add focused domain tests and at least one critical XCUI journey." });
+  if (kind === "android" && !android.wrapper) findings.push({ level: "warning", code: "gradle-wrapper-missing", message: "No Gradle wrapper was found. Commit the wrapper so local work and CI use the same Gradle version." });
+  if (kind === "android" && !android.applicationId) findings.push({ level: "warning", code: "android-application-id-missing", message: "The applicationId was not resolved from the application module. Verify the selected module and release identity." });
+  if (kind === "android" && !android.targetSdk) findings.push({ level: "note", code: "android-target-sdk-unresolved", message: "targetSdk was not resolved from the application module. Verify the version catalog or convention plugin before release planning." });
+  if (kind === "android" && !android.hasUnitTests && !android.hasInstrumentedTests) findings.push({ level: "note", code: "android-tests-missing", message: "No Kotlin source was detected in src/test or src/androidTest. Add focused state and repository tests plus one critical device journey." });
   return {
     schemaVersion: 1, kind, packageManager, router,
     configSource,
-    app: { name: expoConfig.name ?? manifest.name ?? xcode.schemes[0] ?? xcode.project?.replace(/\.xcodeproj$/, "") ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? (kind === "ios" ? xcode.schemes[0] ?? null : null), iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? xcode.bundleIdentifier, androidPackage: expoConfig.android?.package ?? null },
-    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities: kind === "ios" ? xcode.capabilities : capabilities, xcode, findings,
+    app: { name: expoConfig.name ?? manifest.name ?? (kind === "android" ? android.projectName : null) ?? xcode.schemes[0] ?? xcode.project?.replace(/\.xcodeproj$/, "") ?? path.basename(project), slug: expoConfig.slug ?? null, scheme: expoConfig.scheme ?? (kind === "ios" ? xcode.schemes[0] ?? null : null), iosBundleIdentifier: expoConfig.ios?.bundleIdentifier ?? xcode.bundleIdentifier, androidPackage: expoConfig.android?.package ?? android.applicationId },
+    nativeDirectories, usesDevelopmentClient: Boolean(dependencies["expo-dev-client"]), easConfigured: existsSync(path.join(project, "eas.json")), capabilities: kind === "ios" ? xcode.capabilities : kind === "android" ? android.capabilities : capabilities, xcode, android, findings,
   };
 }
 
@@ -322,6 +412,15 @@ function installationGuide(target, selected, profile) {
 - Run \`pnpm dlx automated-product-engineer doctor\` after changing targets, schemes, entitlements, privacy declarations, signing, or deployment settings.
 - Run \`pnpm dlx automated-product-engineer launch\` to open the detected workspace or project in Xcode.
 ` : "";
+  const androidStart = profile.kind === "android" ? `
+## Native Android project path
+
+- Start with \`skills/android-native-app/SKILL.md\` for Kotlin architecture, Compose or Views, coroutines and Flow, auth, persistence, capabilities, testing, signing, and Play delivery.
+- Read \`docs/native-android-delivery.md\` and \`checklists/android-release.md\` before planning distribution.
+- Use \`android/examples/\` for executable domain invariants and \`templates/android/\` for integration patterns. Adapt them into the application; do not import this reference directory at runtime.
+- Run \`pnpm dlx automated-product-engineer doctor\` after changing modules, manifests, SDK targets, credentials, permissions, signing, or release variants.
+- Run \`pnpm dlx automated-product-engineer launch\` to open the detected Gradle project in Android Studio.
+` : "";
   return `# Automated Product Engineer — Local Toolkit
 
 This is an installed reference kit. Adapt its patterns to the host repository; do not import this directory as application runtime code.
@@ -336,7 +435,7 @@ This is an installed reference kit. Adapt its patterns to the host repository; d
 ## Installed parts
 
 ${included}
-${nativeStart}${iosStart}
+${nativeStart}${iosStart}${androidStart}
 ## Shared starting points
 
 - \`pnpm dlx automated-product-engineer audit\`: inspect this codebase and receive evidence-backed upgrade choices before changing architecture.
@@ -466,7 +565,7 @@ async function install(options) {
   if (options.only.includes("skills")) copySkills(project, options.target, options.force, installedFiles);
   for (const component of ["docs", "templates"]) if (options.only.includes(component)) for (const entry of sharedEntries[component]) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   if (options.only.includes("examples")) {
-    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : ["ios", "swift-package"].includes(profile.kind) ? iosExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples, ...iosExamples];
+    const entries = ["expo", "react-native"].includes(profile.kind) ? nativeExamples : ["ios", "swift-package"].includes(profile.kind) ? iosExamples : profile.kind === "android" ? androidExamples : profile.kind === "nextjs" ? webExamples : [...webExamples, ...nativeExamples, ...iosExamples, ...androidExamples];
     for (const entry of entries) copyPackageEntry(entry, toolkitRoot, options.force, installedFiles);
   }
   writeManagedFile(path.join(toolkitRoot, "INSTALLATION.md"), installationGuide(options.target, options.only, profile), options.force);
@@ -477,7 +576,7 @@ async function install(options) {
   console.log(`Parts: ${options.only.join(", ")}`);
   console.log(`Toolkit: ${toolkitRoot}`);
   if (profile.findings.length) console.log(`Doctor: ${profile.findings.length} item${profile.findings.length === 1 ? "" : "s"} to review. Run: pnpm dlx automated-product-engineer doctor`);
-  console.log(["expo", "ios", "swift-package"].includes(profile.kind) ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
+  console.log(["expo", "ios", "swift-package", "android"].includes(profile.kind) ? "Next: run `pnpm dlx automated-product-engineer onboard` or `pnpm dlx automated-product-engineer launch`." : "Next: run `pnpm dlx automated-product-engineer onboard` or ask your agent to use automated-product-engineer for your feature.");
   if (isInteractive() && options.only.includes("skills")) {
     const answer = await ask("Analyze this codebase and prepare its onboarding workspace now? [Y/n] ");
     if (!/^n(?:o)?$/i.test(answer)) await onboard(options, true);
@@ -495,7 +594,7 @@ function doctor(options) {
   console.log(`App: ${profile.app.name}`);
   console.log(`App config: ${profile.configSource ?? "not found"}`);
   console.log(`Scheme: ${profile.app.scheme ?? "missing"}`);
-  console.log(`Native projects: ${profile.nativeDirectories.join(", ") || "managed/CNG"}`);
+  console.log(`Native projects: ${profile.nativeDirectories.join(", ") || (profile.kind === "android" ? "Gradle modules" : "managed/CNG")}`);
   console.log(`Capabilities: ${profile.capabilities.join(", ") || "none detected"}`);
   if (["ios", "swift-package"].includes(profile.kind)) {
     console.log(`Xcode workspace: ${profile.xcode.workspace ?? "not found"}`);
@@ -505,6 +604,15 @@ function doctor(options) {
     console.log(`iOS deployment target: ${profile.xcode.deploymentTarget ?? "not resolved"}`);
     console.log(`Swift language version: ${profile.xcode.swiftVersion ?? "not resolved"}`);
     console.log(`Privacy manifests: ${profile.xcode.privacyManifests.join(", ") || "none"}`);
+  }
+  if (profile.kind === "android") {
+    console.log(`Gradle settings: ${profile.android.settingsFile ?? "not found"}`);
+    console.log(`Gradle wrapper: ${profile.android.wrapper ?? "not found"}`);
+    console.log(`Application module: ${profile.android.applicationModule ?? "not resolved"}`);
+    console.log(`Application ID: ${profile.android.applicationId ?? "not resolved"}`);
+    console.log(`SDK levels: min ${profile.android.minSdk ?? "?"} · target ${profile.android.targetSdk ?? "?"} · compile ${profile.android.compileSdk ?? "?"}`);
+    console.log(`UI: ${profile.android.compose ? "Jetpack Compose detected" : "Views or undetermined"}`);
+    console.log(`Tests: unit ${profile.android.hasUnitTests ? "yes" : "no"} · instrumented ${profile.android.hasInstrumentedTests ? "yes" : "no"}`);
   }
   if (!profile.findings.length) console.log("Doctor: ready — no configuration warnings detected.");
   for (const finding of profile.findings) console.log(`${finding.level.toUpperCase()} ${finding.code}: ${finding.message}`);
@@ -534,7 +642,19 @@ function launch(options) {
     process.exitCode = result.status ?? 0;
     return;
   }
-  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo, React Native, native iOS, or Swift package project.");
+  if (profile.kind === "android") {
+    if (options.platform && options.platform !== "android") throw new Error("Native Android launch supports the Android platform only.");
+    if (options.tunnel || options.clear) throw new Error("--tunnel and --clear are Expo options and are unavailable for native Android projects.");
+    const command = process.platform === "darwin" ? "open" : process.platform === "win32" ? "cmd" : "studio";
+    const args = process.platform === "darwin" ? ["-a", "Android Studio", project] : process.platform === "win32" ? ["/c", "start", "", "studio64.exe", project] : [project];
+    console.log(`Opening ${profile.app.name} in Android Studio with ${command} ${args.join(" ")}`);
+    if (options.dryRun) return;
+    const result = spawnSync(command, args, { cwd: project, stdio: "inherit", env: process.env });
+    if (result.error) throw result.error;
+    process.exitCode = result.status ?? 0;
+    return;
+  }
+  if (!["expo", "react-native"].includes(profile.kind)) throw new Error("Launch requires an Expo, React Native, native iOS, Swift package, or native Android project.");
   const runners = { pnpm: ["pnpm", ["exec"]], npm: ["npx", []], yarn: ["yarn", []], bun: ["bunx", []] };
   const [command, prefix] = runners[profile.packageManager] ?? runners.npm;
   const args = [...prefix];

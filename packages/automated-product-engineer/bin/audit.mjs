@@ -20,6 +20,8 @@ const sourceExtensions = new Set([
   ".graphql",
   ".js",
   ".jsx",
+  ".kt",
+  ".kts",
   ".md",
   ".mjs",
   ".mts",
@@ -28,6 +30,7 @@ const sourceExtensions = new Set([
   ".swift",
   ".ts",
   ".tsx",
+  ".xml",
   ".yaml",
   ".yml",
 ]);
@@ -89,7 +92,7 @@ export function auditProject(project, profile) {
   const dependencies = { ...(manifest.dependencies ?? {}), ...(manifest.devDependencies ?? {}) };
   const files = collectFiles(project).filter((file) => !path.relative(project, file).startsWith(`packages${path.sep}automated-product-engineer${path.sep}payload${path.sep}`));
   const entries = corpus(project, files);
-  const source = entries.filter((entry) => /\.(?:[cm]?[jt]sx?|sql|swift)$/.test(entry.path) && entry.path !== "packages/automated-product-engineer/bin/audit.mjs");
+  const source = entries.filter((entry) => /\.(?:[cm]?[jt]sx?|sql|swift|kt|kts|xml)$/.test(entry.path) && entry.path !== "packages/automated-product-engineer/bin/audit.mjs");
   const applicationSource = source.filter((entry) => !isTestPath(entry.path));
   const routeFiles = applicationSource.filter((entry) => /(?:^|\/)(?:app\/api|pages\/api|routes?|controllers?)(?:\/|\.)/i.test(entry.path));
   const clientFiles = applicationSource.filter((entry) => /(?:^|\/)(?:app|pages|src|components|hooks)(?:\/|\.)/i.test(entry.path) && !/(?:server|route|api|service|repository|migration)/i.test(entry.path));
@@ -161,6 +164,82 @@ export function auditProject(project, profile) {
       action: "Generate the privacy report and reconcile collected data, tracking domains, required-reason APIs, dependency manifests, product copy, and App Store disclosures.",
       skill: "ios-native-app + security-review", reference: "skills/ios-native-app/references/testing-signing-and-release.md", example: "Native iOS privacy manifest template", evidence: profile.xcode?.privacyManifests ?? [],
       question: "Should privacy inventory be part of the first native readiness slice?",
+    }));
+  }
+
+  if (profile.kind === "android") {
+    const kotlinSource = applicationSource.filter((entry) => entry.path.endsWith(".kt"));
+    const composables = kotlinSource.filter((entry) => /@Composable\b/.test(entry.text));
+    const stateOwners = matches(kotlinSource, /\bViewModel\b|\bStateFlow\b|collectAsStateWithLifecycle|rememberSaveable|remember\s*\{/);
+    const directComposableNetworking = composables.filter((entry) => /(?:\b(?:OkHttpClient|Retrofit\.Builder|HttpURLConnection)\b|\bURL\s*\()/.test(entry.text));
+    const unsafeScopes = matches(kotlinSource, /\bGlobalScope\b|CoroutineScope\s*\(\s*Dispatchers\.(?:IO|Default|Main)\s*\)/);
+    const insecureCredentialStorage = matches(kotlinSource, /SharedPreferences[\s\S]{0,220}(?:token|secret|password|credential)|(?:token|secret|password|credential)[\s\S]{0,220}(?:SharedPreferences|getSharedPreferences)/i);
+    const credentialBoundary = matches(kotlinSource, /\bCredentialManager\b|\bCreatePublicKeyCredentialRequest\b|\bGetCredentialRequest\b|\bKeyStore\b/);
+    const hardcodedSigningSecrets = entries.filter((entry) => /build\.gradle(?:\.kts)?$/.test(entry.path) && /\b(?:storePassword|keyPassword)\s*(?:=\s*)?[\"'][^\"']+[\"']/.test(entry.text));
+    const durableStorage = matches(kotlinSource, /@Database\b|@Dao\b|\bRoomDatabase\b|\bDataStore<|preferencesDataStore|\bWorkManager\b/);
+
+    findings.push(finding({
+      id: "android-state-ownership", patternId: "state-owner-by-lifetime", title: stateOwners.length ? "Android state ownership is visible" : "Make Android state ownership explicit",
+      status: stateOwners.length ? "established" : "opportunity", confidence: stateOwners.length ? "high" : "medium", impact: "high",
+      summary: stateOwners.length ? "The Kotlin source uses ViewModel, StateFlow, lifecycle-aware collection, or deliberately retained Compose state. Verify one owner for each screen, local element, durable record, and server snapshot." : "The scan did not find a visible screen-state contract. Trace one journey before adding shared mutable state.",
+      action: "Keep element state local, hoist reusable UI state, expose immutable screen state from screen-level ViewModels, and keep durable or remote truth behind repositories.",
+      skill: "android-native-app + architecture-building", reference: "skills/android-native-app/references/compose-architecture-and-state.md", example: "Kotlin versioned store and Compose WorkItem feature", evidence: evidence(stateOwners),
+      question: "Which Android journey currently shares the most state across destinations, tasks, windows, or devices?",
+    }));
+
+    if (unsafeScopes.length) findings.push(finding({
+      id: "android-concurrency", patternId: "latest-intent-wins", title: "Replace unowned coroutine scopes", status: "risk", confidence: "high", impact: "high",
+      summary: "GlobalScope or an ad-hoc dispatcher scope appears in application code. Its work can outlive the owner, ignore cancellation, and apply stale results.",
+      action: "Move UI work to viewModelScope or lifecycleScope, durable work to WorkManager, inject dispatchers at testable boundaries, and define overlap policy for every mutation.",
+      skill: "android-native-app + code-review", reference: "skills/android-native-app/references/compose-architecture-and-state.md", example: "VersionedWorkItemStore and DurableOutbox", evidence: evidence(unsafeScopes),
+      question: "May the first Android concurrency slice replace these scopes and prove cancellation plus out-of-order completion?",
+    }));
+    else findings.push(finding({
+      id: "android-concurrency", patternId: "versioned-idempotent-write", title: "Define coroutine and mutation ownership", status: "opportunity", confidence: "medium", impact: "high",
+      summary: "No high-confidence unowned scope was found. Static scanning still cannot prove cancellation, dispatcher ownership, replay safety, or stale-response handling.",
+      action: "Trace one write through viewModelScope, repository, local transaction, network request, retry, canonical response, and process recreation.",
+      skill: "android-native-app", reference: "skills/android-native-app/references/compose-architecture-and-state.md", example: "VersionedWorkItemStore and DurableOutbox", evidence: [],
+      question: "Which Android write is most costly when it overlaps, retries, or resumes after process death?",
+    }));
+
+    if (directComposableNetworking.length) findings.push(finding({
+      id: "android-network-boundary", patternId: "thin-server-boundary", title: "Move networking out of composables", status: "risk", confidence: "high", impact: "high",
+      summary: "A composable appears to construct or use a network client directly, coupling recomposition and UI lifetime to transport and recovery policy.",
+      action: "Inject a repository into a screen-level ViewModel, normalize failures at the data boundary, preserve cancellation, and render immutable UI state.",
+      skill: "android-native-app + architecture-building", reference: "skills/android-native-app/references/networking-auth-and-security.md", example: "Compose WorkItem feature template", evidence: evidence(directComposableNetworking),
+      question: "Should this screen become the first repository-boundary migration?",
+    }));
+
+    if (insecureCredentialStorage.length) findings.push(finding({
+      id: "android-secret-storage", patternId: "identity-scoped-cache", title: "Move credentials out of SharedPreferences", status: "risk", confidence: "high", impact: "critical",
+      summary: "A token, secret, password, or credential appears near SharedPreferences. Preference storage is not a credential boundary.",
+      action: "Rotate exposed credentials when applicable, use Credential Manager for user credentials, keep server secrets off-device, protect only minimal local key material with Android Keystore, and clear identity-scoped data on account transition.",
+      skill: "android-native-app + security-review", reference: "skills/android-native-app/references/networking-auth-and-security.md", example: "IdentityScopedCache", evidence: evidence(insecureCredentialStorage),
+      question: "Can the first security slice replace this storage and exercise restore, refresh, logout, account switch, and process death?",
+    }));
+    else if (credentialBoundary.length) findings.push(finding({
+      id: "android-secret-storage", patternId: "identity-scoped-cache", title: "Android credential boundary is visible", status: "established", confidence: "high", impact: "high",
+      summary: "Credential Manager or Android Keystore usage is present. Verify server challenge validation, lifecycle recovery, key invalidation, logout, and account switching.",
+      action: "Trace one complete credential lifecycle and keep identity-scoped caches and queued work aligned with the authenticated subject.",
+      skill: "android-native-app + security-review", reference: "skills/android-native-app/references/networking-auth-and-security.md", example: "IdentityScopedCache", evidence: evidence(credentialBoundary),
+      question: "Do you want the next pass to trace one complete Android session lifecycle?",
+    }));
+
+    if (hardcodedSigningSecrets.length) findings.push(finding({
+      id: "android-signing-secrets", patternId: "evidence-follows-owner", title: "Remove signing secrets from Gradle source", status: "risk", confidence: "high", impact: "critical",
+      summary: "A literal storePassword or keyPassword appears in a Gradle build file.",
+      action: "Remove and rotate exposed credentials, load the upload-key material from protected local or CI secret storage, and verify it cannot enter the packaged artifact or logs.",
+      skill: "android-native-app + security-review", reference: "skills/android-native-app/references/testing-signing-and-play-release.md", example: "Android release checklist", evidence: evidence(hardcodedSigningSecrets),
+      question: "May the security slice remove and rotate these signing credentials now?",
+    }));
+
+    findings.push(finding({
+      id: "android-durable-data", patternId: "durable-outbox", title: durableStorage.length ? "Android durable data primitives are visible" : "Choose explicit Android persistence owners",
+      status: durableStorage.length ? "established" : "opportunity", confidence: durableStorage.length ? "high" : "medium", impact: "high",
+      summary: durableStorage.length ? "Room, DataStore, or WorkManager is present. Verify each is used for the job it owns and that offline work reconciles with canonical server state." : "No Room, DataStore, or WorkManager boundary was visible in Kotlin source.",
+      action: "Use DataStore for small settings, Room for relational or offline application data, and WorkManager for deferrable durable work. Give queued writes stable operation IDs and an explicit conflict policy.",
+      skill: "android-native-app + frontend-api-db", reference: "skills/android-native-app/references/persistence-lifecycle-and-capabilities.md", example: "DurableOutbox", evidence: evidence(durableStorage),
+      question: "Which data must remain correct after offline use, process death, retry, or account switching?",
     }));
   }
 
