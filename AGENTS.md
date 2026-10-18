@@ -47,6 +47,8 @@ Use these instructions when implementing a Figma or Claude Design handoff in a N
 5. Real browser QA covering keyboard use, retry, back/reset, refresh, overflow, console errors, and network failures.
 6. Deterministic desktop and mobile demo screenshots of the completed user journey.
 
+For Expo or React Native work, establish the native runtime before implementation. Use a development build for OAuth redirects, push notifications, or custom native modules. Verify lifecycle, deep links, permissions, offline/reconnect behavior, safe areas, keyboard, text scaling, and platform navigation on the relevant simulator or device. Treat native dependency or configuration changes as a new-binary boundary; an over-the-air JavaScript update does not add native code.
+
 ## Delivery and fix-back
 
 - Run a short retrospective after implementation and initial QA. Record surprises, defects, architecture friction, and missing safeguards.

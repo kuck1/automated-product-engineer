@@ -16,6 +16,7 @@ The original reusable workflows are represented by these installed skills:
 | Figma-led delivery | `figma-to-app-feature` |
 | Claude Design request and integration | `claude-design-to-app` |
 | frontend, API, persistence, and cache work | `frontend-api-db` |
+| Expo and React Native architecture, launch, auth, lifecycle, device capabilities, native QA, builds, updates, and release | `expo-native-app` |
 | real-browser exploratory QA | `manual-ui-qa` |
 | remote pull-request review | `pr-review` |
 | branch, evidence, CI, and draft-PR workflow | `pr-workflow` |
@@ -33,6 +34,7 @@ The concise `SKILL.md` files route to references when a task needs more depth. T
 - Working case studies demonstrate UI state, server cache, transport, domain policy, repository ports, Supabase adapters, authorization, concurrency, optimistic updates, rollback, and browser verification.
 - The state-management playbook covers shared counters, request cancellation, multi-window revision conflicts, chat, collaborative documents, realtime roles, and Supabase cookie-session debugging; the same guidance ships in the frontend and security skills.
 - Templates preserve semantic tokens, enum-backed variants, component contracts, extension registries, hooks, focused tests, E2E and visual checks, CI, screenshot capture, retrospective, and pull-request structure.
+- The native profile preserves project detection, development-build selection, OAuth and deep-link rules, lifecycle-aware sessions, offline conflict contracts, permissions, notification routing, EAS runtime compatibility, Maestro verification, and staged update recovery.
 
 ## Deliberate exclusions
 
