@@ -150,7 +150,7 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/guide");
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day." })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day -- anymore." })).toBeVisible();
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
   await expect(sourceChooser).toHaveValue("release-policy");
