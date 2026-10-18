@@ -33,7 +33,7 @@ export default function HomePage() {
             <div className="hero-actions">
               <Link className="button button-primary" href="/quick-start">Quick start <ArrowRight size={17} /></Link>
               <Link className="text-link" href="/examples?view=releases">Explore the case studies <ArrowRight size={15} /></Link>
-              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
+              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
             </div>
             <small className="live-note"><i /> Inspect the technical system whenever you need it.</small>
           </div>
@@ -105,7 +105,7 @@ export default function HomePage() {
         <span className="cta-icon"><Sparkles size={26} /></span>
         <h2>Start with the outcome.</h2>
         <p>Bring the business need. The system supplies the implementation path, safeguards, tests, and evidence.</p>
-        <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
+        <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
       </section>
 
       <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>

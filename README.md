@@ -2,7 +2,7 @@
 
 An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js features.
 
-[Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [Install from npm](https://www.npmjs.com/package/automated-product-engineer)
+[Website](https://www.buildwithauto.ai) · [GitHub](https://github.com/kuck1/automated-product-engineer) · [npm](https://www.npmjs.com/package/automated-product-engineer)
 
 Design tools are excellent at defining intent, interaction, and visual direction. Production applications also need clear ownership across components, hooks, APIs, services, persistence, analytics, accessibility, responsive behavior, and tests. This repository connects those two worlds.
 

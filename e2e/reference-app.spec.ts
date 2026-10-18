@@ -22,7 +22,7 @@ test("every public page uses the shared top bar", async ({ page }, testInfo) => 
     await expect(navigation.getByRole("link")).toHaveCount(3);
     await expect(page.getByRole("link", { name: "Open Source on GitHub" })).toHaveAttribute(
       "href",
-      "https://github.com/kuck1/automated-product-engineer-nextjs",
+      "https://github.com/kuck1/automated-product-engineer",
     );
   }
 });
@@ -99,7 +99,7 @@ test("release policy rejects an incomplete ship and rolls the optimistic state b
   });
   expect(releaseTokenValue).toBe("#FFD43B");
   await page.getByRole("tab", { name: "Architecture" }).click();
-  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/app/api/examples/releases/[id]/route.ts");
+  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer/blob/main/app/api/examples/releases/[id]/route.ts");
   await expect(page.getByText("Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Skills" }).click();
   await expect(page.getByRole("link", { name: /Architecture Design/ })).toHaveAttribute("href", "/library?skill=architecture-building#skills");
@@ -134,7 +134,7 @@ test("onboarding transition uses URL state and reconciles the canonical response
   });
   expect(journeyTokenValue).toBe("#0066CC");
   await page.getByRole("tab", { name: "Architecture" }).click();
-  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/app/api/examples/onboardings/[id]/route.ts");
+  await expect(page.getByRole("link", { name: "Open API source on GitHub" })).toHaveAttribute("href", "https://github.com/kuck1/automated-product-engineer/blob/main/app/api/examples/onboardings/[id]/route.ts");
   await expect(page.getByText("Clarity System · Live policy service · deterministic memory adapter")).toBeVisible();
   await page.getByRole("tab", { name: "Design system" }).click();
   await expect(page.getByText("Journey before table", { exact: true })).toBeVisible();
