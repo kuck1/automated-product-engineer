@@ -47,7 +47,7 @@ export default function HomePage() {
 
       <section className="section examples-section" id="examples">
         <div className="section-heading">
-          <div><SectionEyebrow>BUSINESS NEEDS IN PRACTICE</SectionEyebrow><h2>See how little the technical work asks of you.</h2></div>
+          <div><SectionEyebrow>BUSINESS NEEDS IN PRACTICE</SectionEyebrow><h2>Make the business decision. The system handles the rest.</h2></div>
           <p>Choose the next business action: decide what can ship or move a customer toward value. State, policy, persistence, failure recovery, and verification stay behind the workflow.</p>
         </div>
         <div className="case-grid">
