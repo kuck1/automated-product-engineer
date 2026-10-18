@@ -16,7 +16,7 @@ export default function QuickStartPage() {
       <section className="quick-start-hero">
         <div>
           <SectionEyebrow>QUICK START</SectionEyebrow>
-          <h1>Install the system.<br /><span>Ship a complete feature.</span></h1>
+          <h1>Install the system.<br /><span>Ship any feature.</span></h1>
         </div>
         <div className="quick-start-intro">
           <p>Add the system to your AI agent, provide the product contract, and follow the same path from implementation through review evidence.</p>
