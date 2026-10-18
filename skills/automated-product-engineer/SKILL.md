@@ -36,6 +36,7 @@ Load only the skills whose boundary is active:
 - `design-system` for shared tokens, primitives, variants, metadata, and previews.
 - `architecture-building` for ownership, state, rendering, integration, encapsulation, and extension points.
 - `frontend-api-db` for durable state, authorization, endpoints, schema, and client-cache behavior.
+- `expo-native-app` for Expo or React Native navigation, auth, lifecycle, offline behavior, device capabilities, development builds, updates, native QA, and store delivery.
 - `responsive-design` and `design-polish` for fluid geometry and final visual refinement.
 - `manual-ui-qa` for the final real-browser exploratory pass.
 - `code-review` and `security-review` before packaging risky or cross-layer changes.
@@ -49,6 +50,7 @@ Load only the skills whose boundary is active:
 - Do not add speculative abstractions. Extract an extension point only when observed variation or a required integration makes it useful.
 - Keep route handlers thin and put authorization, ownership, transactions, idempotency, and durable invariants in server-owned services and storage.
 - Make loading, empty, partial, success, failure, retry, permission, and responsive states deliberate.
+- For native applications, establish the target runtime before implementation and verify on the relevant simulator or device. A browser viewport does not prove iOS or Android behavior.
 
 ## Prove readiness
 

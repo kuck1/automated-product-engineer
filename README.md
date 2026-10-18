@@ -1,6 +1,6 @@
-# Automated Product Engineer for Next.js
+# Automated Product Engineer for Web and Native
 
-An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js features.
+An open-source reference app and installable product-engineering system for turning Figma, Claude Design, product briefs, or existing flows into production-ready Next.js, Expo, and React Native features.
 
 [Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [Install from npm](https://www.npmjs.com/package/automated-product-engineer)
 
@@ -14,6 +14,7 @@ Design tools are excellent at defining intent, interaction, and visual direction
 - Semantic token templates in JSON and CSS.
 - A frame manifest for reproducible desktop and mobile references.
 - Architecture principles for Next.js, React, hooks, APIs, services, and databases.
+- Native product architecture for Expo Router or React Navigation, OAuth and deep links, app lifecycle, offline work, device capabilities, EAS builds and updates, and store delivery.
 - Encapsulation and extension-over-modification rules for stable, composable feature boundaries.
 - A complete design-system blueprint with token layers, component hierarchy, enum-driven variants, slots, metadata, and change policy.
 - Decoupled view/controller examples and typed state-machine patterns.
@@ -54,7 +55,7 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command installs the 13 agent skills, adapters for common AI coding tools, architecture and design-system guides, integration checklists, implementation templates, two working full-stack case studies, Supabase examples, testing and CI patterns, screenshot automation, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, or bare React Native and installs 14 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
 
 Use `--target`, `--project`, or `--only` only when you need a narrower or non-default installation. See [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md) for those options.
 
@@ -65,6 +66,17 @@ Use the automated-product-engineer skill to build this feature from the attached
 ```
 
 The default install works across Codex, Claude Code, Cursor, Windsurf, GitHub Copilot, Orca, and generic agents.
+
+### Expo and React Native
+
+In an Expo project, the same zero-flag install records the detected router, package manager, app scheme, native projects, development client, EAS configuration, and native capabilities. Inspect the result or launch the app with:
+
+```bash
+pnpm dlx automated-product-engineer doctor
+pnpm dlx automated-product-engineer launch
+```
+
+The launcher automatically uses the repository's package manager and adds Expo's development-client mode when detected. Optional `--ios`, `--android`, `--web`, `--tunnel`, and `--clear` flags remain available for deliberate platform or debugging choices.
 
 ## Recommended export
 
@@ -95,6 +107,7 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/case-studies.md`](docs/case-studies.md): business rules, code paths, and learning goals for both examples.
 
 - [`docs/how-to-use.md`](docs/how-to-use.md): workflow from brief to shipped feature.
+- [`docs/native-app-delivery.md`](docs/native-app-delivery.md): Expo and React Native project detection, launch, architecture, auth, lifecycle, native verification, builds, updates, and release.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
 - [`docs/state-and-data-architecture.md`](docs/state-and-data-architecture.md): local, URL, cache, database, controller, API, and service ownership.
@@ -105,6 +118,8 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/ai-editor-setup.md`](docs/ai-editor-setup.md): install and invoke the workflow from supported editors and agent environments.
 - [`docs/declassification-audit.md`](docs/declassification-audit.md): what reusable skill material was included or deliberately excluded.
 - [`checklists/`](checklists): implementation and review gates.
+- [`native/examples/`](native/examples): framework-light offline outbox, lifecycle reconciliation, notification routing, and permission patterns.
+- [`templates/native/`](templates/native): Expo Router auth shell, EAS profiles, and Maestro workflow templates.
 - [`templates/design-export/`](templates/design-export): concrete HTML, token, handoff, and frame examples.
 - [`templates/components/`](templates/components): enum-driven recipes, a decoupled view contract, and a typed extension registry.
 - [`templates/state/`](templates/state): controller-hook example.
