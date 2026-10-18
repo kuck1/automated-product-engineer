@@ -34,7 +34,7 @@ export default function HomePage() {
             <div className="hero-actions">
               <Link className="button button-primary" href="/quick-start">Quick start <ArrowRight size={17} /></Link>
               <Link className="text-link" href="/examples?view=releases">Explore the case studies <ArrowRight size={15} /></Link>
-              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
+              <a className="text-link" href="https://github.com/kuck1/automated-product-engineer#readme" target="_blank" rel="noreferrer">Use with your AI agent <ArrowRight size={15} /></a>
             </div>
             <small className="live-note"><i /> Inspect the technical system whenever you need it.</small>
           </div>
@@ -43,7 +43,23 @@ export default function HomePage() {
       </section>
 
       <section className="stack-strip" aria-label="Reference stack">
-        <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>Expo</strong><strong>React Native</strong><strong>Supabase</strong><strong>TanStack Query</strong>
+        <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>Kotlin / Android</strong><strong>Swift / iOS</strong><strong>Supabase</strong><strong>TanStack Query</strong>
+      </section>
+
+      <section className="section home-parallel-section" id="parallel-delivery">
+        <div className="section-heading">
+          <div><SectionEyebrow>ONE DECISION · THREE NATIVE PRODUCTS</SectionEyebrow><h2>Web, Android, and iOS move together.</h2></div>
+          <div className="home-parallel-copy"><p>Define the product outcome once. Next.js, native Android, and native iOS build in parallel, then prove they agree before release.</p><Link className="text-link" href="/parallel">Explore parallel delivery <ArrowRight size={15} /></Link></div>
+        </div>
+        <Link className="home-platform-proof" href="/parallel" aria-label="Explore parallel platform delivery">
+          <div className="home-contract"><small>PRODUCT DECISION</small><strong>Advance a work item safely</strong><span>CONTRACT e34b5a8e</span></div>
+          {[
+            ["01", "Next.js", "Operations workspace", "web"],
+            ["02", "Android", "Compose native", "android"],
+            ["03", "iOS", "SwiftUI native", "ios"],
+          ].map(([index, platform, surface, id]) => <article className={`home-platform-${id}`} key={platform}><span>{index}</span><div><small>NATIVE LANE</small><strong>{platform}</strong><p>{surface}</p></div><i><Check size={13} /></i></article>)}
+          <div className="home-convergence"><i /><span>SEMANTIC RECEIPTS MATCH</span><ArrowRight size={16} /></div>
+        </Link>
       </section>
 
       <section className="section examples-section" id="examples">
@@ -116,10 +132,10 @@ export default function HomePage() {
         <span className="cta-icon"><Sparkles size={26} /></span>
         <h2>Start with the outcome.</h2>
         <p>Bring the business need. The system supplies the implementation path, safeguards, tests, and evidence.</p>
-        <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
+        <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
       </section>
 
-      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
+      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/parallel">Parallel delivery</Link><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
     </main>
   );
 }

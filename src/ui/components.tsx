@@ -5,6 +5,7 @@ import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipe
 
 const siteNavigation = [
   { id: "quick-start", label: "Quick Start", href: "/quick-start" },
+  { id: "parallel", label: "Parallel Delivery", href: "/parallel" },
   { id: "guide", label: "Behind the scenes", href: "/guide" },
   { id: "library", label: "Complete Skill Library", href: "/library" },
 ] as const;
@@ -31,7 +32,7 @@ export function SiteHeader({ active }: { active?: SiteSection }) {
           </Link>
         ))}
       </nav>
-      <a className="header-action" href="https://github.com/kuck1/automated-product-engineer-nextjs" target="_blank" rel="noreferrer">
+      <a className="header-action" href="https://github.com/kuck1/automated-product-engineer" target="_blank" rel="noreferrer">
         <GitFork size={15} /> Open Source on GitHub
       </a>
     </header>

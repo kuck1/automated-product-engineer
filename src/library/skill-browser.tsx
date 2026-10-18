@@ -64,8 +64,8 @@ export function SkillBrowser({ skills, initialSlug }: { skills: SkillEntry[]; in
         </div>
       </nav>
       {active && <article className="skill-preview" id="skill-detail" aria-live="polite">
-        <header><div><span><Sparkles size={16} /></span><div><small>{active.category}</small><h3>{active.title}</h3><p>{active.description}</p></div></div><a className="button button-secondary" href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/skills/${active.slug}/SKILL.md`} target="_blank" rel="noreferrer">Source <ArrowUpRight size={14} /></a></header>
-        <MarkdownContent sourceBaseUrl={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/skills/${active.slug}`}>{active.body}</MarkdownContent>
+        <header><div><span><Sparkles size={16} /></span><div><small>{active.category}</small><h3>{active.title}</h3><p>{active.description}</p></div></div><a className="button button-secondary" href={`https://github.com/kuck1/automated-product-engineer/blob/main/skills/${active.slug}/SKILL.md`} target="_blank" rel="noreferrer">Source <ArrowUpRight size={14} /></a></header>
+        <MarkdownContent sourceBaseUrl={`https://github.com/kuck1/automated-product-engineer/blob/main/skills/${active.slug}`}>{active.body}</MarkdownContent>
       </article>}
     </div>
   </div>;

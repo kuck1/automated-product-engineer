@@ -27,7 +27,7 @@ export default function QuickStartPage() {
       <section className="quick-start-command" aria-label="Installation command">
         <SquareTerminal size={20} />
         <code>pnpm dlx automated-product-engineer</code>
-        <Link href="https://github.com/kuck1/automated-product-engineer-nextjs#readme" target="_blank" rel="noreferrer">Installation options <ArrowRight size={15} /></Link>
+        <Link href="https://github.com/kuck1/automated-product-engineer#readme" target="_blank" rel="noreferrer">Installation options <ArrowRight size={15} /></Link>
       </section>
 
       <section className="quick-start-steps">
