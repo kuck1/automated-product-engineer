@@ -306,13 +306,34 @@ test("skills library exposes specialist workflows with adaptive intake", async (
   await expect(page.getByRole("heading", { name: /Ask for one artifact/ })).toHaveCount(0);
 });
 
-test("mobile workflow library remains readable without page overflow", async ({ page }, testInfo) => {
+test("mobile workflow library provides a complete responsive browser", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/library?skill=figma-to-app-feature#skills");
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(1);
   await expect(page.getByRole("button", { name: /SHIP FROM FIGMA Figma to App/ })).toBeVisible();
   await expect(page.locator(".skill-preview").getByRole("heading", { name: "Intake contract" })).toBeVisible();
+  const mobileLayout = await page.evaluate(() => {
+    const layout = document.querySelector(".skill-browser-layout")!.getBoundingClientRect();
+    const list = document.querySelector(".skill-list")!.getBoundingClientRect();
+    const preview = document.querySelector(".skill-preview")!.getBoundingClientRect();
+    const track = document.querySelector(".skill-list-track")!;
+    const markdown = document.querySelector(".skill-preview .markdown-content")!;
+    return {
+      layoutWidth: layout.width,
+      viewportWidth: document.documentElement.clientWidth,
+      panelsStacked: list.bottom <= preview.top + 1,
+      trackOverflow: track.scrollWidth - track.clientWidth,
+      markdownOverflow: markdown.scrollHeight - markdown.clientHeight,
+    };
+  });
+  expect(mobileLayout.layoutWidth).toBeLessThanOrEqual(mobileLayout.viewportWidth - 38);
+  expect(mobileLayout.panelsStacked).toBe(true);
+  expect(mobileLayout.trackOverflow).toBeGreaterThan(100);
+  expect(mobileLayout.markdownOverflow).toBeLessThanOrEqual(1);
+  await page.getByPlaceholder("Search skills").fill("security");
+  await expect(page.locator(".skill-list-track > button")).toHaveCount(1);
+  await expect(page.locator(".skill-preview").getByRole("heading", { name: "Security Review", exact: true })).toBeVisible();
 });
 
 test("example reference links open the relevant skill", async ({ page }, testInfo) => {

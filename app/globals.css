@@ -642,10 +642,12 @@ footer > a:hover { color: white; }
 .skill-browser-layout { min-width: 0; max-width: 100%; min-height: 760px; display: grid; grid-template-columns: minmax(280px,.72fr) minmax(0,1.55fr); border: 1px solid var(--line); border-radius: 15px; background: var(--panel); overflow: hidden; }
 .skill-list { max-height: 860px; padding: 8px; display: flex; flex-direction: column; gap: 4px; border-right: 1px solid var(--line); overflow-y: auto; }
 .skill-list-label { padding: 12px 11px 9px; display: flex; justify-content: space-between; color: #68737e; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .8px; }
-.skill-list > button { width: 100%; padding: 15px 13px; display: grid; grid-template-columns: 26px 1fr; gap: 10px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
-.skill-list > button:hover { background: rgba(255,255,255,.025); }
-.skill-list > button.active { border-color: rgba(169,145,255,.25); background: rgba(169,145,255,.09); }
-.skill-list > button > span { padding-top: 4px; color: #69737d; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.skill-list-hint { display: none; }
+.skill-list-track { display: contents; }
+.skill-list-track > button { width: 100%; padding: 15px 13px; display: grid; grid-template-columns: 26px 1fr; gap: 10px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.skill-list-track > button:hover { background: rgba(255,255,255,.025); }
+.skill-list-track > button.active { border-color: rgba(169,145,255,.25); background: rgba(169,145,255,.09); }
+.skill-list-track > button > span { padding-top: 4px; color: #69737d; font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
 .skill-list small { display: block; margin-bottom: 7px; color: var(--accent); font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing: .7px; text-transform: uppercase; }
 .skill-list strong { display: block; font-size: 13px; }
 .skill-list p { margin: 7px 0 0; color: #858d95; font-size: 10px; line-height: 1.5; }
@@ -1588,16 +1590,65 @@ footer > a:hover { color: white; }
   .record-footer > div { width: 100%; }
   .record-footer .button { flex: 1; }
   .milestone-list { grid-template-columns: 1fr; }
-  .library-hero { padding: 62px 20px; }
-  .library-hero h1 { font-size: 48px; }
-  .library-section { margin: 0 20px; padding: 68px 0; }
-  .library-heading { grid-template-columns: 1fr; gap: 12px; }
-  .skill-category-tabs { width: 100%; }
-  .library-hero > div { width: 100%; }
-  .skill-featured { min-width: 0; max-width: 100%; grid-template-columns: minmax(0,1fr); }
-  .skill-featured-intro { border-right: 0; border-bottom: 1px solid var(--line); }
-  .skill-featured-steps { width: 100%; max-width: 100%; grid-template-columns: repeat(5,minmax(150px,1fr)); overflow-x: auto; }
-  .skill-featured-steps button { min-height: 130px; }
+  .library-hero { padding: 52px 20px 48px; }
+  .library-hero h1 { margin: 20px 0; font-size: 44px; line-height: 1.03; }
+  .library-hero > p { font-size: 13px; line-height: 1.6; }
+  .library-hero > div { width: 100%; margin-top: 22px; padding: 12px 13px; }
+  .library-hero code { font-size: 10px; }
+  .library-section { margin: 0 20px; padding: 56px 0; }
+  .library-heading { grid-template-columns: 1fr; gap: 14px; margin-bottom: 28px; }
+  .library-heading h2 { font-size: 34px; }
+  .library-heading > p { font-size: 12px; line-height: 1.6; }
+  .skill-browser { gap: 12px; }
+  .skill-browser > * { min-width: 0; }
+  .skill-featured { width: 100%; min-width: 0; max-width: 100%; grid-template-columns: minmax(0,1fr); border-radius: 12px; }
+  .skill-featured-intro { min-width: 0; padding: 20px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .skill-featured-intro h3 { margin-top: 10px; font-size: 21px; overflow-wrap: anywhere; }
+  .skill-featured-intro p { font-size: 10px; }
+  .skill-featured-steps {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5,138px);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline proximity;
+  }
+  .skill-featured-steps button { width: 138px; min-height: 112px; padding: 16px 14px; gap: 9px; scroll-snap-align: start; }
+  .skill-featured-steps button strong { font-size: 11px; }
+  .skill-browser-controls { align-items: stretch; flex-direction: column; gap: 8px; }
+  .skill-browser-controls > label { width: 100%; }
+  .skill-category-tabs { width: 100%; scroll-snap-type: inline proximity; }
+  .skill-category-tabs button { min-height: 38px; scroll-snap-align: start; }
+  .skill-browser-layout { width: 100%; min-height: 0; grid-template-columns: minmax(0,1fr); border-radius: 12px; overflow: hidden; }
+  .skill-list { max-height: none; padding: 0; gap: 0; border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
+  .skill-list-label { padding: 14px 14px 10px; align-items: center; }
+  .skill-list-hint { display: inline; margin-left: auto; margin-right: 10px; color: #89939d; font-weight: 500; letter-spacing: 0; text-transform: none; }
+  .skill-list-track {
+    padding: 0 8px 8px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 8px;
+    scroll-snap-type: inline proximity;
+  }
+  .skill-list-track > button { width: 232px; min-width: 232px; min-height: 122px; padding: 14px; scroll-snap-align: start; }
+  .skill-list-track > button > span { padding-top: 3px; }
+  .skill-list p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+  .skill-empty { width: 100%; flex: 0 0 100%; }
+  .skill-preview { min-width: 0; display: block; scroll-margin-top: 16px; }
+  .skill-preview > header { padding: 18px; display: grid; gap: 16px; }
+  .skill-preview > header > div { min-width: 0; gap: 10px; }
+  .skill-preview > header > div > span { width: 34px; height: 34px; }
+  .skill-preview h3 { font-size: 17px; }
+  .skill-preview header p { font-size: 10px; }
+  .skill-preview > header .button { width: 100%; justify-content: center; }
+  .skill-preview .markdown-content { max-height: none; padding: 26px 18px 36px; overflow: visible; font-size: 12px; line-height: 1.7; }
+  .skill-preview .markdown-content h1 { font-size: 26px; }
+  .skill-preview .markdown-content h2 { margin-top: 32px; font-size: 20px; }
+  .skill-preview .markdown-content a { max-width: 100%; overflow-wrap: anywhere; }
+  .skill-preview .markdown-content table { display: block; max-width: 100%; overflow-x: auto; }
   .library-footer { align-items: flex-start; flex-wrap: wrap; }
   .library-footer .button { width: 100%; margin: 8px 0 0; }
   .library-system-link { width: fit-content !important; }

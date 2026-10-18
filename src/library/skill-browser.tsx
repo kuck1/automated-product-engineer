@@ -25,7 +25,7 @@ export function SkillBrowser({ skills, initialSlug }: { skills: SkillEntry[]; in
     const term = query.trim().toLowerCase();
     return skills.filter(skill => (category === "All" || skill.category === category) && (!term || `${skill.title} ${skill.description} ${skill.category}`.toLowerCase().includes(term)));
   }, [category, query, skills]);
-  const active = visible.find(skill => skill.slug === activeSlug) ?? visible[0] ?? skills[0];
+  const active = visible.find(skill => skill.slug === activeSlug) ?? visible[0];
 
   function selectSkill(slug: string) {
     setActiveSlug(slug);
@@ -55,13 +55,15 @@ export function SkillBrowser({ skills, initialSlug }: { skills: SkillEntry[]; in
     </div>
     <div className="skill-browser-layout">
       <nav className="skill-list" aria-label="All skills">
-        <div className="skill-list-label"><span>ALL SPECIALISTS</span><span>{visible.length}</span></div>
-        {visible.map((skill, index) => <button type="button" className={active?.slug === skill.slug ? "active" : ""} key={skill.slug} onClick={() => selectSkill(skill.slug)}>
-          <span>{String(index + 1).padStart(2, "0")}</span><div><small>{skill.category}</small><strong>{skill.title}</strong><p>{skill.description}</p></div>
-        </button>)}
-        {visible.length === 0 && <div className="skill-empty">No skills match that search.</div>}
+        <div className="skill-list-label"><span>ALL SPECIALISTS</span><span className="skill-list-hint">Swipe to browse</span><span>{visible.length}</span></div>
+        <div className="skill-list-track">
+          {visible.map((skill, index) => <button type="button" aria-controls="skill-detail" aria-pressed={active?.slug === skill.slug} className={active?.slug === skill.slug ? "active" : ""} key={skill.slug} onClick={() => selectSkill(skill.slug)}>
+            <span>{String(index + 1).padStart(2, "0")}</span><div><small>{skill.category}</small><strong>{skill.title}</strong><p>{skill.description}</p></div>
+          </button>)}
+          {visible.length === 0 && <div className="skill-empty">No skills match that search.</div>}
+        </div>
       </nav>
-      {active && <article className="skill-preview">
+      {active && <article className="skill-preview" id="skill-detail" aria-live="polite">
         <header><div><span><Sparkles size={16} /></span><div><small>{active.category}</small><h3>{active.title}</h3><p>{active.description}</p></div></div><a className="button button-secondary" href={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/skills/${active.slug}/SKILL.md`} target="_blank" rel="noreferrer">Source <ArrowUpRight size={14} /></a></header>
         <MarkdownContent sourceBaseUrl={`https://github.com/kuck1/automated-product-engineer-nextjs/blob/main/skills/${active.slug}`}>{active.body}</MarkdownContent>
       </article>}
