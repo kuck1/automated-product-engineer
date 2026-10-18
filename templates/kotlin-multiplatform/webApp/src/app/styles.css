@@ -1,0 +1,13 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--color-content-primary); color: var(--color-content-on-dark); font-family: ui-sans-serif, system-ui, sans-serif; }
+main { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: 12vh 0; }
+.eyebrow { color: var(--color-action-success); font: 700 12px/1.4 ui-monospace, monospace; letter-spacing: .14em; }
+h1 { max-width: 13ch; font-size: clamp(48px, 9vw, 96px); line-height: .94; letter-spacing: -.06em; margin: 28px 0; }
+.lede { color: #b9bec8; font-size: 20px; line-height: 1.6; max-width: 62ch; }
+.card { margin-top: 64px; border: 1px solid #343842; border-radius: var(--radius-surface); padding: var(--space-page); background: #181b21; }
+.card > div { display: inline-flex; flex-direction: column; margin-right: 48px; }
+.card span { color: #858c99; font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.card strong { margin-top: 6px; }
+.card h2 { margin-top: 40px; font-size: 28px; }
+button { border: 0; border-radius: var(--radius-control); padding: 14px 18px; background: var(--color-action-primary); color: white; font: inherit; font-weight: 700; cursor: pointer; }
+button:disabled { opacity: .45; cursor: default; }

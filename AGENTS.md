@@ -57,6 +57,8 @@ For Kotlin or native Android work, inspect the Gradle wrapper and settings, modu
 
 For Kotlin Multiplatform work, inspect the Gradle wrapper, KMP and Android plugins, version catalog, modules, source sets and targets, native shells, iOS integration, public framework API, contract generators, scenario vectors, and CI fan-out before implementation. Share product documentation, domain rules, application orchestration, wire and error contracts, sync policy, analytics semantics, tokens, and component behavior. Keep navigation, lifecycle, native UI, secure storage, OS capabilities, accessibility, signing, and distribution in the native shells by default. Prefer injected interfaces to broad `expect`/`actual`, keep the Swift-facing facade small, and prove common policy plus both native projections against the same contract version and shared commit.
 
+For a feature implemented concurrently in Next.js, Android, and iOS, freeze one language-neutral feature capsule and its digest first. Create sibling platform lanes from that commit, generate Kotlin and TypeScript semantic policy, keep UI and capabilities native, publish projection receipts, and require the cross-runtime convergence gate without using one platform as the specification.
+
 ## Delivery and fix-back
 
 - Run a short retrospective after implementation and initial QA. Record surprises, defects, architecture friction, and missing safeguards.

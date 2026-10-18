@@ -13,8 +13,29 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: node tools/validate-contracts.mjs
+      - run: node tools/compile-feature.mjs --check
       - run: node tools/compile-tokens.mjs --check
       - run: node tools/compile-scenarios.mjs --check
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: webApp/pnpm-lock.yaml
+      - run: pnpm --dir webApp install --frozen-lockfile
+      - run: pnpm --dir webApp test
+      - run: pnpm --dir webApp typecheck
+      - run: pnpm --dir webApp build
+      - run: cd webApp && node --import tsx ../tools/export-web-receipts.ts "$OLDPWD/build/receipts/web.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-semantic-receipts
+          path: build/receipts/web.json
 
   shared:
     runs-on: ubuntu-latest
@@ -24,7 +45,11 @@ jobs:
         with: { distribution: temurin, java-version: 17 }
       - uses: gradle/actions/setup-gradle@v4
         with: { gradle-version: "9.6.0" }
-      - run: gradle :shared:product-kernel:hostTest
+      - run: gradle :shared:product-kernel:hostTest -PproductReceipts="$PWD/build/receipts/kotlin.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kotlin-semantic-receipts
+          path: build/receipts/kotlin.json
 
   android:
     runs-on: ubuntu-latest
@@ -59,3 +84,15 @@ jobs:
           else
             echo "Reference sources are ready; create or connect the host Xcode project before release CI."
           fi
+
+  semantic-parity:
+    needs: [contracts, web, shared, android, ios]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-semantic-receipts"
+          path: build/receipts
+          merge-multiple: true
+      - run: node tools/compare-receipts.mjs build/receipts/kotlin.json build/receipts/web.json

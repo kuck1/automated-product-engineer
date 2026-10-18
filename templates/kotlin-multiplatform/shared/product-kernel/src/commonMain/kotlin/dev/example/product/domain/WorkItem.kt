@@ -27,17 +27,10 @@ sealed interface TransitionDecision {
 }
 
 object WorkItemPolicy {
-    private val allowed = mapOf(
-        WorkStage.DRAFT to setOf(WorkStage.VALIDATING),
-        WorkStage.VALIDATING to setOf(WorkStage.READY, WorkStage.BLOCKED),
-        WorkStage.BLOCKED to setOf(WorkStage.VALIDATING),
-        WorkStage.READY to emptySet(),
-    )
-
     fun decide(item: WorkItem, command: TransitionCommand): TransitionDecision = when {
         item.id != command.workItemId -> TransitionDecision.Rejected("WRONG_AGGREGATE")
         item.revision != command.expectedRevision -> TransitionDecision.Rejected("STALE_REVISION")
-        command.nextStage !in allowed.getValue(item.stage) -> TransitionDecision.Rejected("INVALID_TRANSITION")
+        !GeneratedWorkItemPolicy.isAllowed(item.stage, command.nextStage) -> TransitionDecision.Rejected("INVALID_TRANSITION")
         else -> TransitionDecision.Allowed
     }
 }

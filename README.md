@@ -60,7 +60,7 @@ From the root of another repository, install the complete toolkit:
 pnpm dlx automated-product-engineer
 ```
 
-That one command detects Next.js, Expo, bare React Native, native iOS, Swift Package, native Android, or Kotlin Multiplatform projects and installs 19 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
+That one command detects Next.js, Expo, bare React Native, native iOS, Swift Package, native Android, or Kotlin Multiplatform projects and installs 20 agent skills, adapters for common AI coding tools, platform-specific architecture guides and examples, integration checklists, implementation templates, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material. Reference material lives under `.automated-product-engineer/` so it remains inspectable without being mixed into the host application's runtime source.
 
 In an interactive terminal, the installer then offers to analyze the repository. It lets you choose review domains and creates a project-owned onboarding workspace plus a local skill overlay. Run the workflow directly or refresh its static evidence at any time:
 
@@ -137,6 +137,8 @@ pnpm dlx automated-product-engineer launch --ios
 
 The `kotlin-multiplatform-app` specialist uses a shared product kernel rather than a shared-code quota: product rules, state transitions, protocols, semantic decisions, and generated contracts stay identical; navigation, lifecycle, UI, secure storage, capabilities, accessibility, and distribution remain native unless a feature-level decision justifies shared UI.
 
+The `parallel-platform-development` specialist extends that model to Next.js, Android, and iOS. A versioned feature capsule generates Kotlin and TypeScript semantic policy, platform lanes branch as siblings, and CI compares canonical receipts only after each web and native projection has produced its own evidence.
+
 ## Recommended export
 
 ```text
@@ -175,6 +177,8 @@ The export is a **design and behavior contract**, not production code to paste. 
 - [`docs/native-android-delivery.md`](docs/native-android-delivery.md): Kotlin and Gradle detection, Compose architecture, persistence, identity, capabilities, emulator and device proof, signing, and Play delivery.
 - [`docs/kotlin-multiplatform-delivery.md`](docs/kotlin-multiplatform-delivery.md): shared product-kernel architecture, KMP project detection, native shell launch, generated contracts, and parallel delivery.
 - [`docs/research/kotlin-multiplatform-product-kernel.md`](docs/research/kotlin-multiplatform-product-kernel.md): official-source research and the complete cross-platform design rationale.
+- [`docs/parallel-platform-development.md`](docs/parallel-platform-development.md): the feature-capsule workflow, sibling platform lanes, projection receipts, and convergence gate.
+- [`docs/research/parallel-next-android-ios.md`](docs/research/parallel-next-android-ios.md): official-source research and architecture rationale for true parallel Next.js, Android, and iOS delivery.
 - [`docs/architecture.md`](docs/architecture.md): responsibility across application layers.
 - [`docs/design-system-blueprint.md`](docs/design-system-blueprint.md): tokens, component hierarchy, enum variants, catalog, accessibility, and governance.
 - [`docs/state-and-data-architecture.md`](docs/state-and-data-architecture.md): local, URL, cache, database, controller, API, and service ownership.

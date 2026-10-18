@@ -258,6 +258,11 @@ export function auditProject(project, profile) {
     const generatedSwift = entries.filter((entry) => /DesignTokens\.swift$/.test(entry.path));
     const scenarioVectors = entries.filter((entry) => /\.vectors\.json$/.test(entry.path));
     const componentContracts = entries.filter((entry) => /\.component\.json$/.test(entry.path));
+    const featureCapsules = entries.filter((entry) => /(?:^|\/)contracts\/features\/.*\.feature\.json$/.test(entry.path));
+    const generatedPolicy = entries.filter((entry) => /Generated\w*Policy\.kt$|(?:^|\/)src\/generated\/.*-policy\.ts$/.test(entry.path));
+    const parityTools = entries.filter((entry) => /(?:compare-receipts|export-web-receipts)/.test(entry.path));
+    const nextSurface = entries.filter((entry) => /(?:^|\/)webApp\/(?:package\.json|next\.config\.[cm]?[jt]s)$/.test(entry.path));
+    const parallelWorkflow = entries.filter((entry) => /(?:^|\/)\.github\/workflows\/.*\.ya?ml$/.test(entry.path) && /semantic-parity/.test(entry.text) && /web-projection/.test(entry.text) && /android-projection/.test(entry.text) && /ios-projection/.test(entry.text));
 
     findings.push(finding({
       id: "kmp-product-kernel", patternId: "shared-product-kernel", title: sharedPolicy.length ? "Shared product kernel is visible" : "Create a platform-free product kernel",
@@ -310,6 +315,35 @@ export function auditProject(project, profile) {
       skill: "kotlin-multiplatform-app + manual-ui-qa", reference: "skills/kotlin-multiplatform-app/references/testing-ci-and-release.md", example: "Parallel contract, host, Android, and iOS CI fan-out", evidence: evidence(commonTests),
       question: "Which shared race or failure scenario should become the first cross-platform vector?",
     }));
+
+    if (profile.multiplatform?.hasNextShell) {
+      findings.push(finding({
+        id: "parallel-feature-capsule", patternId: "feature-capsule-protocol", title: featureCapsules.length && generatedPolicy.length >= 2 ? "Feature capsule projects into Kotlin and TypeScript" : "Create one generated feature capsule boundary",
+        status: featureCapsules.length && generatedPolicy.length >= 2 ? "established" : "opportunity", confidence: "high", impact: "high",
+        summary: featureCapsules.length && generatedPolicy.length >= 2 ? "A canonical feature contract and generated Kotlin and TypeScript policy are visible. Keep generated files disposable and bind every artifact to the capsule digest." : "Next.js and native shells exist, but the scan did not find one canonical feature capsule projected into both Kotlin and TypeScript.",
+        action: "Freeze product vocabulary, states, intents, guards, failures, telemetry, and scenarios in one language-neutral capsule; generate both semantic runtimes and reject drift.",
+        skill: "parallel-platform-development", reference: "skills/parallel-platform-development/references/feature-capsule-protocol.md", example: "Work item three-platform feature capsule", evidence: evidence([...featureCapsules, ...generatedPolicy, ...nextSurface]),
+        question: "Which cross-platform feature creates the highest cost when web and native disagree?",
+      }));
+
+      findings.push(finding({
+        id: "parallel-semantic-parity", patternId: "semantic-receipt-parity", title: parityTools.length >= 2 ? "Kotlin and TypeScript semantic receipts are compared" : "Add a semantic convergence gate",
+        status: parityTools.length >= 2 ? "established" : "risk", confidence: "high", impact: "high",
+        summary: parityTools.length >= 2 ? "Both semantic runtimes can publish normalized results for the same vectors. Native platform evidence remains separate." : "Three platform shells are present without a visible cross-runtime receipt comparison, so product-policy drift can pass compilation.",
+        action: "Replay the canonical vectors in Kotlin and TypeScript, publish normalized receipts, and require parsed deep equality after independent platform jobs complete.",
+        skill: "parallel-platform-development + code-review", reference: "skills/parallel-platform-development/references/parity-ci-and-release.md", example: "Semantic receipt convergence job", evidence: evidence(parityTools),
+        question: "May the first convergence slice turn the highest-value feature into an executable parity oracle?",
+      }));
+
+      findings.push(finding({
+        id: "parallel-independent-lanes", patternId: "sibling-platform-lanes", title: parallelWorkflow.length ? "Platform lanes converge without serial dependency" : "Make platform lanes independent siblings",
+        status: parallelWorkflow.length ? "established" : "opportunity", confidence: "high", impact: "high",
+        summary: parallelWorkflow.length ? "CI names independent web, shared, Android, and iOS lanes and joins them at semantic parity." : "The scan did not find independent web, Android, and iOS jobs joined by one convergence gate.",
+        action: "Branch platform work from the same capsule commit, keep file ownership disjoint, publish receipts, and join only after every lane produces its own evidence.",
+        skill: "parallel-platform-development + pr-workflow", reference: "skills/parallel-platform-development/references/parallel-operating-model.md", example: "Sibling platform CI fan-out", evidence: evidence(parallelWorkflow),
+        question: "Which current platform dependency can be replaced by a generated contract or explicit receipt?",
+      }));
+    }
   }
 
   const services = matches(applicationSource, /\b(?:class|function|const)\s+\w*(?:Service|Repository)|\b(?:service|repository)\.[A-Za-z_]/i);

@@ -108,6 +108,22 @@ Use canonical product language, token, component, protocol, error, analytics, an
 
 Expose immutable feature state, typed intent, subscription, and close. Adapt it to an `@MainActor` Swift observable model, map expected failures to values, limit public Kotlin declarations, and compile a Swift consumer in CI.
 
+### `feature-capsule-protocol` — Freeze product meaning before platform work
+
+Use one language-neutral capsule for vocabulary, states, intents, decisions, failures, telemetry, schemas, tokens, behavior, and scenario identity. Generate Kotlin and TypeScript runtimes and bind every lane to the capsule digest.
+
+### `semantic-receipt-parity` — Compare meaning across runtimes
+
+Replay identical vectors in Kotlin and TypeScript, emit normalized receipts, and require parsed deep equality. Keep lifecycle, accessibility, capabilities, rendering, auth, and distribution in platform-specific proof.
+
+### `sibling-platform-lanes` — Let every platform begin from the contract
+
+Branch Next.js, Android, and iOS work from the same capsule commit with disjoint ownership. Publish projection receipts and join the lanes at one convergence gate rather than stacking platform branches.
+
+### `contract-epoch-rollout` — Release platforms on explicit compatibility windows
+
+Record the capsule digest in every artifact. Prefer additive changes, support old and new epochs during breaking migrations, and prove an independent platform rollback before retiring an active epoch.
+
 ## Evidence
 
 ### `evidence-follows-owner` — Prove invariants where they live

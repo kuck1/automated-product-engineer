@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "platform": "android",
+  "feature": "work-item",
+  "capsuleDigest": "sha256:replace-with-generated-digest",
+  "sourceRevision": "replace-with-commit",
+  "artifactDigest": "sha256:replace-with-artifact-digest",
+  "capabilities": ["online-write", "stale-revision-recovery"],
+  "scenarios": { "passed": 3, "failed": 0 },
+  "evidence": ["host-test", "device-journey", "accessibility-scan"],
+  "deviations": []
+}

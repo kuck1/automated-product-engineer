@@ -8,7 +8,7 @@ pnpm dlx automated-product-engineer
 
 [Explore the live reference site](https://automated-product-engineer-nextjs.vercel.app) · [View the package on npm](https://www.npmjs.com/package/automated-product-engineer) · [Read the source](https://github.com/kuck1/automated-product-engineer)
 
-The zero-flag install detects Next.js, Expo, bare React Native, native iOS, Swift Package, native Android, or Kotlin Multiplatform projects and includes 19 adaptive agent skills, agent adapters, platform-specific architecture guides, checklists, implementation templates, working web or native examples, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material.
+The zero-flag install detects Next.js, Expo, bare React Native, native iOS, Swift Package, native Android, or Kotlin Multiplatform projects and includes 20 adaptive agent skills, agent adapters, platform-specific architecture guides, checklists, implementation templates, working web or native examples, Supabase patterns, testing and CI workflows, evidence capture, and retrospective fix-back material.
 
 The reference kit is installed under `.automated-product-engineer/`; agent skills are also placed in the supported discovery locations. The host application does not import the reference directory at runtime.
 
@@ -44,5 +44,7 @@ For Swift or native iOS projects, the same commands report the Xcode workspace o
 For Kotlin or native Android projects, the commands report Gradle settings and wrapper, modules, application identity, SDK levels, Compose, manifests, tests, and common capabilities, then open the project in Android Studio. The installed `android-native-app` skill covers Compose and Views, ViewModel and Flow, coroutines, Room, DataStore, WorkManager, Credential Manager, App Links, Play Integrity, native testing, signing, and Play delivery.
 
 For Kotlin Multiplatform monorepos, the commands report shared modules, source sets and targets, Android and iOS shells, contract sources, generated projections, and shared-UI signals. The installed `kotlin-multiplatform-app` skill defines a platform-free product kernel, portable runtime, small Swift boundary, native Compose and SwiftUI projections, deterministic token generation, incremental adoption, and parallel CI. Launch opens Android Studio by default or the native iOS project with `--ios`.
+
+When that monorepo also contains a Next.js projection, detection reports feature capsules and semantic-parity tooling. The `parallel-platform-development` skill coordinates sibling web, Android, and iOS lanes from one capsule digest; `launch --web` starts the detected web projection.
 
 See the [live reference application](https://automated-product-engineer-nextjs.vercel.app) for the interactive system and the [project repository](https://github.com/kuck1/automated-product-engineer) for complete documentation.

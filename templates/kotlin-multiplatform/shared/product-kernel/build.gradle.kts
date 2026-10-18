@@ -1,7 +1,13 @@
+import org.gradle.api.tasks.testing.Test
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.android.kmp.library)
+}
+
+tasks.withType<Test>().configureEach {
+    providers.gradleProperty("productReceipts").orNull?.let { systemProperty("product.receipts", it) }
 }
 
 kotlin {

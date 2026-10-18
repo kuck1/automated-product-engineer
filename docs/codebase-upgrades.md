@@ -21,5 +21,8 @@ Typical review paths include:
 - responsive rails, boards, tabs, and overlays whose geometry fails under content pressure;
 - tests that do not match the layer that owns the rule.
 - cross-platform rules duplicated in native shells, platform APIs leaking into `commonMain`, generated token or scenario drift, and unstable Swift-facing KMP surfaces.
+- Next.js, Android, and iOS implementations without a versioned feature capsule, generated Kotlin and TypeScript policy, semantic receipt comparison, or sibling platform lanes.
+
+For a three-platform repository, adopt the parallel model one feature at a time: characterize accepted behavior as shared vectors, generate both semantic runtimes, preserve native UI and capability ownership, and enable the convergence gate before expanding the migration.
 
 After an upgrade, rerun the audit and the workflow's focused proof. The useful output is the changed contract and evidence, not a higher abstract score.
