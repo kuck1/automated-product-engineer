@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowRight, Check, GitFork, Layers3, ShieldCheck, Split, Zap } from "lucide-react";
 import { ParallelPlatformShowcase } from "@/src/parallel/parallel-platform-showcase";
+import { siteFeatures } from "@/src/config/site-features";
 import { SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 export const metadata: Metadata = {
   title: "Parallel platform delivery · Automated Product Engineer",
   description: "Ship one product decision through native Next.js, Android, and iOS experiences in parallel, with shared policy and machine-checked semantic parity.",
+  robots: { index: false, follow: false },
 };
 
 const shared = [
@@ -24,6 +27,8 @@ const native = [
 ];
 
 export default function ParallelPlatformPage() {
+  if (!siteFeatures.parallelDelivery) notFound();
+
   return (
     <main className="site-shell parallel-page">
       <SiteHeader active="parallel" />

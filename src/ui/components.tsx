@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { GitFork } from "lucide-react";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import { siteFeatures } from "@/src/config/site-features";
 import { badgeTone, buttonTone, type BadgeTone, type ButtonTone } from "./recipes";
 
 const siteNavigation = [
-  { id: "quick-start", label: "Quick Start", href: "/quick-start" },
-  { id: "parallel", label: "Parallel Delivery", href: "/parallel" },
-  { id: "guide", label: "Behind the scenes", href: "/guide" },
-  { id: "library", label: "Complete Skill Library", href: "/library" },
+  { id: "quick-start", label: "Quick Start", href: "/quick-start", visible: true },
+  { id: "parallel", label: "Parallel Delivery", href: "/parallel", visible: siteFeatures.parallelDelivery },
+  { id: "guide", label: "Behind the scenes", href: "/guide", visible: true },
+  { id: "library", label: "Complete Skill Library", href: "/library", visible: true },
 ] as const;
 
 type SiteSection = typeof siteNavigation[number]["id"];
@@ -26,7 +27,7 @@ export function SiteHeader({ active }: { active?: SiteSection }) {
     <header className="site-header">
       <Brand />
       <nav aria-label="Primary navigation">
-        {siteNavigation.map(item => (
+        {siteNavigation.filter(item => item.visible).map(item => (
           <Link aria-current={active === item.id ? "page" : undefined} href={item.href} key={item.id}>
             {item.label}
           </Link>

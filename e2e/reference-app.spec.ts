@@ -14,14 +14,13 @@ test("every public page uses the shared top bar", async ({ page }, testInfo) => 
     "/quick-start",
     "/guide",
     "/library",
-    "/parallel",
     "/system",
   ];
 
   for (const route of routes) {
     await page.goto(route);
     const navigation = page.getByRole("navigation", { name: "Primary navigation" });
-    await expect(navigation.getByRole("link")).toHaveCount(4);
+    await expect(navigation.getByRole("link")).toHaveCount(3);
     await expect(page.getByRole("link", { name: "Open Source on GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/kuck1/automated-product-engineer",
@@ -43,7 +42,7 @@ test("the shared top bar remains legible at tablet width", async ({ page }, test
     });
   });
 
-  expect(headerGeometry).toHaveLength(5);
+  expect(headerGeometry).toHaveLength(4);
   for (const item of headerGeometry) {
     expect(item.left).toBeGreaterThanOrEqual(0);
     expect(item.right).toBeLessThanOrEqual(item.viewportWidth);
@@ -54,10 +53,10 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Primary navigation" });
-  await expect(navigation.getByRole("link")).toHaveCount(4);
+  await expect(navigation.getByRole("link")).toHaveCount(3);
   await expect(navigation.getByRole("link", { name: /Case Study/ })).toHaveCount(0);
   await expect(navigation.getByRole("link", { name: "Quick Start" })).toHaveAttribute("href", "/quick-start");
-  await expect(navigation.getByRole("link", { name: "Parallel Delivery" })).toHaveAttribute("href", "/parallel");
+  await expect(navigation.getByRole("link", { name: "Parallel Delivery" })).toHaveCount(0);
   await expect(navigation.getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("href", "/guide");
   await expect(navigation.getByRole("link", { name: "Complete Skill Library" })).toHaveAttribute("href", "/library");
   await expect(page.getByRole("heading", { name: "Daily product work starts with business needs. Not technical wrangling." })).toBeVisible();
@@ -65,26 +64,13 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(page.getByRole("link", { name: "Open the Release Readiness case study" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open the Onboarding Operations case study" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open the Field Relay native case study" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Explore parallel platform delivery" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore parallel platform delivery" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Parallel delivery", exact: true })).toHaveCount(0);
 });
 
-test("parallel delivery turns one product decision into three native lanes", async ({ page }) => {
-  await page.goto("/parallel");
-  await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Parallel Delivery" })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("heading", { name: "One product decision. Three native products." })).toBeVisible();
-  const demo = page.getByLabel("Interactive parallel platform delivery demo");
-  await expect(demo.getByText(/01 \/ NEXT\.JS/)).toBeVisible();
-  await expect(demo.getByText(/02 \/ ANDROID/)).toBeVisible();
-  await expect(demo.getByText(/03 \/ IOS/)).toBeVisible();
-  await demo.getByLabel("Product decision").fill("Approve a high-risk transfer safely");
-  await demo.getByRole("button", { name: "Run in parallel" }).click();
-  await expect(demo.getByText("Approve a high-risk transfer safely")).toHaveCount(4);
-  await expect(demo.getByRole("button", { name: "Validate" })).toHaveAttribute("aria-pressed", "true");
-  await demo.getByRole("button", { name: "Reconcile" }).click();
-  await expect(demo.getByText("Receipts match")).toHaveCount(3);
-  await expect(page.getByLabel("Parallel platform verification results")).toContainText("Kotlin ↔ TypeScript receipts");
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  expect(overflow).toBeLessThanOrEqual(1);
+test("parallel delivery is hidden from the public website", async ({ page }) => {
+  const response = await page.goto("/parallel");
+  expect(response?.status()).toBe(404);
 });
 
 test("before and after cards stay aligned across viewports", async ({ page }) => {
