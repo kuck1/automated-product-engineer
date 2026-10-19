@@ -205,6 +205,7 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
     [".live-activity p", 11],
     [".scenario-contract dt", 10],
     [".scenario-contract dd", 11],
+    [".scenario-detail pre code", 11],
     [".auth-flow small", 10],
     [".auth-debugger li", 11],
     [".audit-path li p", 11],

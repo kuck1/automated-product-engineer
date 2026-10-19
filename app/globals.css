@@ -2128,6 +2128,7 @@ footer > a:hover { color: white; }
   .scenario-contract dd,
   .pattern-compare p,
   .scenario-detail > code,
+  .scenario-detail pre code,
   .state-lab-tabs button,
   .auth-debugger nav button,
   .auth-debugger > article > span,
