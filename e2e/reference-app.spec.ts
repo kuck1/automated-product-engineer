@@ -185,6 +185,19 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day -- anymore." })).toBeVisible();
   await expect(page.getByText("Daily product work starts with business needs - not technical wrangling.", { exact: true })).toBeVisible();
+  const sourceReader = page.locator(".source-reader");
+  const readerHeights: number[] = [];
+  const layerButtons = page.locator(".layer-stack button");
+  for (let index = 0; index < await layerButtons.count(); index += 1) {
+    await layerButtons.nth(index).click();
+    const chooser = sourceReader.getByRole("combobox");
+    const sourceIds = await chooser.locator("option").evaluateAll(options => options.map(option => (option as HTMLOptionElement).value));
+    for (const sourceId of sourceIds) {
+      await chooser.selectOption(sourceId);
+      readerHeights.push(await sourceReader.evaluate(element => Math.round(element.getBoundingClientRect().height)));
+    }
+  }
+  expect(new Set(readerHeights).size).toBe(1);
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
   await expect(sourceChooser).toHaveValue("release-policy");

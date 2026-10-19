@@ -494,7 +494,8 @@ footer > a:hover { color: white; }
 .layer-stack button p { margin: 0; color: #89929c; font-size: 8px; line-height: 1.4; }
 .layer-stack button > svg { color: #59636f; }
 .layer-stack button.active > svg { color: var(--accent); }
-.source-reader { min-width: 0; padding: 24px; display: flex; flex-direction: column; border: 1px solid rgba(169,145,255,.22); border-radius: 13px; background: #16141c; }
+.source-reader { min-width: 0; height: 514px; padding: 24px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid rgba(169,145,255,.22); border-radius: 13px; background: #16141c; }
+.source-reader > header, .source-reader > p, .source-file-meta, .source-reader > footer { flex: 0 0 auto; }
 .source-reader > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
 .source-reader > header span, .source-reader > header strong { display: block; }
 .source-reader > header span { color: var(--accent); font: 700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; letter-spacing: 1px; }
@@ -511,7 +512,7 @@ footer > a:hover { color: white; }
 .source-file-meta code { overflow-wrap: anywhere; color: #c6bbff; font-size: 8px; }
 .source-file-meta span { flex: 0 0 auto; color: #69737e; font: 650 7px/1 ui-monospace,SFMono-Regular,Menlo,monospace; text-transform: uppercase; }
 .source-file-meta strong { max-width: 340px; color: #929ba4; font-size: 8px; line-height: 1.45; font-weight: 500; text-align: right; }
-.source-code { min-width: 0; margin: 0; padding: 13px 0; overflow-x: auto; border-radius: 0 0 9px 9px; background: #0e1014; color: #cbd4dd; font: 500 9px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.source-code { min-width: 0; min-height: 0; margin: 0; padding: 13px 0; overflow: auto; flex: 1 1 auto; border-radius: 0 0 9px 9px; background: #0e1014; color: #cbd4dd; font: 500 9px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
 .source-code > code { min-width: max-content; display: block; }
 .source-code-line { min-height: 16px; display: grid; grid-template-columns: 46px minmax(0,1fr); }
 .source-code-line:hover { background: rgba(169,145,255,.05); }
@@ -1560,7 +1561,7 @@ footer > a:hover { color: white; }
     margin-top: 13px;
     justify-self: center;
   }
-  .source-reader { min-height: 0; padding: 18px; }
+  .source-reader { height: 640px; min-height: 0; padding: 18px; }
   .source-reader > header { display: grid; }
   .source-reader-actions { width: 100%; min-width: 0; justify-items: stretch; }
   .source-reader-actions label { grid-template-columns: 1fr; }
