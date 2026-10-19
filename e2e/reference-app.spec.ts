@@ -195,6 +195,14 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
     [".source-reader > p", 13],
     [".source-code", 11],
     [".source-reader footer", 10],
+    [".system-tour-nav small", 11],
+    [".token-card-copy p", 11],
+    [".component-specimen header p", 11],
+    [".cl-workbench > nav p", 11],
+    [".cl-contract dd", 11],
+    [".owner-map p", 11],
+    [".scenario-list small", 10],
+    [".live-activity p", 11],
   ] as const;
   for (const [selector, minimum] of readableType) {
     const fontSize = await page.locator(selector).first().evaluate(element => Number.parseFloat(getComputedStyle(element).fontSize));
@@ -256,7 +264,8 @@ test("mobile behind the scenes keeps every source excerpt accessible", async ({ 
   }));
   expect(layerCardGeometry).toHaveLength(5);
   for (const card of layerCardGeometry) {
-    expect(card.width).toBeLessThanOrEqual(159);
+    expect(card.width).toBeGreaterThanOrEqual(190);
+    expect(card.width).toBeLessThanOrEqual(200);
     expect(card.rightInset).toBeGreaterThanOrEqual(12);
     expect(card.titleArrowOffset).toBeLessThanOrEqual(2);
   }
