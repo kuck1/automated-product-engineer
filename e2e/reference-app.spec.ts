@@ -280,8 +280,18 @@ test("mobile behind the scenes keeps every source excerpt accessible", async ({ 
   await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("scoring-policy");
   await expect(page.getByText("export function releaseReadiness", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L31-L53$/);
-  const verticalCodeOverflow = await page.locator(".source-code").evaluate((element) => element.scrollHeight - element.clientHeight);
-  expect(verticalCodeOverflow).toBeLessThanOrEqual(1);
+  const sourceCode = page.locator(".source-code");
+  const scrollContract = await sourceCode.evaluate((element) => ({
+    overflow: element.scrollHeight - element.clientHeight,
+    overflowY: getComputedStyle(element).overflowY,
+  }));
+  expect(scrollContract.overflow).toBeGreaterThan(0);
+  expect(scrollContract.overflowY).toMatch(/auto|scroll/);
+  const reachesLastLine = await sourceCode.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+    return element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
+  });
+  expect(reachesLastLine).toBe(true);
   await page.getByRole("button", { name: /Visual Deterministic desktop/ }).click();
   await expect(page.getByText("Prove hierarchy, spacing, typography", { exact: false })).toBeVisible();
   const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
