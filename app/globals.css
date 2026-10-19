@@ -475,7 +475,7 @@ footer > a:hover { color: white; }
 .guide-intro dl { margin: 0; display: flex; gap: 8px; }
 .guide-intro dl div { width: 104px; min-height: 104px; padding: 17px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
 .guide-intro dt { color: var(--mint); font-size: 26px; font-weight: 650; }
-.guide-intro dd { margin: 5px 0 0; color: #838d97; font-size: 8px; line-height: 1.35; }
+.guide-intro dd { min-height: 2.7em; margin: 5px 0 0; color: #838d97; font-size: 8px; line-height: 1.35; }
 .guide-nav { position: sticky; top: 0; z-index: 15; padding: 0 20px; display: flex; gap: 4px; overflow-x: auto; border: 1px solid var(--line); border-top: 0; background: rgba(17,20,24,.92); backdrop-filter: blur(14px); }
 .guide-nav a { min-height: 48px; padding: 0 13px; display: flex; align-items: center; color: #929ba4; font-size: 9px; white-space: nowrap; }
 .guide-nav a:hover { color: white; }
