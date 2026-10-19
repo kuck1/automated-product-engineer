@@ -185,6 +185,21 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day -- anymore." })).toBeVisible();
   await expect(page.getByText("Daily product work starts with business needs - not technical wrangling.", { exact: true })).toBeVisible();
+  const readableType = [
+    [".guide-intro p", 14],
+    [".guide-intro dd", 11],
+    [".guide-nav a", 12],
+    [".guide-heading p", 14],
+    [".layer-stack button small", 10],
+    [".layer-stack button p", 11],
+    [".source-reader > p", 13],
+    [".source-code", 11],
+    [".source-reader footer", 10],
+  ] as const;
+  for (const [selector, minimum] of readableType) {
+    const fontSize = await page.locator(selector).first().evaluate(element => Number.parseFloat(getComputedStyle(element).fontSize));
+    expect(fontSize, `${selector} should remain readable`).toBeGreaterThanOrEqual(minimum);
+  }
   const sourceReader = page.locator(".source-reader");
   const readerHeights: number[] = [];
   const layerButtons = page.locator(".layer-stack button");
