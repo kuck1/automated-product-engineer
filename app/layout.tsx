@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Automated Product Engineer",
-  description: "Start with the business need, then ship native web, Android, and iOS products in parallel with shared policy and verifiable convergence.",
+  description: "Start daily product work with business needs while an open-source engineering system handles the technical details behind the scenes.",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     shortcut: ["/icon.svg"],

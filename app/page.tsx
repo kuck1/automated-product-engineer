@@ -1,6 +1,7 @@
 import { ArrowRight, BookOpen, Check, GitFork, Layers3, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { HeroPipeline } from "@/src/landing/hero-pipeline";
+import { siteFeatures } from "@/src/config/site-features";
 import { Badge, Brand, SectionEyebrow, SiteHeader } from "@/src/ui/components";
 
 const skills = [
@@ -46,7 +47,7 @@ export default function HomePage() {
         <span>REFERENCE<br />STACK</span><strong>Next.js</strong><strong>Kotlin / Android</strong><strong>Swift / iOS</strong><strong>Supabase</strong><strong>TanStack Query</strong>
       </section>
 
-      <section className="section home-parallel-section" id="parallel-delivery">
+      {siteFeatures.parallelDelivery && <section className="section home-parallel-section" id="parallel-delivery">
         <div className="section-heading">
           <div><SectionEyebrow>ONE DECISION · THREE NATIVE PRODUCTS</SectionEyebrow><h2>Web, Android, and iOS move together.</h2></div>
           <div className="home-parallel-copy"><p>Define the product outcome once. Next.js, native Android, and native iOS build in parallel, then prove they agree before release.</p><Link className="text-link" href="/parallel">Explore parallel delivery <ArrowRight size={15} /></Link></div>
@@ -60,7 +61,7 @@ export default function HomePage() {
           ].map(([index, platform, surface, id]) => <article className={`home-platform-${id}`} key={platform}><span>{index}</span><div><small>NATIVE LANE</small><strong>{platform}</strong><p>{surface}</p></div><i><Check size={13} /></i></article>)}
           <div className="home-convergence"><i /><span>SEMANTIC RECEIPTS MATCH</span><ArrowRight size={16} /></div>
         </Link>
-      </section>
+      </section>}
 
       <section className="section examples-section" id="examples">
         <div className="section-heading">
@@ -135,7 +136,7 @@ export default function HomePage() {
         <div><Link className="button button-primary" href="/quick-start">Start with the workflow <ArrowRight size={17} /></Link><a className="button button-secondary" href="https://github.com/kuck1/automated-product-engineer" target="_blank" rel="noreferrer"><GitFork size={17} /> View source</a></div>
       </section>
 
-      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span><Link href="/parallel">Parallel delivery</Link><Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
+      <footer><Brand /><span>MIT licensed · Built as a reference, not a framework.</span>{siteFeatures.parallelDelivery && <Link href="/parallel">Parallel delivery</Link>}<Link href="/guide">Behind the scenes</Link><Link href="/library">Complete skill library</Link></footer>
     </main>
   );
 }
