@@ -185,6 +185,49 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
   await expect(page.getByRole("navigation", { name: "Primary navigation" }).getByRole("link", { name: "Behind the scenes" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("heading", { name: "Everything you don’t have to think about every day -- anymore." })).toBeVisible();
   await expect(page.getByText("Daily product work starts with business needs - not technical wrangling.", { exact: true })).toBeVisible();
+  const readableType = [
+    [".guide-intro p", 14],
+    [".guide-intro dd", 11],
+    [".guide-nav a", 12],
+    [".guide-heading p", 14],
+    [".layer-stack button small", 10],
+    [".layer-stack button p", 11],
+    [".source-reader > p", 13],
+    [".source-code", 11],
+    [".source-reader footer", 10],
+    [".system-tour-nav small", 11],
+    [".token-card-copy p", 11],
+    [".component-specimen header p", 11],
+    [".cl-workbench > nav p", 11],
+    [".cl-contract dd", 11],
+    [".owner-map p", 11],
+    [".scenario-list small", 10],
+    [".live-activity p", 11],
+    [".scenario-contract dt", 10],
+    [".scenario-contract dd", 11],
+    [".scenario-detail pre code", 11],
+    [".auth-flow small", 10],
+    [".auth-debugger li", 11],
+    [".audit-path li p", 11],
+    [".state-sources a", 11],
+  ] as const;
+  for (const [selector, minimum] of readableType) {
+    const fontSize = await page.locator(selector).first().evaluate(element => Number.parseFloat(getComputedStyle(element).fontSize));
+    expect(fontSize, `${selector} should remain readable`).toBeGreaterThanOrEqual(minimum);
+  }
+  const sourceReader = page.locator(".source-reader");
+  const readerHeights: number[] = [];
+  const layerButtons = page.locator(".layer-stack button");
+  for (let index = 0; index < await layerButtons.count(); index += 1) {
+    await layerButtons.nth(index).click();
+    const chooser = sourceReader.getByRole("combobox");
+    const sourceIds = await chooser.locator("option").evaluateAll(options => options.map(option => (option as HTMLOptionElement).value));
+    for (const sourceId of sourceIds) {
+      await chooser.selectOption(sourceId);
+      readerHeights.push(await sourceReader.evaluate(element => Math.round(element.getBoundingClientRect().height)));
+    }
+  }
+  expect(new Set(readerHeights).size).toBe(1);
   await page.getByRole("button", { name: /Domain ExampleService/ }).click();
   const sourceChooser = page.getByRole("combobox", { name: "ExampleService source file" });
   await expect(sourceChooser).toHaveValue("release-policy");
@@ -228,7 +271,8 @@ test("mobile behind the scenes keeps every source excerpt accessible", async ({ 
   }));
   expect(layerCardGeometry).toHaveLength(5);
   for (const card of layerCardGeometry) {
-    expect(card.width).toBeLessThanOrEqual(159);
+    expect(card.width).toBeGreaterThanOrEqual(190);
+    expect(card.width).toBeLessThanOrEqual(200);
     expect(card.rightInset).toBeGreaterThanOrEqual(12);
     expect(card.titleArrowOffset).toBeLessThanOrEqual(2);
   }
@@ -236,8 +280,18 @@ test("mobile behind the scenes keeps every source excerpt accessible", async ({ 
   await page.getByRole("combobox", { name: "ExampleService source file" }).selectOption("scoring-policy");
   await expect(page.getByText("export function releaseReadiness", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: "View full source" })).toHaveAttribute("href", /src\/examples\/service\.ts#L31-L53$/);
-  const verticalCodeOverflow = await page.locator(".source-code").evaluate((element) => element.scrollHeight - element.clientHeight);
-  expect(verticalCodeOverflow).toBeLessThanOrEqual(1);
+  const sourceCode = page.locator(".source-code");
+  const scrollContract = await sourceCode.evaluate((element) => ({
+    overflow: element.scrollHeight - element.clientHeight,
+    overflowY: getComputedStyle(element).overflowY,
+  }));
+  expect(scrollContract.overflow).toBeGreaterThan(0);
+  expect(scrollContract.overflowY).toMatch(/auto|scroll/);
+  const reachesLastLine = await sourceCode.evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+    return element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
+  });
+  expect(reachesLastLine).toBe(true);
   await page.getByRole("button", { name: /Visual Deterministic desktop/ }).click();
   await expect(page.getByText("Prove hierarchy, spacing, typography", { exact: false })).toBeVisible();
   const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
