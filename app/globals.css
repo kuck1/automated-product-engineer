@@ -2048,7 +2048,17 @@ footer > a:hover { color: white; }
   .live-cursor > span,
   .live-activity > span,
   .living-main > section > small,
-  .release-demo-heading small
+  .release-demo-heading small,
+  .source-file-meta span,
+  .scenario-surfaces > span,
+  .scenario-contract dt,
+  .pattern-compare span,
+  .points-browser main small,
+  .auth-flow span,
+  .auth-flow small,
+  .auth-debugger > article > small,
+  .audit-path li > span,
+  .state-sources > span
 ) { font-size: 10px; }
 
 .guide-shell :is(
@@ -2113,5 +2123,19 @@ footer > a:hover { color: white; }
   .release-app > nav button span,
   .release-app > nav button small,
   .release-status,
-  .living-release-gates button
+  .living-release-gates button,
+  .scenario-surfaces strong,
+  .scenario-contract dd,
+  .pattern-compare p,
+  .scenario-detail > code,
+  .state-lab-tabs button,
+  .auth-debugger nav button,
+  .auth-debugger > article > span,
+  .auth-debugger li,
+  .auth-debugger > article > div p,
+  .key-boundary p,
+  .audit-path > header p,
+  .audit-path li strong,
+  .audit-path li p,
+  .state-sources a
 ) { font-size: 11px; }

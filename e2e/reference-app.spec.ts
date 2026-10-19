@@ -203,6 +203,12 @@ test("behind the scenes embeds the ownership chain and real source excerpts", as
     [".owner-map p", 11],
     [".scenario-list small", 10],
     [".live-activity p", 11],
+    [".scenario-contract dt", 10],
+    [".scenario-contract dd", 11],
+    [".auth-flow small", 10],
+    [".auth-debugger li", 11],
+    [".audit-path li p", 11],
+    [".state-sources a", 11],
   ] as const;
   for (const [selector, minimum] of readableType) {
     const fontSize = await page.locator(selector).first().evaluate(element => Number.parseFloat(getComputedStyle(element).fontSize));
