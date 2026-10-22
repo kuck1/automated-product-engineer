@@ -22,12 +22,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "Auto",
-    title: "Auto | AI coding, reliable enough for real products",
+    title: "Auto | Beautiful features. In a day, not a week.",
     description: siteDescription,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Auto | AI coding, reliable enough for real products",
+    title: "Auto | Beautiful features. In a day, not a week.",
     description: siteDescription,
   },
   icons: {

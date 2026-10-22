@@ -78,6 +78,9 @@ test("landing page publishes a production social sharing card", async ({ request
   expect(html).toMatch(
     /<meta property="og:image" content="https:\/\/www\.buildwithauto\.ai\/opengraph-image[^\"]*"\s*\/?>/,
   );
+  expect(html).toContain(
+    'property="og:title" content="Auto | Beautiful features. In a day, not a week."',
+  );
   expect(html).toContain('name="twitter:card" content="summary_large_image"');
   expect(html).toMatch(
     /<meta name="twitter:image" content="https:\/\/www\.buildwithauto\.ai\/twitter-image[^\"]*"\s*\/?>/,

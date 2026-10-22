@@ -96,25 +96,25 @@ export function createSocialImage() {
           <div
             style={{
               display: "flex",
-              fontSize: 72,
+              fontSize: 82,
               lineHeight: 1.02,
               fontWeight: 590,
-              letterSpacing: "-4.3px",
+              letterSpacing: "-4.8px",
             }}
           >
-            AI coding. Reliable enough
+            Beautiful features.
           </div>
           <div
             style={{
               display: "flex",
               color: "#a991ff",
-              fontSize: 72,
+              fontSize: 82,
               lineHeight: 1.02,
               fontWeight: 590,
-              letterSpacing: "-4.3px",
+              letterSpacing: "-4.8px",
             }}
           >
-            for real products.
+            In a day, not a week.
           </div>
           <div
             style={{
@@ -127,8 +127,8 @@ export function createSocialImage() {
               letterSpacing: "-0.4px",
             }}
           >
-            One repository-aware system for architecture, design, implementation,
-            QA, security, and delivery.
+            Give every AI agent your design language, engineering rules, and
+            delivery workflow.
           </div>
         </div>
 
