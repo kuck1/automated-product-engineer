@@ -68,6 +68,32 @@ test("landing page explains the complete delivery workflow", async ({ page }, te
   await expect(page.getByRole("link", { name: "Parallel delivery", exact: true })).toHaveCount(0);
 });
 
+test("landing page publishes a production social sharing card", async ({ request }) => {
+  const pageResponse = await request.get("/");
+  expect(pageResponse.ok()).toBe(true);
+  const html = await pageResponse.text();
+  expect(html).toMatch(
+    /<link rel="canonical" href="https:\/\/www\.buildwithauto\.ai"\s*\/?>/,
+  );
+  expect(html).toMatch(
+    /<meta property="og:image" content="https:\/\/www\.buildwithauto\.ai\/opengraph-image[^\"]*"\s*\/?>/,
+  );
+  expect(html).toContain(
+    'property="og:title" content="Auto | Beautiful features. In a day, not a week."',
+  );
+  expect(html).toContain('name="twitter:card" content="summary_large_image"');
+  expect(html).toMatch(
+    /<meta name="twitter:image" content="https:\/\/www\.buildwithauto\.ai\/twitter-image[^\"]*"\s*\/?>/,
+  );
+
+  const imageResponse = await request.get("/opengraph-image");
+  expect(imageResponse.ok()).toBe(true);
+  expect(imageResponse.headers()["content-type"]).toContain("image/png");
+  const image = Buffer.from(await imageResponse.body());
+  expect(image.readUInt32BE(16)).toBe(1200);
+  expect(image.readUInt32BE(20)).toBe(630);
+});
+
 test("parallel delivery is hidden from the public website", async ({ page }) => {
   const response = await page.goto("/parallel");
   expect(response?.status()).toBe(404);
