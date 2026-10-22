@@ -3,9 +3,33 @@ import type { ReactNode } from "react";
 import { QueryProvider } from "@/src/providers/query-provider";
 import "./globals.css";
 
+const siteDescription =
+  "Auto gives every AI coding agent the same repository-aware system for architecture, design, implementation, QA, security, and delivery.";
+
 export const metadata: Metadata = {
-  title: "Automated Product Engineer",
-  description: "Start daily product work with business needs while an open-source engineering system handles the technical details behind the scenes.",
+  metadataBase: new URL("https://www.buildwithauto.ai"),
+  applicationName: "Auto",
+  title: {
+    default: "Auto | Product engineering for AI agents",
+    template: "%s | Auto",
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "Auto",
+    title: "Auto | AI coding, reliable enough for real products",
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Auto | AI coding, reliable enough for real products",
+    description: siteDescription,
+  },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     shortcut: ["/icon.svg"],
